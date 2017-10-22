@@ -1,0 +1,22 @@
+{
+  "name": "hms",
+  "version": "1.0.0",
+  "private": false,
+  "scripts": {
+    "start": "node app.js",
+    "inspect": "node --inspect app.js"
+  },
+  "dependencies": {
+    "bunyan": "^1.8.12",
+    "bunyan-format": "^0.2.1",
+    "lodash": "^4.17.4",
+    "mysql2": "^1.4.2",
+    "nconf": "^0.8.5",
+    "request": "^2.83.0",
+    "restify": "6.2.3",
+    "restify-cors-middleware": "^1.0.1",
+    "restify-errors": "^5.0.0",
+    "sequelize": "^4.15.1"
+  },
+  "devDependencies": {}
+}
