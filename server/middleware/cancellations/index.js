@@ -1,30 +1,30 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Users = require('../../src/models/users.js')
+const Cancellations = require('../../src/models/cancellations.js')
 
 const routes = [];
 
 routes.push({
     meta: {
-        name: 'userList',
+        name: 'cancellationList',
         method: 'GET',
         paths: [
-            '/user'
+            '/cancellation'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Users.findAll({
+        Cancellations.findAll({
             order: [
                 ['id', 'DESC']
             ],
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'name',
-                'type',
-                'active'
+                'comments',
+                'booking_id',
+                'user_id'
             ]
         }).then((data) => {
             res.send(data);
@@ -36,15 +36,15 @@ routes.push({
 
 routes.push({
     meta: {
-        name: 'userRead',
+        name: 'cancellationRead',
         method: 'GET',
         paths: [
-            '/user/:id'
+            '/cancellation/:id'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Users.findOne({
+        Cancellations.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -53,9 +53,9 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'name',
-                'type',
-                'active'
+                'comments',
+                'booking_id',
+                'user_id'
             ],
             limit: 1,
             raw: true
@@ -69,10 +69,10 @@ routes.push({
 
 routes.push({
     meta: {
-        name: 'userCreate',
+        name: 'cancellationCreate',
         method: 'POST',
         paths: [
-            '/user'
+            '/cancellation'
         ],
         version: '1.0.0'
     },
@@ -84,10 +84,10 @@ routes.push({
 
 routes.push({
     meta: {
-        name: 'userUpdate',
+        name: 'cancellationUpdate',
         method: 'PUT',
         paths: [
-            '/user/:id'
+            '/cancellation/:id'
         ],
         version: '1.0.0'
     },

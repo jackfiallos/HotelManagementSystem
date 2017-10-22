@@ -1,31 +1,30 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Cancellations = require('../../src/models/cancellations.js')
+const Payments = require('../../src/models/payments.js')
 
 const routes = [];
 
 routes.push({
     meta: {
-        name: 'cancelationList',
+        name: 'paymentsList',
         method: 'GET',
         paths: [
-            '/cancelation'
+            '/payments'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Cancellations.findAll({
+        Payments.findAll({
             order: [
                 ['id', 'DESC']
             ],
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'booking_id',
-                'room_id',
-                'customer_id',
-                'user_id'
+                'amount',
+                'method',
+                'currency'
             ]
         }).then((data) => {
             res.send(data);
@@ -37,15 +36,15 @@ routes.push({
 
 routes.push({
     meta: {
-        name: 'cancelationRead',
+        name: 'paymentsRead',
         method: 'GET',
         paths: [
-            '/cancelation/:id'
+            '/payments/:id'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Cancellations.findOne({
+        Payments.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -54,10 +53,9 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'booking_id',
-                'room_id',
-                'customer_id',
-                'user_id'
+                'amount',
+                'method',
+                'currency'
             ],
             limit: 1,
             raw: true
@@ -71,10 +69,10 @@ routes.push({
 
 routes.push({
     meta: {
-        name: 'cancelationCreate',
+        name: 'paymentsCreate',
         method: 'POST',
         paths: [
-            '/cancelation'
+            '/payments'
         ],
         version: '1.0.0'
     },
@@ -86,10 +84,10 @@ routes.push({
 
 routes.push({
     meta: {
-        name: 'cancelationUpdate',
+        name: 'paymentsUpdate',
         method: 'PUT',
         paths: [
-            '/cancelation/:id'
+            '/payments/:id'
         ],
         version: '1.0.0'
     },
