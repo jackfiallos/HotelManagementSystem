@@ -1,6 +1,7 @@
 'use strict';
 
 const Sequelize = require('sequelize');
+
 const sequelize = new Sequelize('mysql://root:mysqlubuntu@localhost:3306/hms', {
     define: {
         timestamps: false, // true by default

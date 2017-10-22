@@ -1,6 +1,10 @@
 'use strict';
 
 const Sequelize = require('sequelize');
+const Rooms = require('./rooms.js');
+const Customers = require('./customers.js');
+const Users = require('./users.js');
+
 const sequelize = new Sequelize('mysql://root:mysqlubuntu@localhost:3306/hms', {
     define: {
         timestamps: false, // true by default
@@ -43,7 +47,11 @@ const Bookings = sequelize.define('bookings', {
     },
     breakfast: {
         type: Sequelize.BOOLEAN,
-        defaultValue: 0
+        defaultValue: 0,
+        get() {
+            const hasBreakfast = this.getDataValue('breakfast');
+            return (hasBreakfast) ? true : false
+        }
     },
     nights: {
         type: Sequelize.INTEGER,
@@ -65,15 +73,27 @@ const Bookings = sequelize.define('bookings', {
     },
     room_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Rooms,
+            key: 'id',
+        }
     },
     customer_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Customers,
+            key: 'id',
+        }
     },
     user_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+            model: Users,
+            key: 'id',
+        }
     }
 });
 

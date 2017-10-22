@@ -1,20 +1,18 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Bookings = require('./bookings');
-const Rooms = require('./rooms.js');
-const Customers = require('./customers.js');
+const Bookings = require('./bookings.js');
 const Users = require('./users.js');
 
 const sequelize = new Sequelize('mysql://root:mysqlubuntu@localhost:3306/hms', {
     define: {
         timestamps: false, // true by default
-        tableName: 'cancellations',
+        tableName: 'payments',
         engine: 'MYISAM'
     }
 });
 
-const Cancelations = sequelize.define('cancellations', {
+const Payments = sequelize.define('payments', {
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -24,11 +22,30 @@ const Cancelations = sequelize.define('cancellations', {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
     },
-    comments: {
-        type: Sequelize.TEXT,
+    amount: {
+        type: Sequelize.STRING,
+        allowNull: false,
         validate: {
-            notEmpty: true,
+            isDecimal: true
         }
+    },
+    method: {
+        type: Sequelize.ENUM(),
+        values: ['cash', 'card', 'online'],
+        allowNull: false,
+        defaultValue: 'card',
+        set(val) {
+            this.setDataValue('method', val.toLowerCase());
+        }
+    },
+    currency: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: 'USD',
+    },
+    source: {
+        type: Sequelize.STRING,
+        allowNull: true
     },
     booking_id: {
         type: Sequelize.INTEGER,
@@ -45,7 +62,7 @@ const Cancelations = sequelize.define('cancellations', {
             model: Users,
             key: 'id',
         }
-    },
+    }
 });
 
-module.exports = Cancelations;
+module.exports = Payments;

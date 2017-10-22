@@ -2,6 +2,7 @@
 
 const Sequelize = require('sequelize');
 const Users = require('./users.js');
+
 const sequelize = new Sequelize('mysql://root:mysqlubuntu@localhost:3306/hms', {
     define: {
         timestamps: false, // true by default

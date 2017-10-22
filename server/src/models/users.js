@@ -1,6 +1,7 @@
 'use strict';
 
 const Sequelize = require('sequelize');
+
 const sequelize = new Sequelize('mysql://root:mysqlubuntu@localhost:3306/hms', {
     define: {
         timestamps: false, // true by default
@@ -35,7 +36,16 @@ const Users = sequelize.define('users', {
         set(val) {
             this.setDataValue('type', val.toLowerCase());
         }
-    }
+    },
+    active: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: 0,
+        get() {
+            const isActive = this.getDataValue('active');
+            return (isActive) ? true : false
+        }
+    },
 });
 
 module.exports = Users;
