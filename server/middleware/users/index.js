@@ -2,9 +2,13 @@
 
 const Sequelize = require('sequelize');
 const Users = require('../../src/models/users.js')
-
 const routes = [];
 
+/**
+ * @action list
+ * @method get
+ * @return Users[]
+ */
 routes.push({
     meta: {
         name: 'userList',
@@ -27,13 +31,18 @@ routes.push({
                 'active'
             ]
         }).then((data) => {
-            res.send(data);
-
+            res.json(data);
             return next();
         });
     }
 });
 
+/**
+ * @action read
+ * @method get
+ * @param id
+ * @return Users
+ */
 routes.push({
     meta: {
         name: 'userRead',
@@ -60,13 +69,17 @@ routes.push({
             limit: 1,
             raw: true
         }).then((data) => {
-            res.send(data);
-
+            res.json(data);
             return next();
         });
     }
 });
 
+/**
+ * @action create
+ * @method post
+ * @return Users
+ */
 routes.push({
     meta: {
         name: 'userCreate',
@@ -77,11 +90,40 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        res.send(req.body);
-        return next();
+        // object
+        const form = {
+            name: req.body.name,
+            password: req.body.password,
+            type: req.body.type,
+            active: req.body.active
+        };
+
+        // create record
+        Users.create(form).then((data) => {
+            res.json(data);
+            return next();
+        }).catch((err) => {
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    message: err.message,
+                    type: err.type,
+                    path: err.path
+                });
+            } else {
+                res.json(err);
+            }
+
+            return next();
+        });
     }
 });
 
+/**
+ * @action update
+ * @method put
+ * @param id
+ * @return Users
+ */
 routes.push({
     meta: {
         name: 'userUpdate',
@@ -92,11 +134,40 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        res.send({
-            id: req.params.id,
-            req: req.body,
+        const id = req.params.id;
+        // object
+        const form = {
+            name: req.body.name,
+            password: req.body.password,
+            type: req.body.type,
+            active: req.body.active
+        };
+
+        // update record
+        Users.find({
+            where: {
+                id: {
+                    [Sequelize.Op.eq]: req.params.id
+                }
+            }
+        }).then(data => {
+            return data.updateAttributes(form);
+        }).then((data) => {
+            res.json(data);
+            return next();
+        }).catch((err) => {
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    message: err.message,
+                    type: err.type,
+                    path: err.path
+                });
+            } else {
+                res.json(err);
+            }
+
+            return next();
         });
-        return next();
     }
 });
 

@@ -2,9 +2,13 @@
 
 const Sequelize = require('sequelize');
 const Bookings = require('../../src/models/bookings.js')
-
 const routes = [];
 
+/**
+ * @action list
+ * @method get
+ * @return Booking[]
+ */
 routes.push({
     meta: {
         name: 'bookingList',
@@ -15,6 +19,7 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
+        // find records
         Bookings.findAll({
             order: [
                 ['id', 'DESC']
@@ -29,13 +34,18 @@ routes.push({
                 'room_id',
             ]
         }).then((data) => {
-            res.send(data);
-
+            res.json(data);
             return next();
         });
     }
 });
 
+/**
+ * @action read
+ * @method get
+ * @param id
+ * @return Booking
+ */
 routes.push({
     meta: {
         name: 'bookingRead',
@@ -46,6 +56,7 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
+        // find specific record
         Bookings.findOne({
             where: {
                 id: {
@@ -59,18 +70,29 @@ routes.push({
                 'departure',
                 'checkin',
                 'checkout',
+                'breakfast',
+                'nights',
+                'adults',
+                'children',
+                'comments',
                 'room_id',
+                'customer_id',
+                'user_id'
             ],
             limit: 1,
             raw: true
         }).then((data) => {
-            res.send(data);
-
+            res.json(data);
             return next();
         });
     }
 });
 
+/**
+ * @action create
+ * @method post
+ * @return Booking
+ */
 routes.push({
     meta: {
         name: 'bookingCreate',
@@ -81,11 +103,48 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        res.send(req.body);
-        return next();
+        // object
+        const form = {
+            arrival: new Date(req.body.arrival),
+            departure: new Date(req.body.departure),
+            checkin: (req.body.checkin) ? req.body.checkin : null,
+            checkout: (req.body.checkout) ? req.body.checkout : null,
+            breakfast: req.body.breakfast,
+            nights: req.body.nights,
+            adults: req.body.adults,
+            children: req.body.children,
+            comments: (req.body.comments) ? req.body.comments : null,
+            room_id: req.body.room_id,
+            customer_id: req.body.customer_id,
+            user_id: req.body.user_id
+        };
+
+        // create record
+        Bookings.create(form).then((data) => {
+            res.json(data);
+            return next();
+        }).catch((err) => {
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    message: err.message,
+                    type: err.type,
+                    path: err.path
+                });
+            } else {
+                res.json(err);
+            }
+
+            return next();
+        });
     }
 });
 
+/**
+ * @action update
+ * @method put
+ * @param id
+ * @return Booking
+ */
 routes.push({
     meta: {
         name: 'bookingUpdate',
@@ -96,11 +155,47 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        res.send({
-            id: req.params.id,
-            req: req.body,
+        const id = req.params.id;
+        // object
+        const form = {
+            arrival: new Date(req.body.arrival),
+            departure: new Date(req.body.departure),
+            checkin: (req.body.checkin) ? req.body.checkin : null,
+            checkout: (req.body.checkout) ? req.body.checkout : null,
+            breakfast: req.body.breakfast,
+            nights: req.body.nights,
+            adults: req.body.adults,
+            children: req.body.children,
+            comments: (req.body.comments) ? req.body.comments : null,
+            room_id: req.body.room_id,
+            customer_id: req.body.customer_id
+        };
+
+        // update record
+        Bookings.find({
+            where: {
+                id: {
+                    [Sequelize.Op.eq]: req.params.id
+                }
+            }
+        }).then(data => {
+            return data.updateAttributes(form);
+        }).then((data) => {
+            res.json(data);
+            return next();
+        }).catch((err) => {
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    message: err.message,
+                    type: err.type,
+                    path: err.path
+                });
+            } else {
+                res.json(err);
+            }
+
+            return next();
         });
-        return next();
     }
 });
 

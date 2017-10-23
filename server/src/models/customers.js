@@ -3,7 +3,14 @@
 const Sequelize = require('sequelize');
 const Users = require('./users.js');
 
-const sequelize = new Sequelize('mysql://root:mysqlubuntu@localhost:3306/hms', {
+const sequelize = new Sequelize('hms', 'root', 'mysqlubuntu', {
+    host: 'localhost',
+    dialect: 'mysql',
+    pool: {
+        max: 10,
+        min: 0,
+        idle: 10000
+    },
     define: {
         timestamps: false, // true by default
         tableName: 'customers',
