@@ -26,6 +26,7 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
+                'currency',
                 'price_night',
                 'type',
                 'max_persons'
@@ -62,6 +63,7 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
+                'currency',
                 'price_night',
                 'type',
                 'max_persons'
@@ -92,6 +94,7 @@ routes.push({
     middleware: (req, res, next) => {
         // object
         const form = {
+            currency: req.body.currency,
             price_night: req.body.price_night,
             type: req.body.type,
             max_persons: (req.body.max_persons) ? req.body.max_persons : null
@@ -136,6 +139,7 @@ routes.push({
         const id = req.params.id;
         // object
         const form = {
+            currency: req.body.currency,
             price_night: req.body.price_night,
             type: req.body.type,
             max_persons: (req.body.max_persons) ? req.body.max_persons : null

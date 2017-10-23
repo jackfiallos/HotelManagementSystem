@@ -27,8 +27,13 @@ const Rooms = sequelize.define('rooms', {
         type: Sequelize.DATE,
         defaultValue: Sequelize.NOW
     },
-    price_night: {
+    currency: {
         type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: 'USD'
+    },
+    price_night: {
+        type: Sequelize.DECIMAL(6,2),
         allowNull: false,
         defaultValue: 0
     },

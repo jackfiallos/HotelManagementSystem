@@ -30,7 +30,7 @@ const Payments = sequelize.define('payments', {
         defaultValue: Sequelize.NOW
     },
     amount: {
-        type: Sequelize.STRING,
+        type: Sequelize.DECIMAL(6,2),
         allowNull: false,
         validate: {
             isDecimal: true
