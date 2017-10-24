@@ -17,10 +17,10 @@ const restify = require('restify');
 const bunyan = require('bunyan');
 const bformat = require('bunyan-format');
 const Sequelize = require('sequelize');
-const corsMiddleware = require('restify-cors-middleware')
+const corsMiddleware = require('restify-cors-middleware');
 
 const nconf = require('nconf').file({
-    file: path.join(__dirname, 'config', 'global.json')
+    file: path.join(__dirname, 'src', 'config', `${process.env.NODE_ENV}.config.json`)
 });
 
 const formatOut = bformat({
@@ -40,7 +40,7 @@ const Logger = bunyan.createLogger({
         stream: formatOut
     }, {
         level: 'error',
-        path: path.join(nconf.get('Logging:Dir'), process.env.NODE_ENV + '-' + nconf.get('Server:Name') + '.log')
+        path: path.join(nconf.get('Logging:Dir'), `${process.env.NODE_ENV}-${nconf.get('Server:Name')}.log`)
     }]
 });
 
@@ -92,6 +92,21 @@ const cors = corsMiddleware({
 server.pre(cors.preflight);
 server.use(cors.actual);
 
+// Inject extra header response
+server.use((req, res, next) => {
+    res.header('API-RND', Math.floor(Date.now() / 1000));
+    return next();
+});
+
+// Verify through middleware if user is authorized
+server.use((req, res, next) => {
+    // if (req.session.auth || req.path === '/auth') {
+    //     next();
+    // } else {
+    //    res.redirect('/');
+    // }
+});
+
 /**
  * Request / Response Logging
  */
@@ -117,15 +132,15 @@ server.on('restifyError', (req, res, err, next) => {
  */
 
 const registerRoute = (route) => {
-    var routeMethod = route.meta.method.toLowerCase();
-    var routeName = route.meta.name;
-    var routeVersion = route.meta.version;
+    const routeMethod = route.meta.method.toLowerCase();
+    const routeName = route.meta.name;
+    const routeVersion = route.meta.version;
 
     route
         .meta
         .paths
         .forEach((aPath) => {
-            var routeMeta = {
+            const routeMeta = {
                 name: routeName,
                 path: aPath,
                 version: routeVersion
@@ -136,7 +151,7 @@ const registerRoute = (route) => {
 };
 
 const setupMiddleware = (middlewareName) => {
-    var routes = require(path.join(__dirname, 'middleware', middlewareName));
+    const routes = require(path.join(__dirname, 'src', 'middleware', middlewareName));
     routes.forEach(registerRoute);
 };
 

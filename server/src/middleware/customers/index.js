@@ -1,35 +1,37 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Rooms = require('../../src/models/rooms.js')
+const models = require('../../models');
 const routes = [];
 
 /**
  * @action list
  * @method get
- * @return Rooms[]
+ * @return Customers[]
  */
 routes.push({
     meta: {
-        name: 'roomList',
+        name: 'customerList',
         method: 'GET',
         paths: [
-            '/room'
+            '/customer'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Rooms.findAll({
+        models.customers.findAll({
             order: [
                 ['id', 'DESC']
             ],
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'currency',
-                'price_night',
-                'type',
-                'max_persons'
+                'first_name',
+                'last_name',
+                'phone',
+                'mobile',
+                'city',
+                'user_id'
             ]
         }).then((data) => {
             res.json(data);
@@ -42,19 +44,19 @@ routes.push({
  * @action read
  * @method get
  * @param id
- * @return Rooms
+ * @return Customers
  */
 routes.push({
     meta: {
-        name: 'roomRead',
+        name: 'customerRead',
         method: 'GET',
         paths: [
-            '/room/:id'
+            '/customer/:id'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Rooms.findOne({
+        models.customers.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -63,10 +65,12 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'currency',
-                'price_night',
-                'type',
-                'max_persons'
+                'first_name',
+                'last_name',
+                'phone',
+                'mobile',
+                'city',
+                'user_id'
             ],
             limit: 1,
             raw: true
@@ -80,28 +84,33 @@ routes.push({
 /**
  * @action create
  * @method post
- * @return Rooms
+ * @return Customers
  */
 routes.push({
     meta: {
-        name: 'roomCreate',
+        name: 'customerCreate',
         method: 'POST',
         paths: [
-            '/room'
+            '/customer'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
         // object
         const form = {
-            currency: req.body.currency,
-            price_night: req.body.price_night,
-            type: req.body.type,
-            max_persons: (req.body.max_persons) ? req.body.max_persons : null
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            phone: (req.body.phone) ? req.body.phone : null,
+            mobile: (req.body.mobile) ? req.body.mobile : null,
+            city: req.body.city,
+            country: req.body.country,
+            email: (req.body.email) ? req.body.email : null,
+            organization: (req.body.organization) ? req.body.organization : null,
+            user_id: req.body.user_id
         };
 
         // create record
-        Rooms.create(form).then((data) => {
+        models.customers.create(form).then((data) => {
             res.json(data);
             return next();
         }).catch((err) => {
@@ -124,14 +133,14 @@ routes.push({
  * @action update
  * @method put
  * @param id
- * @return Rooms
+ * @return Customers
  */
 routes.push({
     meta: {
-        name: 'roomUpdate',
+        name: 'customerUpdate',
         method: 'PUT',
         paths: [
-            '/room/:id'
+            '/customer/:id'
         ],
         version: '1.0.0'
     },
@@ -139,14 +148,18 @@ routes.push({
         const id = req.params.id;
         // object
         const form = {
-            currency: req.body.currency,
-            price_night: req.body.price_night,
-            type: req.body.type,
-            max_persons: (req.body.max_persons) ? req.body.max_persons : null
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            phone: (req.body.phone) ? req.body.phone : null,
+            mobile: (req.body.mobile) ? req.body.mobile : null,
+            city: req.body.city,
+            country: req.body.country,
+            email: (req.body.email) ? req.body.email : null,
+            organization: (req.body.organization) ? req.body.organization : null
         };
 
         // update record
-        Rooms.find({
+        models.customers.find({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id

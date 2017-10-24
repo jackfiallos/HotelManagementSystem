@@ -1,37 +1,34 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Bookings = require('../../src/models/bookings.js')
+const models = require('../../models');
 const routes = [];
 
 /**
  * @action list
  * @method get
- * @return Booking[]
+ * @return Users[]
  */
 routes.push({
     meta: {
-        name: 'bookingList',
+        name: 'userList',
         method: 'GET',
         paths: [
-            '/booking'
+            '/user'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        // find records
-        Bookings.findAll({
+        models.users.findAll({
             order: [
                 ['id', 'DESC']
             ],
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'arrival',
-                'departure',
-                'checkin',
-                'checkout',
-                'room_id',
+                'name',
+                'type',
+                'active'
             ]
         }).then((data) => {
             res.json(data);
@@ -44,20 +41,19 @@ routes.push({
  * @action read
  * @method get
  * @param id
- * @return Booking
+ * @return Users
  */
 routes.push({
     meta: {
-        name: 'bookingRead',
+        name: 'userRead',
         method: 'GET',
         paths: [
-            '/booking/:id'
+            '/user/:id'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        // find specific record
-        Bookings.findOne({
+        models.users.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -66,18 +62,9 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'arrival',
-                'departure',
-                'checkin',
-                'checkout',
-                'breakfast',
-                'nights',
-                'adults',
-                'children',
-                'comments',
-                'room_id',
-                'customer_id',
-                'user_id'
+                'name',
+                'type',
+                'active'
             ],
             limit: 1,
             raw: true
@@ -91,36 +78,28 @@ routes.push({
 /**
  * @action create
  * @method post
- * @return Booking
+ * @return Users
  */
 routes.push({
     meta: {
-        name: 'bookingCreate',
+        name: 'userCreate',
         method: 'POST',
         paths: [
-            '/booking'
+            '/user'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
         // object
         const form = {
-            arrival: new Date(req.body.arrival),
-            departure: new Date(req.body.departure),
-            checkin: (req.body.checkin) ? req.body.checkin : null,
-            checkout: (req.body.checkout) ? req.body.checkout : null,
-            breakfast: req.body.breakfast,
-            nights: req.body.nights,
-            adults: req.body.adults,
-            children: req.body.children,
-            comments: (req.body.comments) ? req.body.comments : null,
-            room_id: req.body.room_id,
-            customer_id: req.body.customer_id,
-            user_id: req.body.user_id
+            name: req.body.name,
+            password: req.body.password,
+            type: req.body.type,
+            active: req.body.active
         };
 
         // create record
-        Bookings.create(form).then((data) => {
+        models.users.create(form).then((data) => {
             res.json(data);
             return next();
         }).catch((err) => {
@@ -143,14 +122,14 @@ routes.push({
  * @action update
  * @method put
  * @param id
- * @return Booking
+ * @return Users
  */
 routes.push({
     meta: {
-        name: 'bookingUpdate',
+        name: 'userUpdate',
         method: 'PUT',
         paths: [
-            '/booking/:id'
+            '/user/:id'
         ],
         version: '1.0.0'
     },
@@ -158,21 +137,14 @@ routes.push({
         const id = req.params.id;
         // object
         const form = {
-            arrival: new Date(req.body.arrival),
-            departure: new Date(req.body.departure),
-            checkin: (req.body.checkin) ? req.body.checkin : null,
-            checkout: (req.body.checkout) ? req.body.checkout : null,
-            breakfast: req.body.breakfast,
-            nights: req.body.nights,
-            adults: req.body.adults,
-            children: req.body.children,
-            comments: (req.body.comments) ? req.body.comments : null,
-            room_id: req.body.room_id,
-            customer_id: req.body.customer_id
+            name: req.body.name,
+            password: req.body.password,
+            type: req.body.type,
+            active: req.body.active
         };
 
         // update record
-        Bookings.find({
+        models.users.find({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id

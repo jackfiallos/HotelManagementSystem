@@ -1,34 +1,34 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Payments = require('../../src/models/payments.js')
+const models = require('../../models');
 const routes = [];
 
 /**
  * @action list
  * @method get
- * @return Payments[]
+ * @return Cancellations[]
  */
 routes.push({
     meta: {
-        name: 'paymentsList',
+        name: 'cancellationList',
         method: 'GET',
         paths: [
-            '/payments'
+            '/cancellation'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Payments.findAll({
+        models.cancellations.findAll({
             order: [
                 ['id', 'DESC']
             ],
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'amount',
-                'method',
-                'currency'
+                'comments',
+                'booking_id',
+                'user_id'
             ]
         }).then((data) => {
             res.json(data);
@@ -41,19 +41,19 @@ routes.push({
  * @action read
  * @method get
  * @param id
- * @return Payments
+ * @return Cancellations
  */
 routes.push({
     meta: {
-        name: 'paymentsRead',
+        name: 'cancellationRead',
         method: 'GET',
         paths: [
-            '/payments/:id'
+            '/cancellation/:id'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Payments.findOne({
+        models.cancellations.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -62,9 +62,9 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'amount',
-                'method',
-                'currency'
+                'comments',
+                'booking_id',
+                'user_id'
             ],
             limit: 1,
             raw: true
@@ -78,30 +78,27 @@ routes.push({
 /**
  * @action create
  * @method post
- * @return Payments
+ * @return Cancellations
  */
 routes.push({
     meta: {
-        name: 'paymentsCreate',
+        name: 'cancellationCreate',
         method: 'POST',
         paths: [
-            '/payments'
+            '/cancellation'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
         // object
         const form = {
-            amount: req.body.amount,
-            method: req.body.method,
-            currency: req.body.currency,
-            source: (req.body.source) ? req.body.source : null,
+            comments: (req.body.comments) ? req.body.comments : null,
             booking_id: req.body.booking_id,
             user_id: req.body.user_id
         };
 
         // create record
-        Payments.create(form).then((data) => {
+        models.cancellations.create(form).then((data) => {
             res.json(data);
             return next();
         }).catch((err) => {
@@ -124,14 +121,14 @@ routes.push({
  * @action update
  * @method put
  * @param id
- * @return Payments
+ * @return Cancellations
  */
 routes.push({
     meta: {
-        name: 'paymentsUpdate',
+        name: 'cancellationUpdate',
         method: 'PUT',
         paths: [
-            '/payments/:id'
+            '/cancellation/:id'
         ],
         version: '1.0.0'
     },
@@ -139,15 +136,12 @@ routes.push({
         const id = req.params.id;
         // object
         const form = {
-            amount: req.body.amount,
-            method: req.body.method,
-            currency: req.body.currency,
-            source: (req.body.source) ? req.body.source : null,
+            comments: (req.body.comments) ? req.body.comments : null,
             booking_id: req.body.booking_id
         };
 
         // update record
-        Payments.find({
+        models.cancellations.find({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id

@@ -1,5 +1,7 @@
 ## Server Configuration
 
+First of all, don´t forget to configure your **database** (look into the resource folder the schema)
+
 ### Installing Dependencies
 ```bash
 $ npm install

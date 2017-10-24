@@ -1,0 +1,35 @@
+{
+    "App": {
+        "Name": "api.hms"
+    },
+    "Server": {
+        "Port": 1337,
+        "Name": "api.hms.local",
+        "DefaultVersion": "1.0.0",
+        "Acceptable": [ "application/json" ],
+        "ThrottleRate": 50,
+        "ThrottleBurst": 100
+    },
+    "DB": {
+        "name": "hms",
+        "username": "root",
+        "password": "mysqlubuntu",
+        "config": {
+            "host": "localhost",
+            "port": 3306,
+            "dialect": "mysql",
+            "pool": {
+                "max": 10,
+                "min": 0,
+                "idle": 10000
+            },
+            "define": {
+                "timestamps": false
+            }
+        }
+    },
+    "Logging": {
+        "Name": "hms-log",
+        "Dir": "./logs/"
+    }
+}

@@ -1,37 +1,37 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Customers = require('../../src/models/customers.js')
+const models = require('../../models');
 const routes = [];
 
 /**
  * @action list
  * @method get
- * @return Customers[]
+ * @return Booking[]
  */
 routes.push({
     meta: {
-        name: 'customerList',
+        name: 'bookingList',
         method: 'GET',
         paths: [
-            '/customer'
+            '/booking'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Customers.findAll({
+        // find records
+        models.bookings.findAll({
             order: [
                 ['id', 'DESC']
             ],
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'first_name',
-                'last_name',
-                'phone',
-                'mobile',
-                'city',
-                'user_id'
+                'arrival',
+                'departure',
+                'checkin',
+                'checkout',
+                'room_id',
             ]
         }).then((data) => {
             res.json(data);
@@ -44,19 +44,20 @@ routes.push({
  * @action read
  * @method get
  * @param id
- * @return Customers
+ * @return Booking
  */
 routes.push({
     meta: {
-        name: 'customerRead',
+        name: 'bookingRead',
         method: 'GET',
         paths: [
-            '/customer/:id'
+            '/booking/:id'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Customers.findOne({
+        // find specific record
+        models.bookings.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -65,11 +66,17 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'first_name',
-                'last_name',
-                'phone',
-                'mobile',
-                'city',
+                'arrival',
+                'departure',
+                'checkin',
+                'checkout',
+                'breakfast',
+                'nights',
+                'adults',
+                'children',
+                'comments',
+                'room_id',
+                'customer_id',
                 'user_id'
             ],
             limit: 1,
@@ -84,33 +91,36 @@ routes.push({
 /**
  * @action create
  * @method post
- * @return Customers
+ * @return Booking
  */
 routes.push({
     meta: {
-        name: 'customerCreate',
+        name: 'bookingCreate',
         method: 'POST',
         paths: [
-            '/customer'
+            '/booking'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
         // object
         const form = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            phone: (req.body.phone) ? req.body.phone : null,
-            mobile: (req.body.mobile) ? req.body.mobile : null,
-            city: req.body.city,
-            country: req.body.country,
-            email: (req.body.email) ? req.body.email : null,
-            organization: (req.body.organization) ? req.body.organization : null,
+            arrival: new Date(req.body.arrival),
+            departure: new Date(req.body.departure),
+            checkin: (req.body.checkin) ? req.body.checkin : null,
+            checkout: (req.body.checkout) ? req.body.checkout : null,
+            breakfast: req.body.breakfast,
+            nights: req.body.nights,
+            adults: req.body.adults,
+            children: req.body.children,
+            comments: (req.body.comments) ? req.body.comments : null,
+            room_id: req.body.room_id,
+            customer_id: req.body.customer_id,
             user_id: req.body.user_id
         };
 
         // create record
-        Customers.create(form).then((data) => {
+        models.bookings.create(form).then((data) => {
             res.json(data);
             return next();
         }).catch((err) => {
@@ -133,14 +143,14 @@ routes.push({
  * @action update
  * @method put
  * @param id
- * @return Customers
+ * @return Booking
  */
 routes.push({
     meta: {
-        name: 'customerUpdate',
+        name: 'bookingUpdate',
         method: 'PUT',
         paths: [
-            '/customer/:id'
+            '/booking/:id'
         ],
         version: '1.0.0'
     },
@@ -148,18 +158,21 @@ routes.push({
         const id = req.params.id;
         // object
         const form = {
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            phone: (req.body.phone) ? req.body.phone : null,
-            mobile: (req.body.mobile) ? req.body.mobile : null,
-            city: req.body.city,
-            country: req.body.country,
-            email: (req.body.email) ? req.body.email : null,
-            organization: (req.body.organization) ? req.body.organization : null
+            arrival: new Date(req.body.arrival),
+            departure: new Date(req.body.departure),
+            checkin: (req.body.checkin) ? req.body.checkin : null,
+            checkout: (req.body.checkout) ? req.body.checkout : null,
+            breakfast: req.body.breakfast,
+            nights: req.body.nights,
+            adults: req.body.adults,
+            children: req.body.children,
+            comments: (req.body.comments) ? req.body.comments : null,
+            room_id: req.body.room_id,
+            customer_id: req.body.customer_id
         };
 
         // update record
-        Customers.find({
+        models.bookings.find({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id

@@ -1,34 +1,34 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Users = require('../../src/models/users.js')
+const models = require('../../models');
 const routes = [];
 
 /**
  * @action list
  * @method get
- * @return Users[]
+ * @return Payments[]
  */
 routes.push({
     meta: {
-        name: 'userList',
+        name: 'paymentsList',
         method: 'GET',
         paths: [
-            '/user'
+            '/payments'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Users.findAll({
+        models.payments.findAll({
             order: [
                 ['id', 'DESC']
             ],
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'name',
-                'type',
-                'active'
+                'amount',
+                'method',
+                'currency'
             ]
         }).then((data) => {
             res.json(data);
@@ -41,19 +41,19 @@ routes.push({
  * @action read
  * @method get
  * @param id
- * @return Users
+ * @return Payments
  */
 routes.push({
     meta: {
-        name: 'userRead',
+        name: 'paymentsRead',
         method: 'GET',
         paths: [
-            '/user/:id'
+            '/payments/:id'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        Users.findOne({
+        models.payments.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -62,9 +62,9 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'name',
-                'type',
-                'active'
+                'amount',
+                'method',
+                'currency'
             ],
             limit: 1,
             raw: true
@@ -78,28 +78,30 @@ routes.push({
 /**
  * @action create
  * @method post
- * @return Users
+ * @return Payments
  */
 routes.push({
     meta: {
-        name: 'userCreate',
+        name: 'paymentsCreate',
         method: 'POST',
         paths: [
-            '/user'
+            '/payments'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
         // object
         const form = {
-            name: req.body.name,
-            password: req.body.password,
-            type: req.body.type,
-            active: req.body.active
+            amount: req.body.amount,
+            method: req.body.method,
+            currency: req.body.currency,
+            source: (req.body.source) ? req.body.source : null,
+            booking_id: req.body.booking_id,
+            user_id: req.body.user_id
         };
 
         // create record
-        Users.create(form).then((data) => {
+        models.payments.create(form).then((data) => {
             res.json(data);
             return next();
         }).catch((err) => {
@@ -122,14 +124,14 @@ routes.push({
  * @action update
  * @method put
  * @param id
- * @return Users
+ * @return Payments
  */
 routes.push({
     meta: {
-        name: 'userUpdate',
+        name: 'paymentsUpdate',
         method: 'PUT',
         paths: [
-            '/user/:id'
+            '/payments/:id'
         ],
         version: '1.0.0'
     },
@@ -137,14 +139,15 @@ routes.push({
         const id = req.params.id;
         // object
         const form = {
-            name: req.body.name,
-            password: req.body.password,
-            type: req.body.type,
-            active: req.body.active
+            amount: req.body.amount,
+            method: req.body.method,
+            currency: req.body.currency,
+            source: (req.body.source) ? req.body.source : null,
+            booking_id: req.body.booking_id
         };
 
         // update record
-        Users.find({
+        models.payments.find({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
