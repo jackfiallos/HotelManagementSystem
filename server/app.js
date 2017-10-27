@@ -52,7 +52,7 @@ const server = restify.createServer({
     name: nconf.get('Server:Name'),
     version: nconf.get('Server:DefaultVersion'),
     acceptable: nconf.get('Server:Acceptable'),
-    log: Logger,
+    log: Logger
 });
 
 /**

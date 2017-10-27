@@ -1,0 +1,43 @@
+.lock-screen{
+    position: relative;
+    overflow: hidden;
+  .backhground-bg{
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    left: -20px;
+    bottom: -20px;
+    background-size: cover;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    -ms-filter: blur(5px);
+    -o-filter: blur(5px);
+    -moz-filter: blur(5px);
+    overflow: hidden;
+    min-height: 100%;
+  }
+  .card{
+    background: rgba(255,255,255,0.5);
+    @include border-radius(6px);
+    .card-body{
+      img{
+        width: 90px;
+        height:90px;
+        @include border-radius(100%);
+        border:2px solid $white;
+        @extend .mb-4;
+      }
+      p{
+        color: theme-color(dark);
+        font-weight: 500;
+        @extend .mb-3;
+      }
+      input[type="text"]{
+        background: rgba(255, 255, 255, 0.55);
+        border: none;
+        width: 80%;
+        margin: auto;
+      }
+    }
+  }
+}

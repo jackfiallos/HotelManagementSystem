@@ -1,0 +1,99 @@
+
+////////// COLOR SYSTEM //////////
+
+$blue:              #007bff;
+$indigo:            #6610f2;
+$purple:            #6f42c1;
+$pink:              #e83e8c;
+$red:               #dc3545;
+$orange:            #fd7e14;
+$yellow:            #ffc107;
+$green:             #00e566;
+$teal:              #58d8a3;
+$cyan:              #17a2b8;
+$black:             #000;
+$white:             #ffffff;
+$white-smoke:       #f2f7f8;
+$darkslategray :    #2e383e;
+$dodger-blue :      #3498db;
+
+
+$colors: (
+  blue: $blue,
+  indigo: $indigo,
+  purple: $purple,
+  pink: $pink,
+  red: $red,
+  orange: $orange,
+  yellow: $yellow,
+  green: $green,
+  teal: $teal,
+  cyan: $cyan,
+  white: $white,
+  black: $black,
+  gray: $gray-600,
+  gray-light: #636c72,
+  gray-lightest: #e9ecef,
+  gray-dark: #292b2c
+);
+
+
+$theme-colors: (
+  primary: #002388,
+  secondary: #009efb,
+  success: #5cd069,
+  info: #745af2,
+  warning: #fecb01,
+  danger: #ea2c54,
+  light: $gray-100,
+  dark: #383d4d
+);
+
+
+////////// COLOR SYSTEM //////////
+
+
+
+////////// COLOR VARIABLES //////////
+
+$light-text-color: #616161;
+$dark-text-color: #2f323e;
+$sidebar-item-color: #616161;
+$sidebar-submenu-color: #616161;
+$content-bg: #edf1f5;
+$border-color: #e7eaf3;
+$horizontal-menu-bg: #e6e6e6;
+$placeholder-text-color: #a1aabb;
+$td-color: #575962;
+////////// COLOR VARIABLES //////////
+
+////////// SOCIAL COLORS //////////
+
+$social-colors: (
+  twitter: #009efb,
+  facebook: #3b5998,
+  google: #dd4b39,
+  linkedin: #0976b4,
+  pinterest: #cc2127,
+  youtube: #e52d27,
+  github: #333333,
+  behance: #1769ff,
+  dribbble: #ea4c89,
+  reddit: #ff4500
+);
+
+
+////////// SOCIAL COLORS //////////
+
+
+
+////////// MEASUREMENT AND PROPERTY VARIABLES //////////
+
+$navbar-height: 5rem;
+$sidebar-width-lg: 235px;
+$sidebar-width-mini: 185px;
+$sidebar-width-icon: 70px;
+$boxed-container-width: 96%;
+$border-property: 1px solid rgba(128, 128, 128, 0.16);
+
+////////// OTHER VARIABLES //////////

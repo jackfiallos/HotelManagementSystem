@@ -1,20 +1,131 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{title}}!
-  </h1>
-  <img width="300" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<nav class="navbar navbar-primary col-lg-12 col-12 fixed-top d-flex flex-row">
+    <div class="text-center navbar-brand-wrapper">
+        <a class="navbar-brand brand-logo">HMS
+            <i class="mdi mdi-cube-send"></i>
+        </a>
+        <a class="navbar-brand brand-logo-mini">
+            <i class="mdi mdi-cube-send"></i>
+        </a>
+    </div>
+    <div class="navbar-menu-wrapper d-flex align-items-center">
+        <button class="navbar-toggler navbar-toggler align-self-center mr-2" type="button" data-toggle="minimize" (click)="openSidebar = !openSidebar">
+            <span class="mdi mdi-menu"></span>
+        </button>
+        <div class="nav-profile">
+            <span>Hi, Jack</span>
+        </div>
+        <form class="form-inline mt-2 mt-md-0 d-none d-lg-block ml-lg-auto">
+            <input class="form-control search" type="text" placeholder="Search">
+        </form>
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown" [ngClass]="{'show': openNotifications}">
+                <a class="nav-link count-indicator" data-toggle="dropdown" (click)="openNotifications = !openNotifications">
+                    <i class="mdi mdi-comment-outline"></i>
+                    <span class="count bg-danger">4</span>
+                </a>
+                <div class="dropdown-menu navbar-dropdown mail-notification" [ngClass]="{'show': openNotifications}">
+                    <a class="dropdown-item" href="#">
+                        <div class="sender-img">
+                            <span class="badge badge-success">&nbsp;</span>
+                        </div>
+                        <div class="sender">
+                            <p class="Sende-name">John Doe</p>
+                            <p class="Sender-message">Hey, We have a meeting planned at the end of the day.</p>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <div class="sender-img">
+                            <span class="badge badge-success">&nbsp;</span>
+                        </div>
+                        <div class="sender">
+                            <p class="Sende-name">Leanne Jones</p>
+                            <p class="Sender-message">Can we schedule a call this afternoon?</p>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <div class="sender-img">
+                            <span class="badge badge-primary">&nbsp;</span>
+                        </div>
+                        <div class="sender">
+                            <p class="Sende-name">Stella</p>
+                            <p class="Sender-message">Great presentation the other day. Keep up the good work!</p>
+                        </div>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                        <div class="sender-img">
+                            <span class="badge badge-warning">&nbsp;</span>
+                        </div>
+                        <div class="sender">
+                            <p class="Sende-name">James Brown</p>
+                            <p class="Sender-message">Need the updates of the project at the end of the week.</p>
+                        </div>
+                    </a>
+                    <a href="#" class="dropdown-item view-all">View all</a>
+                </div>
+            </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas" (click)="openSidebar = !openSidebar">
+            <span class="mdi mdi-menu"></span>
+          </button>
+    </div>
+</nav>
 
+<div class="container-fluid page-body-wrapper">
+    <div class="row row-offcanvas row-offcanvas-right" [ngClass]="{'active': openSidebar}">
+        <nav class="sidebar sidebar-offcanvas">
+            <ul class="nav">
+                <li class="nav-item nav-category">
+                    <span class="nav-link">Menu</span>
+                </li>
+                <!-- <li class="nav-item">
+                    <a class="nav-link collapsed" data-toggle="collapse" href="#layoutsSubmenu" aria-expanded="false" aria-controls="collapseExample">
+                        <i class="mdi mdi-arrow-expand-all"></i>
+                        <span class="menu-title">Reservaciones</span>
+                        <i class="mdi mdi-chevron-down"></i>
+                    </a>
+                    <div class="collapse">
+                        <ul class="nav flex-column sub-menu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="pages/layout/boxed_layout.html">Ver</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> -->
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['bookings']">
+                        <i class="mdi mdi-atom"></i>
+                        <span class="menu-title">Booking</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['clients']">
+                        <i class="mdi mdi-atom"></i>
+                        <span class="menu-title">Guest</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['payments']">
+                        <i class="mdi mdi-atom"></i>
+                        <span class="menu-title">Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['rooms']">
+                        <i class="mdi mdi-atom"></i>
+                        <span class="menu-title">Rooms</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <div class="content-wrapper">
+            <router-outlet></router-outlet>
+        </div>
+        <footer class="footer">
+            <div class="container-fluid clearfix">
+                <span class="float-right">
+                    <a href="#">HMS Admin</a> 2017
+                </span>
+            </div>
+        </footer>
+    </div>
+</div>

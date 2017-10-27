@@ -1,0 +1,80 @@
+body {
+  font-size: 1rem;
+  font-family: 'source-sans-pro-regular', sans-serif;
+}
+h1,h2,h3,h4,h5 {
+  font-family: 'source-sans-pro-semibold', sans-serif;
+}
+h1 {
+  font-size: 1.375rem;
+}
+h2 {
+  font-size: 1.25rem;
+}
+h3 {
+  font-size: 1.125rem;
+}
+h4 {
+  font-size: 1.0625rem;
+}
+h5 {
+  font-size: .9375rem;
+}
+p {
+  font-size: .875rem;
+}
+.display-1 {
+
+  @media (max-width: 991px) {
+    font-size: 4rem;
+  }
+}
+.display-2 {
+  @media (max-width: 991px) {
+    font-size: 3.5rem;
+  }
+}
+.display-3 {
+  @media (max-width: 991px) {
+    font-size: 3rem;
+  }
+}
+.display-4 {
+  font-size: 2.25rem;
+  @media (max-width: 991px) {
+    font-size: 2rem;
+  }
+}
+.font-weight-normal {
+  font-family: 'souce-sans-pro-regular', sans-serif;
+}
+.error-page {
+  h1 {
+    font-size: 12rem;
+    @media (max-width: 991px) {
+      font-size: 8rem;
+    }
+  }
+}
+.page-title {
+  color: theme-color("primary");
+  font-family: 'open-sans-semibold', sans-serif;
+  margin: .5rem 0 1.5rem 0;
+}
+.card-title {
+  color: color(black);
+  font-family: 'open-sans-semibold', sans-serif;
+}
+.bold-text {
+  font-family: 'source-sans-pro-bold', sans-serif;
+}
+.table {
+  th {
+    font-family: 'source-sans-pro-semibold', sans-serif;
+    font-size: .9375rem;
+  }
+  td {
+    font-family: 'source-sans-pro-regular', sans-serif;
+    font-size: .9375rem;
+  }
+}

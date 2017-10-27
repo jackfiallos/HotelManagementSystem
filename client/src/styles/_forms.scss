@@ -1,0 +1,25 @@
+.input-group-addon {
+  background: theme-color("primary");
+  color: color(white);
+  width: 40px;
+}
+.form-control {
+  border-radius: 2px;
+  background-color: color(white);
+  border: 1px solid $border-color;
+  @include input-placeholder {
+    color: $placeholder-text-color;
+    font-family: 'source-sans-pro-light', sans-serif;
+    font-size: 1rem;
+  }
+}
+.form-group {
+  &.has-danger {
+    .form-control {
+      border-color: theme-color("danger");
+    }
+  }
+  .form-control-file {
+    display: none;
+  }
+}

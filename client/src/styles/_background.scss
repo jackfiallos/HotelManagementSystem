@@ -1,0 +1,6 @@
+.bg-white {
+  @include bg(white);
+}
+.bg-dark {
+  @include bg(theme-color("dark"));
+}

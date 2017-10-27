@@ -20,9 +20,12 @@
     "@angular/http": "^4.2.4",
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
-    "@angular/router": "^4.2.4",
+    "@angular/router": "^4.4.6",
+    "bootstrap": "^4.0.0-beta.2",
+    "compass-mixins": "^0.12.10",
     "core-js": "^2.4.1",
-    "rxjs": "^5.4.2",
+    "mdi": "^2.0.46",
+    "rxjs": "^5.5.1",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

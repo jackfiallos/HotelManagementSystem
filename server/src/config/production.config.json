@@ -1,6 +1,6 @@
 {
     "App": {
-        "Name": "api.hms"
+        "Name": "api.hms.com"
     },
     "Server": {
         "Port": 1337,

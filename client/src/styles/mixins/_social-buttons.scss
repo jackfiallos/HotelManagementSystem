@@ -1,0 +1,14 @@
+@mixin social-button($color) {
+  background: $color;
+  color: color(white);
+  &:hover {
+    background: darken($color, 10%);
+  }
+  &.btn-link {
+    background: none;
+    color: $color;
+    &:hover {
+      color: darken($color, 10%);
+    }
+  }
+}
