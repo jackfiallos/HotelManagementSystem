@@ -9,6 +9,7 @@ This project is a very simple api and frontend client to manage bookings, rooms,
 * MySQL 5.7.20
 * Typescript 2.5.3
 * @angular/cli: 1.4.9
+* Bootstrap 4.0.0 beta.2
 
 ## Notes
 
