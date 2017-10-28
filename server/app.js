@@ -98,14 +98,14 @@ server.use((req, res, next) => {
     return next();
 });
 
-// Verify through middleware if user is authorized
-server.use((req, res, next) => {
-    // if (req.session.auth || req.path === '/auth') {
-    //     next();
-    // } else {
-    //    res.redirect('/');
-    // }
-});
+// // Verify through middleware if user is authorized
+// server.use((req, res, next) => {
+//     if (req.session.auth || req.path === '/auth') {
+//         next();
+//     } else {
+//        res.redirect('/');
+//     }
+// });
 
 /**
  * Request / Response Logging
