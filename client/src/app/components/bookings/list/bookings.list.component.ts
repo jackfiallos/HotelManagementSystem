@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
-    selector: 'dashboard',
-    templateUrl: './dashboard.component.html',
+    selector: 'list-bookings',
+    templateUrl: './bookings.list.component.html',
     encapsulation: ViewEncapsulation.None
 })
-export class DashboardComponent implements OnInit {
+export class BookingsListComponent implements OnInit {
     constructor() { }
     ngOnInit() { }
 }

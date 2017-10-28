@@ -92,25 +92,25 @@
                     </div>
                 </li> -->
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['bookings']">
+                    <a class="nav-link" [routerLink]="['bookings']" (click)="openSidebar = false">
                         <i class="mdi mdi-atom"></i>
                         <span class="menu-title">Booking</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['clients']">
+                    <a class="nav-link" [routerLink]="['guests']" (click)="openSidebar = false">
                         <i class="mdi mdi-atom"></i>
                         <span class="menu-title">Guest</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['payments']">
+                    <a class="nav-link" [routerLink]="['payments']" (click)="openSidebar = false">
                         <i class="mdi mdi-atom"></i>
                         <span class="menu-title">Payments</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['rooms']">
+                    <a class="nav-link" [routerLink]="['rooms']" (click)="openSidebar = false">
                         <i class="mdi mdi-atom"></i>
                         <span class="menu-title">Rooms</span>
                     </a>

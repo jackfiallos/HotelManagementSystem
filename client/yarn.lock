@@ -159,6 +159,14 @@
   dependencies:
     tsickle "^0.21.0"
 
+"@ngrx/core@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/core/-/core-1.2.0.tgz#882b46abafa2e0e6d887cb71a1b2c2fa3e6d0dc6"
+
+"@ngrx/store@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-4.1.0.tgz#8c074cbc6197e259cd9492e85a76c3c67dbea173"
+
 "@ngtools/json-schema@1.1.0", "@ngtools/json-schema@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@ngtools/json-schema/-/json-schema-1.1.0.tgz#c3a0c544d62392acc2813a42c8a0dc6f58f86922"
@@ -2462,6 +2470,10 @@ icss-utils@^2.1.0:
   dependencies:
     postcss "^6.0.1"
 
+ie-shim@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ie-shim/-/ie-shim-0.1.0.tgz#d329de228e7dfe656feaea3e20748ef095363c5d"
+
 ieee754@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
@@ -3330,6 +3342,10 @@ mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkd
   dependencies:
     minimist "0.0.8"
 
+moment@^2.19.1:
+  version "2.19.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
+
 ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"
@@ -3366,6 +3382,10 @@ ncname@1.0.x:
 negotiator@0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
+
+ngrx-store-logger@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/ngrx-store-logger/-/ngrx-store-logger-0.2.0.tgz#9bef9447bc91d8e35a2aa6ae1c5a57ea51036694"
 
 no-case@^2.2.0:
   version "2.3.2"
@@ -4363,7 +4383,7 @@ reduce-function-call@^1.0.1:
   dependencies:
     balanced-match "^0.4.2"
 
-reflect-metadata@^0.1.2:
+reflect-metadata@^0.1.10, reflect-metadata@^0.1.2:
   version "0.1.10"
   resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.10.tgz#b4f83704416acad89988c9b15635d47e03b9344a"
 

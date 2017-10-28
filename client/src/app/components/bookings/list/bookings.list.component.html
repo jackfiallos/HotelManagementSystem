@@ -1,0 +1,39 @@
+<h1 class="page-title">Booking List</h1>
+<div class="row grid-margin">
+    <div class="col-lg-12">
+    	<div class="btn-group float-right">
+    		<a class="btn btn-success" [routerLink]="['create']">
+                <i class="fa fa-plus"></i> New Booking
+            </a>
+    	</div>
+    </div>
+</div>
+<div class="row grid-margin">
+    <div class="col-lg-12 grid-margin grid-margin-lg-0">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Bookings</h2>
+                <table class="table table-hover table-responsive-sm">
+                    <thead class="thead-light">
+                        <tr class="">
+                            <th>No.</th>
+                            <th>Date</th>
+                            <th>Room</th>
+                            <th>Guest</th>
+                            <th>Arrival</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let booking of bookings; let i = index">
+                            <th scope="row">{{ booking.id }}</th>
+                            <td>{{ booking.created_at }}</td>
+                            <td>{{ booking.id }}</td>
+                            <td>{{ booking.id }}</td>
+                            <td>{{ booking.arrival }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

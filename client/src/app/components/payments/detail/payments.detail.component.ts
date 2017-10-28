@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
-    selector: 'bookings',
-    templateUrl: './bookings.component.html',
+    selector: 'detail-payments',
+    templateUrl: './payments.detail.component.html',
     encapsulation: ViewEncapsulation.None
 })
-export class BookingsComponent implements OnInit {
+export class PaymentsDetailComponent implements OnInit {
     constructor() { }
     ngOnInit() { }
 }
