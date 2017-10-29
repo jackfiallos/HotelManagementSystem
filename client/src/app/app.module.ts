@@ -16,13 +16,15 @@ import { bookingsReducer,
     paymentsReducer,
     roomsReducer } from './ducks/index';
 
+// set default environment
+import { environment } from '../environments/environment';
+
 // auth and request interceptor
 import { ApiInterceptor } from './auth/api.interceptor';
 import { AuthService } from './auth/authService';
 
+// base component
 import { AppComponent } from './app.component';
-
-import { environment } from '../environments/environment';
 
 // Import application styles
 import '../styles/index.scss';
@@ -37,11 +39,11 @@ const APP_PROVIDERS = [
     AppState
 ];
 
-export const logger = (reducer: ActionReducer<any, Action>): any => {
+export function logger(reducer) {
     return storeLogger()(reducer);
-};
+}
 
-const metaReducers = (environment.production) ? [] : [logger];
+export const metaReducers = environment.production ? [] : [logger];
 
 @NgModule({
     declarations: [
@@ -69,8 +71,8 @@ const metaReducers = (environment.production) ? [] : [logger];
     ],
     providers: [
         APP_PROVIDERS,
-        AuthService,
         // api interceptor provider
+        AuthService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ApiInterceptor,
