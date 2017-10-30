@@ -11,8 +11,8 @@ export class BookingsController {
      * @method  constructor
      * @author jackfiallos
      * @version [version]
-     * @date    2017-10-28
-     * @param   {HttpClient} publichttp [description]
+     * @date    2017-10-29
+     * @param   {HttpClient} public http [description]
      * @return  {[type]} [description]
      */
     constructor(public http: HttpClient) {}
@@ -26,7 +26,7 @@ export class BookingsController {
      * @return  {Observable<any>} [description]
      */
     public getBookings(): Observable<any> {
-        return this.http.get<any>(environment.api_url + '/bookings');
+        return this.http.get<any>(environment.api_url + '/booking');
     }
 
     /**
@@ -39,7 +39,7 @@ export class BookingsController {
      * @return  {Observable<any>} [description]
      */
     public getBookingById(bookingId: number): Observable<any> {
-        return this.http.get<any>(environment.api_url + '/bookings/' + bookingId);
+        return this.http.get<any>(environment.api_url + '/booking/' + bookingId);
     }
 
     /**
@@ -52,7 +52,7 @@ export class BookingsController {
      * @return  {[type]} [description]
      */
     public createBooking(booking: any) {
-        return this.http.post(environment.api_url + '/bookings/', booking);
+        return this.http.post(environment.api_url + '/booking/', booking);
     }
 
     /**
@@ -66,6 +66,6 @@ export class BookingsController {
      * @return  {Observable<any>} [description]
      */
     public updateBooking(bookingId: number, booking): Observable<any> {
-        return this.http.put<any>(environment.api_url + '/bookings/' + bookingId, booking);
+        return this.http.put<any>(environment.api_url + '/booking/' + bookingId, booking);
     }
 }

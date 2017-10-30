@@ -12,7 +12,7 @@ import { PaymentsDetailComponent } from './detail/payments.detail.component';
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule.forChild(routes),
+        RouterModule.forChild(routes)
     ],
     declarations: [
         PaymentsListComponent,

@@ -12,7 +12,7 @@ import { RoomsDetailComponent } from './detail/rooms.detail.component';
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule.forChild(routes),
+        RouterModule.forChild(routes)
     ],
     declarations: [
         RoomsListComponent,

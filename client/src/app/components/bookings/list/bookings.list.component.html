@@ -16,20 +16,43 @@
                 <table class="table table-hover table-responsive-sm">
                     <thead class="thead-light">
                         <tr class="">
-                            <th>No.</th>
-                            <th>Date</th>
+                            <th>ID</th>
+                            <th>Booking At</th>
                             <th>Room</th>
                             <th>Guest</th>
                             <th>Arrival</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr *ngFor="let booking of bookings; let i = index">
-                            <th scope="row">{{ booking.id }}</th>
-                            <td>{{ booking.created_at }}</td>
-                            <td>{{ booking.id }}</td>
-                            <td>{{ booking.id }}</td>
-                            <td>{{ booking.arrival }}</td>
+                    <tbody *ngIf="bookings$.isLoading == true">
+                        <tr>
+                            <th colspan="5" class="text-center">
+                                <loading-spinner></loading-spinner>
+                            </th>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="bookings$.data.length > 0 && bookings$.isLoading == false">
+                        <tr *ngFor="let booking of bookings$.data">
+                            <th scope="row">{{ booking.uid }}</th>
+                            <td>
+                                <a [routerLink]="['view', booking.uid]" title="View Booking Details">
+                                    {{ booking.created_at | date: 'dd/MM/yyyy' }}<br>
+                                    <small>{{ booking.created_at | date: 'mediumTime' }}</small>
+                                </a>
+                            </td>
+                            <td>
+                                <a [routerLink]="['/rooms', booking.room_id]" title="View Room Details">
+                                    {{ booking.room_id }}
+                                </a>
+                            </td>
+                            <td>
+                                <a [routerLink]="['/guests']" title="View Guest Details">
+                                    -
+                                </a>
+                            </td>
+                            <td>
+                                {{ booking.arrival | date: 'dd/MM/yyyy' }}<br>
+                                <small>{{ booking.arrival | date: 'mediumTime' }}</small>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

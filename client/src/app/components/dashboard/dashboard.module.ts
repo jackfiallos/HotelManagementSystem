@@ -10,7 +10,7 @@ import { DashboardComponent } from './home/dashboard.home.component';
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule.forChild(routes),
+        RouterModule.forChild(routes)
     ],
     declarations: [
         DashboardComponent
