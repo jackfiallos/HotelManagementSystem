@@ -19,7 +19,7 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        models.customers.findAll({
+        models.guests.findAll({
             order: [
                 ['id', 'DESC']
             ],
@@ -31,6 +31,7 @@ routes.push({
                 'phone',
                 'mobile',
                 'city',
+                'email',
                 'user_id'
             ]
         }).then((data) => {
@@ -56,7 +57,7 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        models.customers.findOne({
+        models.guests.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -70,6 +71,11 @@ routes.push({
                 'phone',
                 'mobile',
                 'city',
+                'country',
+                'email',
+                'organization',
+                'age',
+                'gender',
                 'user_id'
             ],
             limit: 1,
@@ -106,11 +112,13 @@ routes.push({
             country: req.body.country,
             email: (req.body.email) ? req.body.email : null,
             organization: (req.body.organization) ? req.body.organization : null,
+            age: (req.body.age) ? req.body.age : null,
+            gender: (req.body.gender) ? req.body.gender : null,
             user_id: req.body.user_id
         };
 
         // create record
-        models.customers.create(form).then((data) => {
+        models.guests.create(form).then((data) => {
             res.json(data);
             return next();
         }).catch((err) => {
@@ -155,11 +163,13 @@ routes.push({
             city: req.body.city,
             country: req.body.country,
             email: (req.body.email) ? req.body.email : null,
-            organization: (req.body.organization) ? req.body.organization : null
+            organization: (req.body.organization) ? req.body.organization : null,
+            age: (req.body.age) ? req.body.age : null,
+            gender: (req.body.gender) ? req.body.gender : null
         };
 
         // update record
-        models.customers.find({
+        models.guests.find({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id

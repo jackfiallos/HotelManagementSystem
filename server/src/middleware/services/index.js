@@ -7,30 +7,31 @@ const routes = [];
 /**
  * @action list
  * @method get
- * @return Rooms[]
+ * @return Payments[]
  */
 routes.push({
     meta: {
-        name: 'roomList',
+        name: 'servicesList',
         method: 'GET',
         paths: [
-            '/room'
+            '/services'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        models.rooms.findAll({
+        models.services.findAll({
             order: [
                 ['id', 'DESC']
             ],
             attributes: [
                 ['id', 'uid'],
                 'created_at',
+                'description',
                 'currency',
-                'price_night',
-                'type',
-                'name',
-                'max_persons'
+                'amount',
+                'is_active',
+                'user_id',
+                'booking_id'
             ]
         }).then((data) => {
             res.json(data);
@@ -43,19 +44,19 @@ routes.push({
  * @action read
  * @method get
  * @param id
- * @return Rooms
+ * @return Payments
  */
 routes.push({
     meta: {
-        name: 'roomRead',
+        name: 'servicesRead',
         method: 'GET',
         paths: [
-            '/room/:id'
+            '/services/:id'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        models.rooms.findOne({
+        models.services.findOne({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id
@@ -64,11 +65,12 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
+                'description',
                 'currency',
-                'price_night',
-                'type',
-                'name',
-                'max_persons'
+                'amount',
+                'is_active',
+                'user_id',
+                'booking_id'
             ],
             limit: 1,
             raw: true
@@ -82,29 +84,29 @@ routes.push({
 /**
  * @action create
  * @method post
- * @return Rooms
+ * @return Payments
  */
 routes.push({
     meta: {
-        name: 'roomCreate',
+        name: 'servicesCreate',
         method: 'POST',
         paths: [
-            '/room'
+            '/services'
         ],
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
         // object
         const form = {
+            description: req.body.description,
             currency: req.body.currency,
-            price_night: req.body.price_night,
-            type: req.body.type,
-            name: req.body.name,
-            max_persons: (req.body.max_persons) ? req.body.max_persons : null
+            amount: req.body.amount,
+            booking_id: req.body.booking_id,
+            user_id: req.body.user_id
         };
 
         // create record
-        models.rooms.create(form).then((data) => {
+        models.services.create(form).then((data) => {
             res.json(data);
             return next();
         }).catch((err) => {
@@ -127,14 +129,14 @@ routes.push({
  * @action update
  * @method put
  * @param id
- * @return Rooms
+ * @return Payments
  */
 routes.push({
     meta: {
-        name: 'roomUpdate',
+        name: 'servicesUpdate',
         method: 'PUT',
         paths: [
-            '/room/:id'
+            '/services/:id'
         ],
         version: '1.0.0'
     },
@@ -142,15 +144,13 @@ routes.push({
         const id = req.params.id;
         // object
         const form = {
+            description: req.body.description,
             currency: req.body.currency,
-            price_night: req.body.price_night,
-            type: req.body.type,
-            name: req.body.name,
-            max_persons: (req.body.max_persons) ? req.body.max_persons : null
+            amount: req.body.amount
         };
 
         // update record
-        models.rooms.find({
+        models.services.find({
             where: {
                 id: {
                     [Sequelize.Op.eq]: req.params.id

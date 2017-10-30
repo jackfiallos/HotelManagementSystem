@@ -159,11 +159,12 @@ const setupMiddleware = (middlewareName) => {
 [
     'bookings',
     'cancellations',
-    'customers',
+    'guests',
     'home',
     'payments',
     'rooms',
-    'users'
+    'users',
+    'services'
 ].forEach(setupMiddleware);
 
 /**

@@ -2,7 +2,7 @@
 
 const Sequelize = require('sequelize');
 const Rooms = require('./rooms.js');
-const Customers = require('./customers.js');
+const Guests = require('./guests.js');
 const Users = require('./users.js');
 
 module.exports = function(sequelize, DataTypes) {
@@ -16,26 +16,26 @@ module.exports = function(sequelize, DataTypes) {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW
         },
-        arrival: {
-            type: Sequelize.DATE,
-            allowNull: false,
-            defaultValue: true
-        },
-        departure: {
-            type: Sequelize.DATE,
-            allowNull: false,
-            defaultValue: true
-        },
         checkin: {
             type: Sequelize.DATE,
-            validate: {
-                isDate: true
-            }
+            allowNull: false,
+            defaultValue: true
         },
         checkout: {
             type: Sequelize.DATE,
+            allowNull: false,
+            defaultValue: true
+        },
+        currency: {
+            type: Sequelize.STRING(3),
+            allowNull: false,
+            defaultValue: 'USD'
+        },
+        amount: {
+            type: Sequelize.DECIMAL(6,2),
+            allowNull: false,
             validate: {
-                isDate: true
+                isDecimal: true
             }
         },
         breakfast: {
@@ -66,7 +66,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         room_id: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            allowNull: true,
             references: {
                 model: Rooms,
                 key: 'id',
@@ -76,7 +76,7 @@ module.exports = function(sequelize, DataTypes) {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
-                model: Customers,
+                model: Guests,
                 key: 'id',
             }
         },

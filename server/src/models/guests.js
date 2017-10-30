@@ -4,7 +4,7 @@ const Sequelize = require('sequelize');
 const Users = require('./users.js');
 
 module.exports = function(sequelize, DataTypes) {
-    const Customers = sequelize.define('customers', {
+    const Guests = sequelize.define('guests', {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -75,6 +75,14 @@ module.exports = function(sequelize, DataTypes) {
                 len: [5, 50]
             }
         },
+        age: {
+            type: Sequelize.INTEGER,
+            allowNull: true
+        },
+        gender: {
+            type: Sequelize.ENUM(),
+            values: ['M', 'F']
+        },
         user_id: {
             type: Sequelize.INTEGER,
             allowNull: true,
@@ -85,5 +93,5 @@ module.exports = function(sequelize, DataTypes) {
         }
     });
 
-    return Customers;
+    return Guests;
 };

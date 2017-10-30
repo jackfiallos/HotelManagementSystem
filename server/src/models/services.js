@@ -1,11 +1,11 @@
 'use strict';
 
 const Sequelize = require('sequelize');
-const Bookings = require('./bookings');
+const Bookings = require('./bookings.js');
 const Users = require('./users.js');
 
 module.exports = function(sequelize, DataTypes) {
-    const Cancelations = sequelize.define('cancellations', {
+    const Services = sequelize.define('services', {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
@@ -15,10 +15,31 @@ module.exports = function(sequelize, DataTypes) {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW
         },
-        comments: {
-            type: Sequelize.TEXT,
+        description: {
+            type: Sequelize.STRING(255),
+            allowNull: false,
             validate: {
-                notEmpty: true,
+                len: [5, 255]
+            }
+        },
+        currency: {
+            type: Sequelize.STRING(3),
+            allowNull: false,
+            defaultValue: 'USD'
+        },
+        amount: {
+            type: Sequelize.DECIMAL(6,2),
+            allowNull: false,
+            validate: {
+                isDecimal: true
+            }
+        },
+        is_active: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: 0,
+            get() {
+                const isActive = this.getDataValue('is_active');
+                return (isActive) ? true : false
             }
         },
         booking_id: {
@@ -36,8 +57,8 @@ module.exports = function(sequelize, DataTypes) {
                 model: Users,
                 key: 'id',
             }
-        },
+        }
     });
 
-    return Cancelations;
+    return Services;
 };

@@ -13,6 +13,14 @@ module.exports = function(sequelize, DataTypes) {
             type: Sequelize.DATE,
             defaultValue: Sequelize.NOW
         },
+        name: {
+            type: Sequelize.STRING(20),
+            allowNull: false,
+            validate: {
+                notEmpty: true,
+                len: [3, 20]
+            }
+        },
         currency: {
             type: Sequelize.STRING(3),
             allowNull: false,

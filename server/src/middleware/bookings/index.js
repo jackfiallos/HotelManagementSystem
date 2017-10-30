@@ -27,11 +27,12 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'arrival',
-                'departure',
                 'checkin',
                 'checkout',
+                'currency',
+                'amount',
                 'room_id',
+                'guest_id'
             ]
         }).then((data) => {
             res.json(data);
@@ -66,17 +67,17 @@ routes.push({
             attributes: [
                 ['id', 'uid'],
                 'created_at',
-                'arrival',
-                'departure',
                 'checkin',
                 'checkout',
+                'currency',
+                'amount',
                 'breakfast',
                 'nights',
                 'adults',
                 'children',
                 'comments',
                 'room_id',
-                'customer_id',
+                'guest_id',
                 'user_id'
             ],
             limit: 1,
@@ -105,17 +106,17 @@ routes.push({
     middleware: (req, res, next) => {
         // object
         const form = {
-            arrival: new Date(req.body.arrival),
-            departure: new Date(req.body.departure),
-            checkin: (req.body.checkin) ? req.body.checkin : null,
-            checkout: (req.body.checkout) ? req.body.checkout : null,
+            checkin: new Date(req.body.checkin),
+            checkout: new Date(req.body.checkout),
+            currency: req.body.currency,
+            amount: req.body.amount, // calculated
             breakfast: req.body.breakfast,
             nights: req.body.nights,
             adults: req.body.adults,
             children: req.body.children,
             comments: (req.body.comments) ? req.body.comments : null,
-            room_id: req.body.room_id,
-            customer_id: req.body.customer_id,
+            room_id: (req.body.room_id) ? req.body.room_id : null,
+            guest_id: req.body.guest_id,
             user_id: req.body.user_id
         };
 
@@ -158,17 +159,11 @@ routes.push({
         const id = req.params.id;
         // object
         const form = {
-            arrival: new Date(req.body.arrival),
-            departure: new Date(req.body.departure),
-            checkin: (req.body.checkin) ? req.body.checkin : null,
-            checkout: (req.body.checkout) ? req.body.checkout : null,
             breakfast: req.body.breakfast,
-            nights: req.body.nights,
             adults: req.body.adults,
             children: req.body.children,
             comments: (req.body.comments) ? req.body.comments : null,
-            room_id: req.body.room_id,
-            customer_id: req.body.customer_id
+            room_id: req.body.room_id
         };
 
         // update record
