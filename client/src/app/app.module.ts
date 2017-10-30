@@ -11,6 +11,7 @@ import { AppState, InternalStateType } from './app.service';
 // redux
 import { StoreModule, ActionReducer, Action } from '@ngrx/store';
 import { storeLogger } from 'ngrx-store-logger';
+import { localStorageSync } from 'ngrx-store-localstorage';
 import { bookingsReducer,
     guestsReducer,
     paymentsReducer,
@@ -33,17 +34,32 @@ import '../styles/index.scss';
 import { NoContentComponent } from './components/no-content/no-content.component';
 import { LoginComponent } from './components/login/login.component';
 
+import { BookingsController } from './ducks/bookings/bookings.controller';
+import { GuestsController } from './ducks/guests/guests.controller';
+
 // Application wide providers
 const APP_PROVIDERS = [
     ...APP_RESOLVER_PROVIDERS,
-    AppState
+    AppState,
+    BookingsController,
+    GuestsController
 ];
 
 export function logger(reducer) {
     return storeLogger()(reducer);
 }
 
-export const metaReducers = environment.production ? [] : [logger];
+export function localStorageSyncReducer(reducer) {
+    return localStorageSync({
+        rehydrate: true,
+        keys: [
+            'bookings',
+            'guests'
+        ]
+    })(reducer);
+}
+
+export const metaReducers = environment.production ? [localStorageSyncReducer] : [logger, localStorageSyncReducer];
 
 @NgModule({
     declarations: [
