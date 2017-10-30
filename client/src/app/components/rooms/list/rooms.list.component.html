@@ -17,15 +17,16 @@
                     <thead class="thead-light">
                         <tr class="">
                             <th>No.</th>
+                            <th>Name</th>
                             <th>Type</th>
                             <th>Price/Night</th>
-                            <th>Max/Person</th>
+                            <th>Max/Persons</th>
                             <th>#</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="rooms$.isLoading == true">
                         <tr>
-                            <th colspan="5" class="text-center">
+                            <th colspan="6" class="text-center">
                                 <loading-spinner></loading-spinner>
                             </th>
                         </tr>
@@ -33,6 +34,7 @@
                     <tbody *ngIf="rooms$.data.length > 0 && rooms$.isLoading == false">
                         <tr *ngFor="let room of rooms$.data">
                             <th scope="row">{{ room.uid }}</th>
+                            <td>{{ room.name }}</td>
                             <td>{{ room.type }}</td>
                             <td>{{ room.price_night | currency: room.currency:true:'1.2' }}</td>
                             <td>{{ room.max_persons }}</td>

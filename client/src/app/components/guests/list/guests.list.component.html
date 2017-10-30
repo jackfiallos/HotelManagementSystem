@@ -17,9 +17,9 @@
                     <thead class="thead-light">
                         <tr class="">
                             <th>No.</th>
-                            <th>Created At</th>
                             <th>Firts Name</th>
                             <th>Lastname</th>
+                            <th>Email</th>
                             <th>Mobile</th>
                             <th>#</th>
                         </tr>
@@ -34,9 +34,9 @@
                     <tbody *ngIf="guests$.data.length > 0 && guests$.isLoading == false">
                         <tr *ngFor="let guest of guests$.data">
                             <th scope="row">{{ guest.uid }}</th>
-                            <td>{{ guest.created_at | date: 'dd/MM/yyyy' }}</td>
                             <td>{{ guest.first_name }}</td>
                             <td>{{ guest.last_name }}</td>
+                            <td>{{ guest.email }}</td>
                             <td>{{ guest.mobile }}</td>
                             <td>
                                 <a [routerLink]="['edit', guest.uid]" title="Edit Guest">

@@ -1,15 +1,62 @@
-<h1 class="page-title">Booking List</h1>
+<h1 class="page-title">New Booking</h1>
 <div class="row grid-margin">
     <div class="col-lg-12">
     	<div class="btn-group float-right">
-    		<a class="btn btn-success" [routerLink]="['new']">
-                <i class="fa fa-plus"></i> New Booking
+    		<a class="btn btn-success" [routerLink]="['/bookings']">
+                <i class="mdi mdi-arrow-left-bold-circle"></i> Go Back
             </a>
     	</div>
     </div>
 </div>
 <div class="row grid-margin">
     <div class="col-lg-12 grid-margin grid-margin-lg-0">
-        
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Fill the following gaps</h2>
+                <form class="forms-sample">
+                    <div class="form-group">
+                        <label for="checkin">CheckIn</label>
+                        <input type="email" class="form-control" id="checkin" aria-describedby="checkin_help" placeholder="CheckIn" autocomplete="off">
+                        <small id="checkin_help" class="form-text text-muted text-success">Checkin help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkout">CheckOut</label>
+                        <input type="email" class="form-control" id="checkout" aria-describedby="checkout_help" placeholder="CheckOut" autocomplete="off">
+                        <small id="checkout_help" class="form-text text-muted text-success">Checkout help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="nights">Nights</label>
+                        <input type="email" class="form-control" id="nights" aria-describedby="nights_help" placeholder="Number of nights" autocomplete="off">
+                        <small id="nights_help" class="form-text text-muted text-success">Nights help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="adults">Adults</label>
+                        <input type="email" class="form-control" id="adults" aria-describedby="adults_help" placeholder="Number of adults" autocomplete="off">
+                        <small id="adults_help" class="form-text text-muted text-success">Adults help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="children">Children</label>
+                        <input type="email" class="form-control" id="children" aria-describedby="children_help" placeholder="Number of children" autocomplete="off">
+                        <small id="children_help" class="form-text text-muted text-success">Children help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments">Comments</label>
+                        <input type="email" class="form-control" id="comments" aria-describedby="comments_help" placeholder="Comments" autocomplete="off">
+                        <small id="comments_help" class="form-text text-muted text-success">Comments help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="room">Room</label>
+                        <input type="email" class="form-control" id="room" aria-describedby="room_help" placeholder="Room" autocomplete="off">
+                        <small id="room_help" class="form-text text-muted text-success">Room help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="guest">Guest</label>
+                        <input type="email" class="form-control" id="guest" aria-describedby="guest_help" placeholder="Guest" autocomplete="off">
+                        <small id="guest_help" class="form-text text-muted text-success">Guest help</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
