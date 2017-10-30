@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "ngrx-store-localstorage": "^0.2.4"
-  }
-}
