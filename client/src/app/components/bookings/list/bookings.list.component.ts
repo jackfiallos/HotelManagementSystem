@@ -20,8 +20,8 @@ export class BookingsListComponent implements OnInit {
      * @author jackfiallos
      * @version [version]
      * @date    2017-10-30
-     * @param   {BookingsController} private_bookings [description]
-     * @param   {Store<any>} private_store [description]
+     * @param   {BookingsController} private _bookings [description]
+     * @param   {Store<any>} private _store [description]
      * @return  {[type]} [description]
      */
     constructor(private _bookings: BookingsController, private _store: Store<any>) {

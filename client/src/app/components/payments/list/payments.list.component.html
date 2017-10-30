@@ -3,7 +3,7 @@
     <div class="col-lg-12">
     	<div class="btn-group float-right">
     		<a class="btn btn-success" [routerLink]="['create']">
-                <i class="fa fa-plus"></i> New Booking
+                <i class="fa fa-plus"></i> New Payment
             </a>
     	</div>
     </div>
@@ -12,24 +12,42 @@
     <div class="col-lg-12 grid-margin grid-margin-lg-0">
         <div class="card">
             <div class="card-body">
-                <h2 class="card-title">Bookings</h2>
+                <h2 class="card-title">Payments</h2>
                 <table class="table table-hover table-responsive-sm">
                     <thead class="thead-light">
                         <tr class="">
                             <th>No.</th>
                             <th>Date</th>
-                            <th>Room</th>
-                            <th>Guest</th>
-                            <th>Arrival</th>
+                            <th>Method</th>
+                            <th>Currency</th>
+                            <th>Amount</th>
+                            <th>#</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr *ngFor="let booking of bookings; let i = index">
-                            <th scope="row">{{ booking.id }}</th>
-                            <td>{{ booking.created_at }}</td>
-                            <td>{{ booking.id }}</td>
-                            <td>{{ booking.id }}</td>
-                            <td>{{ booking.arrival }}</td>
+                    <tbody *ngIf="payments$.isLoading == true">
+                        <tr>
+                            <th colspan="6" class="text-center">
+                                <loading-spinner></loading-spinner>
+                            </th>
+                        </tr>
+                    </tbody>
+                    <tbody *ngIf="payments$.data.length > 0 && payments$.isLoading == false">
+                        <tr *ngFor="let payment of payments$.data">
+                            <th scope="row">{{ payment.uid }}</th>
+                            <td>
+                                <a [routerLink]="['view', payment.uid]" title="View Payment Details">
+                                    {{ payment.created_at | date: 'dd/MM/yyyy' }}<br>
+                                    <small>{{ payment.created_at | date: 'mediumTime' }}</small>
+                                </a>
+                            </td>
+                            <td>{{ payment.method }}</td>
+                            <td>{{ payment.currency }}</td>
+                            <td>{{ payment.amount | currency: payment.currency:true:'1.2' }}</td>
+                            <td>
+                                <a [routerLink]="['edit', payment.uid]" title="Edit Payment">
+                                    <i class="mdi mdi-pencil"></i>
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

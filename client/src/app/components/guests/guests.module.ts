@@ -8,12 +8,14 @@ import { GuestsListComponent } from './list/guests.list.component';
 import { GuestsFormComponent } from './form/guests.form.component';
 import { GuestsDetailComponent } from './detail/guests.detail.component';
 
+import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        LoadingSpinnerModule
     ],
     declarations: [
         GuestsListComponent,

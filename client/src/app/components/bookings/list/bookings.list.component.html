@@ -21,11 +21,12 @@
                             <th>Room</th>
                             <th>Guest</th>
                             <th>Arrival</th>
+                            <th>#</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="bookings$.isLoading == true">
                         <tr>
-                            <th colspan="5" class="text-center">
+                            <th colspan="6" class="text-center">
                                 <loading-spinner></loading-spinner>
                             </th>
                         </tr>
@@ -52,6 +53,11 @@
                             <td>
                                 {{ booking.arrival | date: 'dd/MM/yyyy' }}<br>
                                 <small>{{ booking.arrival | date: 'mediumTime' }}</small>
+                            </td>
+                            <td>
+                                <a [routerLink]="['edit', booking.uid]" title="Edit Booking">
+                                    <i class="mdi mdi-pencil"></i>
+                                </a>
                             </td>
                         </tr>
                     </tbody>

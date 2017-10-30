@@ -8,11 +8,14 @@ import { RoomsListComponent } from './list/rooms.list.component';
 import { RoomsFormComponent } from './form/rooms.form.component';
 import { RoomsDetailComponent } from './detail/rooms.detail.component';
 
+import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
+
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        LoadingSpinnerModule
     ],
     declarations: [
         RoomsListComponent,

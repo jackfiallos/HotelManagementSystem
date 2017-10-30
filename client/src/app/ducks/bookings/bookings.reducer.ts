@@ -15,7 +15,7 @@ export const initialState: any = {
  * @version [version]
  * @date    2017-10-28
  * @param   {any = initialState} state [description]
- * @param   {Action} action [description]
+ * @param   {any} action [description]
  * @return  {[type]} [description]
  */
 export function bookingsReducer(state: any = initialState, action: any) {

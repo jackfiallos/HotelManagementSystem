@@ -8,19 +8,19 @@ import { BookingsListComponent } from './list/bookings.list.component';
 import { BookingsFormComponent } from './form/bookings.form.component';
 import { BookingsDetailComponent } from './detail/bookings.detail.component';
 
-import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        LoadingSpinnerModule
     ],
     declarations: [
         BookingsListComponent,
         BookingsFormComponent,
-        BookingsDetailComponent,
-        LoadingSpinnerComponent
+        BookingsDetailComponent
     ]
 })
 export class BookingsModule {

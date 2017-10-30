@@ -26,6 +26,7 @@ import { AuthService } from './auth/authService';
 
 // base component
 import { AppComponent } from './app.component';
+import { LoadingSpinnerModule } from './components/loading-spinner/loading-spinner.module';
 
 // Import application styles
 import '../styles/index.scss';
@@ -36,13 +37,17 @@ import { LoginComponent } from './components/login/login.component';
 
 import { BookingsController } from './ducks/bookings/bookings.controller';
 import { GuestsController } from './ducks/guests/guests.controller';
+import { PaymentsController } from './ducks/payments/payments.controller';
+import { RoomsController } from './ducks/rooms/rooms.controller';
 
 // Application wide providers
 const APP_PROVIDERS = [
     ...APP_RESOLVER_PROVIDERS,
     AppState,
     BookingsController,
-    GuestsController
+    GuestsController,
+    PaymentsController,
+    RoomsController
 ];
 
 export function logger(reducer) {
@@ -54,7 +59,9 @@ export function localStorageSyncReducer(reducer) {
         rehydrate: true,
         keys: [
             'bookings',
-            'guests'
+            'guests',
+            'payments',
+            'rooms'
         ]
     })(reducer);
 }
@@ -71,6 +78,7 @@ export const metaReducers = environment.production ? [localStorageSyncReducer] :
         BrowserModule,
         HttpModule,
         HttpClientModule,
+        LoadingSpinnerModule,
         RouterModule.forRoot(ROUTES, {
             useHash: Boolean(history.pushState) === false,
             preloadingStrategy: PreloadAllModules

@@ -8,11 +8,14 @@ import { PaymentsListComponent } from './list/payments.list.component';
 import { PaymentsFormComponent } from './form/payments.form.component';
 import { PaymentsDetailComponent } from './detail/payments.detail.component';
 
+import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
+
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        LoadingSpinnerModule
     ],
     declarations: [
         PaymentsListComponent,

@@ -26,7 +26,7 @@ export class RoomsController {
      * @return  {Observable<any>} [description]
      */
     public getRooms(): Observable<any> {
-        return this.http.get<any>(environment.api_url + '/rooms');
+        return this.http.get<any>(environment.api_url + '/room');
     }
 
     /**
@@ -39,7 +39,7 @@ export class RoomsController {
      * @return  {Observable<any>} [description]
      */
     public getRoomById(roomId: number): Observable<any> {
-        return this.http.get<any>(environment.api_url + '/rooms/' + roomId);
+        return this.http.get<any>(environment.api_url + '/room/' + roomId);
     }
 
     /**
@@ -52,7 +52,7 @@ export class RoomsController {
      * @return  {[type]} [description]
      */
     public createRoom(room: any) {
-        return this.http.post(environment.api_url + '/rooms/', room);
+        return this.http.post(environment.api_url + '/room/', room);
     }
 
     /**
@@ -66,6 +66,6 @@ export class RoomsController {
      * @return  {Observable<any>} [description]
      */
     public updateRoom(roomId: number, room: any): Observable<any> {
-        return this.http.put<any>(environment.api_url + '/rooms/' + roomId, room);
+        return this.http.put<any>(environment.api_url + '/room/' + roomId, room);
     }
 }

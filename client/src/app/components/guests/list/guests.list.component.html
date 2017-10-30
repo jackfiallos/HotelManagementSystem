@@ -21,12 +21,13 @@
                             <th>Firts Name</th>
                             <th>Lastname</th>
                             <th>Mobile</th>
+                            <th>#</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="guests$.isLoading == true">
                         <tr>
-                            <th colspan="5" class="text-center">
-                                loading-spinner
+                            <th colspan="6" class="text-center">
+                                <loading-spinner></loading-spinner>
                             </th>
                         </tr>
                     </tbody>
@@ -37,6 +38,11 @@
                             <td>{{ guest.first_name }}</td>
                             <td>{{ guest.last_name }}</td>
                             <td>{{ guest.mobile }}</td>
+                            <td>
+                                <a [routerLink]="['edit', guest.uid]" title="Edit Guest">
+                                    <i class="mdi mdi-pencil"></i>
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
