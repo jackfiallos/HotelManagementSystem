@@ -5,7 +5,9 @@ import { types } from './bookings.types';
 export const initialState: any = {
     isLoading: false,
     lastUpdated: Date.now(),
-    data: null,
+    id: null,
+    data: [],
+    view: {}
 };
 
 /**
@@ -20,12 +22,13 @@ export const initialState: any = {
  */
 export function bookingsReducer(state: any = initialState, action: any) {
     switch (action.type) {
+        // LIST_BOOKINGS
         case types.LIST_BOOKINGS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                data: []
             });
         case types.LIST_BOOKINGS_SUCCESS:
             return Object.assign({}, state, {
@@ -39,28 +42,31 @@ export function bookingsReducer(state: any = initialState, action: any) {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                data: [],
+                error: action.error
             });
+        // GET_BOOKINGS
         case types.GET_BOOKINGS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                id: action.uid
             });
         case types.GET_BOOKINGS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                view: action.payload
             });
         case types.GET_BOOKINGS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                view: {},
+                error: action.error
             });
         case types.CREATE_BOOKINGS:
             return Object.assign({}, state, {

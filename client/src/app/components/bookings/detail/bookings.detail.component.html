@@ -1,15 +1,29 @@
-<h1 class="page-title">Booking List</h1>
+<h1 class="page-title">Booking No. {{ id }}</h1>
 <div class="row grid-margin">
     <div class="col-lg-12">
     	<div class="btn-group float-right">
-    		<a class="btn btn-success" [routerLink]="['new']">
-                <i class="fa fa-plus"></i> New Booking
+            <a class="btn btn-success" [routerLink]="['/bookings']">
+                <i class="mdi mdi-arrow-left-bold-circle"></i> Go Back
             </a>
     	</div>
     </div>
 </div>
 <div class="row grid-margin">
     <div class="col-lg-12 grid-margin grid-margin-lg-0">
-        
+        <div class="card">
+            <div class="card-body" *ngIf="booking$.isLoading == true">
+                <loading-spinner></loading-spinner>
+            </div>
+            <div class="card-body" *ngIf="booking$.view !== null && booking$.isLoading == false">
+                <h4>Guest Information</h4>
+                <hr>
+                <h4>Room Information</h4>
+                <hr>
+                <h4>Services Information</h4>
+                <hr>
+                <h4>Comments</h4>
+                <hr>
+            </div>
+        </div>
     </div>
 </div>
