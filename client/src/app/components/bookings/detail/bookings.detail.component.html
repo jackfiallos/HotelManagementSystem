@@ -1,6 +1,8 @@
 <h1 class="page-title">Booking No. {{ id }}</h1>
 <div class="row grid-margin">
     <div class="col-lg-12">
+        <small>Created by {{ booking$.view.user.name }}</small>
+        <small>on {{ booking$.view.created_at | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
     	<div class="btn-group float-right">
             <a class="btn btn-success" [routerLink]="['/bookings']">
                 <i class="mdi mdi-arrow-left-bold-circle"></i> Go Back
@@ -15,14 +17,80 @@
                 <loading-spinner></loading-spinner>
             </div>
             <div class="card-body" *ngIf="booking$.view !== null && booking$.isLoading == false">
-                <h4>Guest Information</h4>
+                <h3>
+                    Guest Information
+                </h3>
+                <div class="row" *ngIf="booking$.view.guest">
+                    <div class="col">
+                        <b>Name</b>
+                        <p>{{ booking$.view.guest.first_name }} {{ booking$.view.guest.last_name }}</p>
+                    </div>
+                    <div class="col">
+                        <b>Mobile</b>
+                        <p>{{ booking$.view.guest.mobile }}</p>
+                    </div>
+                    <div class="col">
+                        <b>Email</b>
+                        <p>{{ booking$.view.guest.email }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <b>CheckIn</b>
+                        <p>{{ booking$.view.checkin | date: 'dd/MM/yyyy' }}</p>
+                    </div>
+                    <div class="col-sm-4 offset-sm-4">
+                        <b>CheckOut</b>
+                        <p>{{ booking$.view.checkout | date: 'dd/MM/yyyy' }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <b>Adults</b>
+                        <p>{{ booking$.view.adults }}</p>
+                    </div>
+                    <div class="col">
+                        <b>Children</b>
+                        <p>{{ booking$.view.children }}</p>
+                    </div>
+                    <div class="col">
+                        <b>Breakfast</b>
+                        <p>{{ booking$.view.breakfast }}</p>
+                    </div>
+                </div>
                 <hr>
-                <h4>Room Information</h4>
+                <h3>Room Information</h3>
+                <div class="row">
+                    <div class="col">
+                        <b>Nights</b>
+                        <p>{{ booking$.view.nights }}</p>
+                    </div>
+                    <div class="col-sm-4 offset-sm-4">
+                        <b>Room Name</b>
+                        <p>{{ booking$.view.room.name }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <b>Max Persons</b>
+                        <p>{{ booking$.view.room.max_persons }}</p>
+                    </div>
+                    <div class="col">
+                        <b>Type</b>
+                        <p>{{ booking$.view.room.type }}</p>
+                    </div>
+                    <div class="col">
+                        <b>Rate</b>
+                        <p>{{ booking$.view.room.price_night | currency: booking$.view.room.currency:true:'1.2' }}</p>
+                    </div>
+                </div>
                 <hr>
-                <h4>Services Information</h4>
-                <hr>
-                <h4>Comments</h4>
-                <hr>
+                <h3>Comments</h3>
+                <div class="row">
+                    <div class="col">
+                        <p>{{ booking$.view.comments }}</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

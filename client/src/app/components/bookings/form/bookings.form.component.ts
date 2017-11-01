@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { DateAdapter, NativeDateAdapter } from '@angular/material';
 
 @Component({
     selector: 'form-bookings',
@@ -6,6 +7,8 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
     encapsulation: ViewEncapsulation.None
 })
 export class BookingsFormComponent implements OnInit {
-    constructor() { }
+    constructor(private dateAdapter: DateAdapter<NativeDateAdapter>) {
+        this.dateAdapter.setLocale('en-GB');
+    }
     ngOnInit() { }
 }

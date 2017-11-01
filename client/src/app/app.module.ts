@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { RouterModule, PreloadAllModules } from '@angular/router';
@@ -76,6 +77,7 @@ export const metaReducers = environment.production ? [localStorageSyncReducer] :
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         HttpModule,
         HttpClientModule,
         LoadingSpinnerModule,

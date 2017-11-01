@@ -16,7 +16,8 @@
                 <form class="forms-sample">
                     <div class="form-group">
                         <label for="checkin">CheckIn</label>
-                        <input type="email" class="form-control" id="checkin" aria-describedby="checkin_help" placeholder="CheckIn" autocomplete="off">
+                        <input readonly matInput [matDatepicker]="picker" id="checkin" autocomplete="off" class="form-control" placeholder="Choose a date" (click)="picker.open()">
+                        <mat-datepicker #picker></mat-datepicker>
                         <small id="checkin_help" class="form-text text-muted text-success">Checkin help</small>
                     </div>
                     <div class="form-group">
@@ -26,32 +27,36 @@
                     </div>
                     <div class="form-group">
                         <label for="nights">Nights</label>
-                        <input type="email" class="form-control" id="nights" aria-describedby="nights_help" placeholder="Number of nights" autocomplete="off">
+                        <input type="number" step="1" min="0" class="form-control" id="nights" aria-describedby="nights_help" placeholder="Number of nights" autocomplete="off">
                         <small id="nights_help" class="form-text text-muted text-success">Nights help</small>
                     </div>
                     <div class="form-group">
                         <label for="adults">Adults</label>
-                        <input type="email" class="form-control" id="adults" aria-describedby="adults_help" placeholder="Number of adults" autocomplete="off">
+                        <input type="number" step="1" min="0" class="form-control" id="adults" aria-describedby="adults_help" placeholder="Number of adults" autocomplete="off">
                         <small id="adults_help" class="form-text text-muted text-success">Adults help</small>
                     </div>
                     <div class="form-group">
                         <label for="children">Children</label>
-                        <input type="email" class="form-control" id="children" aria-describedby="children_help" placeholder="Number of children" autocomplete="off">
+                        <input type="number" step="1" min="0" class="form-control" id="children" aria-describedby="children_help" placeholder="Number of children" autocomplete="off">
                         <small id="children_help" class="form-text text-muted text-success">Children help</small>
                     </div>
                     <div class="form-group">
                         <label for="comments">Comments</label>
-                        <input type="email" class="form-control" id="comments" aria-describedby="comments_help" placeholder="Comments" autocomplete="off">
+                        <input type="text" class="form-control" id="comments" aria-describedby="comments_help" placeholder="Comments" autocomplete="off">
                         <small id="comments_help" class="form-text text-muted text-success">Comments help</small>
                     </div>
                     <div class="form-group">
                         <label for="room">Room</label>
-                        <input type="email" class="form-control" id="room" aria-describedby="room_help" placeholder="Room" autocomplete="off">
+                        <select class="form-control" id="room" aria-describedby="room_help">
+                            <option value="">not selected</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
                         <small id="room_help" class="form-text text-muted text-success">Room help</small>
                     </div>
                     <div class="form-group">
                         <label for="guest">Guest</label>
-                        <input type="email" class="form-control" id="guest" aria-describedby="guest_help" placeholder="Guest" autocomplete="off">
+                        <input type="text" class="form-control" id="guest" aria-describedby="guest_help" placeholder="Guest" autocomplete="off">
                         <small id="guest_help" class="form-text text-muted text-success">Guest help</small>
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>

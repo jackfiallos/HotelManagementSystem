@@ -125,7 +125,7 @@
 /* style for off-canvas menu*/
 @media screen and (max-width: 991px) {
   .row-offcanvas {
-    position: fixed;
+    position: absolute;
     -webkit-transition: all .25s ease-out;
     -o-transition: all .25s ease-out;
     transition: all .25s ease-out;

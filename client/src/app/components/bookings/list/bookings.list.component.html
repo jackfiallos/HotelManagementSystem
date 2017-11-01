@@ -33,22 +33,24 @@
                     </tbody>
                     <tbody *ngIf="bookings$.data.length > 0 && bookings$.isLoading == false">
                         <tr *ngFor="let booking of bookings$.data">
-                            <th scope="row">{{ booking.uid }}</th>
-                            <td>
-                                <a [routerLink]="['/rooms', booking.room_id]" title="View Room Details">
-                                    {{ booking.room_id }}
-                                </a>
-                            </td>
-                            <td>
-                                <a [routerLink]="['/guests']" title="View Guest Details">
-                                    -
-                                </a>
-                            </td>
-                            <td>
+                            <td scope="row">
                                 <a [routerLink]="['view', booking.uid]" title="View Booking Details">
-                                    {{ booking.checkin | date: 'dd/MM/yyyy' }}<br>
-                                    <small>{{ booking.checkin | date: 'mediumTime' }}</small>
+                                    {{ booking.uid }}
                                 </a>
+                            </td>
+                            <td>
+                                <a [routerLink]="['/rooms', booking.room.uid]" title="View Room Details">
+                                    {{ booking.room.name }}
+                                </a>
+                            </td>
+                            <td>
+                                <a [routerLink]="['/guests', booking.guest.uid]" title="View Guest Details">
+                                    {{ booking.guest.first_name }} {{ booking.guest.last_name }}
+                                </a>
+                            </td>
+                            <td>
+                                {{ booking.checkin | date: 'dd/MM/yyyy' }}<br>
+                                <small>{{ booking.checkin | date: 'mediumTime' }}</small>
                             </td>
                             <td>
                                 {{ booking.checkout | date: 'dd/MM/yyyy' }}<br>
