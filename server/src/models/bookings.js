@@ -9,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     const Bookings = sequelize.define('bookings', {
         id: {
             type: Sequelize.INTEGER,
+            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
@@ -72,7 +73,7 @@ module.exports = function(sequelize, DataTypes) {
                 key: 'id',
             }
         },
-        customer_id: {
+        guest_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
             references: {
@@ -90,9 +91,22 @@ module.exports = function(sequelize, DataTypes) {
         }
     });
 
-    // Bookings.associate = function(models) {
-    //     Bookings.belongsTo(models.User);
-    // }
+    Bookings.associate = function(models) {
+        Bookings.belongsTo(models.rooms, {
+            as: 'room',
+            foreignKey: 'id'
+        });
+
+        Bookings.belongsTo(models.guests, {
+            as: 'guest',
+            foreignKey: 'id'
+        });
+
+        Bookings.belongsTo(models.users, {
+            as: 'user',
+            foreignKey: 'id'
+        });
+    }
 
     return Bookings;
 };

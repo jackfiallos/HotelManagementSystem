@@ -6,6 +6,7 @@ module.exports = function(sequelize, DataTypes) {
     const Rooms = sequelize.define('rooms', {
         id: {
             type: Sequelize.INTEGER,
+            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },

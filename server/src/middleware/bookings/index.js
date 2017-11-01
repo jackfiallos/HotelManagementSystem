@@ -24,18 +24,51 @@ routes.push({
             order: [
                 ['id', 'DESC']
             ],
-            attributes: [
-                ['id', 'uid'],
-                'created_at',
-                'checkin',
-                'checkout',
-                'currency',
-                'amount',
-                'room_id',
-                'guest_id'
-            ]
+            include: [{
+                model: models.rooms,
+                as: 'room',
+                required: true
+            }, {
+                model: models.guests,
+                as: 'guest',
+                required: true
+            }, {
+                model: models.users,
+                as: 'user',
+                required: true
+            }],
         }).then((data) => {
-            res.json(data);
+            const resObj = data.map((booking) => {
+                // tidy up the user data
+                return Object.assign({}, {
+                    uid: booking.id,
+                    created_at: booking.created_at,
+                    checkin: booking.checkin,
+                    checkout: booking.checkout,
+                    currency: booking.currency,
+                    amount: booking.amount,
+                    room: Object.assign({}, {
+                        uid: booking.room.id,
+                        name: booking.room.name,
+                        currency: booking.room.currency,
+                        price_night: booking.room.price_night,
+                        type: booking.room.type,
+                        max_persons: booking.room.max_persons
+                    }),
+                    guest: Object.assign({}, {
+                        uid: booking.guest.id,
+                        first_name: booking.guest.first_name,
+                        last_name: booking.guest.last_name,
+                        mobile: booking.guest.mobile,
+                        email: booking.guest.email
+                    }),
+                    user: Object.assign({}, {
+                        uid: booking.user.id,
+                        name: booking.user.name
+                    })
+                });
+            });
+            res.json(resObj);
             return next();
         });
     }
@@ -64,26 +97,54 @@ routes.push({
                     [Sequelize.Op.eq]: req.params.id
                 }
             },
-            attributes: [
-                ['id', 'uid'],
-                'created_at',
-                'checkin',
-                'checkout',
-                'currency',
-                'amount',
-                'breakfast',
-                'nights',
-                'adults',
-                'children',
-                'comments',
-                'room_id',
-                'guest_id',
-                'user_id'
-            ],
-            limit: 1,
-            raw: true
+            include: [{
+                model: models.rooms,
+                as: 'room',
+                required: true
+            }, {
+                model: models.guests,
+                as: 'guest',
+                required: true
+            }, {
+                model: models.users,
+                as: 'user',
+                required: true
+            }],
+            limit: 1
         }).then((data) => {
-            res.json(data);
+            const resObj = Object.assign({}, {
+                uid: data.id,
+                created_at: data.created_at,
+                checkin: data.checkin,
+                checkout: data.checkout,
+                currency: data.currency,
+                amount: data.amount,
+                breakfast: data.breakfast,
+                nights: data.nights,
+                adults: data.adults,
+                children: data.children,
+                comments: data.comments,
+                room: Object.assign({}, {
+                    uid: data.room.id,
+                    name: data.room.name,
+                    currency: data.room.currency,
+                    price_night: data.room.price_night,
+                    type: data.room.type,
+                    max_persons: data.room.max_persons
+                }),
+                guest: Object.assign({}, {
+                    uid: data.guest.id,
+                    first_name: data.guest.first_name,
+                    last_name: data.guest.last_name,
+                    mobile: data.guest.mobile,
+                    email: data.guest.email
+                }),
+                user: Object.assign({}, {
+                    uid: data.user.id,
+                    name: data.user.name
+                })
+            });
+            res.json(resObj);
             return next();
         });
     }

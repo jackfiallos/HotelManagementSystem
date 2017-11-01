@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     const Services = sequelize.define('services', {
         id: {
             type: Sequelize.INTEGER,
+            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },

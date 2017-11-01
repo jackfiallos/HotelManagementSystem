@@ -7,6 +7,7 @@ module.exports = function(sequelize, DataTypes) {
     const Guests = sequelize.define('guests', {
         id: {
             type: Sequelize.INTEGER,
+            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },

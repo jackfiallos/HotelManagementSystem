@@ -8,6 +8,7 @@ module.exports = function(sequelize, DataTypes) {
     const Cancelations = sequelize.define('cancellations', {
         id: {
             type: Sequelize.INTEGER,
+            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
