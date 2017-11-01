@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatAutocompleteModule } from '@angular/material';
 
 import { routes } from './bookings.routes';
 import { BookingsListComponent } from './list/bookings.list.component';
@@ -15,7 +16,9 @@ import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module'
     imports: [
         CommonModule,
         FormsModule,
+        ReactiveFormsModule,
         RouterModule.forChild(routes),
+        MatAutocompleteModule,
         MatDatepickerModule,
         MatNativeDateModule,
         LoadingSpinnerModule,

@@ -5,7 +5,7 @@ import { types } from './rooms.types';
 export const initialState: any = {
     isLoading: false,
     lastUpdated: Date.now(),
-    data: null,
+    data: [],
 };
 
 /**
@@ -25,7 +25,7 @@ export function roomsReducer(state: any = initialState, action: any) {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                data: []
             });
         case types.LIST_ROOMS_SUCCESS:
             return Object.assign({}, state, {
@@ -39,7 +39,7 @@ export function roomsReducer(state: any = initialState, action: any) {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                data: []
             });
         case types.GET_ROOMS:
             return Object.assign({}, state, {

@@ -7,7 +7,8 @@ export const initialState: any = {
     lastUpdated: Date.now(),
     id: null,
     data: [],
-    view: {}
+    form: null,
+    view: null
 };
 
 /**
@@ -68,46 +69,47 @@ export function bookingsReducer(state: any = initialState, action: any) {
                 view: {},
                 error: action.error
             });
+        // CREATE BOOKINGS
         case types.CREATE_BOOKINGS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                form: action.payload
             });
         case types.CREATE_BOOKINGS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
-                data: {}
+                lastUpdated: Date.now(),
+                saved: action.payload
             });
         case types.CREATE_BOOKINGS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                saved: null,
+                error: action.error
             });
+        // UPDATE BOOKINGS
         case types.UPDATE_BOOKINGS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
-                lastUpdated: Date.now(),
-                data: {}
+                lastUpdated: Date.now()
             });
         case types.UPDATE_BOOKINGS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
-                lastUpdated: Date.now(),
-                data: {}
+                lastUpdated: Date.now()
             });
         case types.UPDATE_BOOKINGS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
-                lastUpdated: Date.now(),
-                data: {}
+                lastUpdated: Date.now()
             });
         default:
             return state;
