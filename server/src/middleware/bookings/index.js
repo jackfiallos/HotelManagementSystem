@@ -1,5 +1,5 @@
 'use strict';
-
+const moment = require('moment');
 const Sequelize = require('sequelize');
 const models = require('../../models');
 const routes = [];
@@ -69,6 +69,18 @@ routes.push({
                 });
             });
             res.json(resObj);
+            return next();
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json(err);
+            }
+
             return next();
         });
     }
@@ -146,6 +158,18 @@ routes.push({
             });
             res.json(resObj);
             return next();
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json(err);
+            }
+
+            return next();
         });
     }
 });
@@ -169,31 +193,58 @@ routes.push({
         const form = {
             checkin: new Date(req.body.checkin),
             checkout: new Date(req.body.checkout),
-            currency: req.body.currency,
-            amount: req.body.amount, // calculated
-            breakfast: req.body.breakfast,
-            nights: req.body.nights,
+            // currency: req.body.currency,
+            // amount: req.body.amount,
+            // breakfast: req.body.breakfast,
+            // nights: req.body.nights,
             adults: req.body.adults,
             children: req.body.children,
             comments: (req.body.comments) ? req.body.comments : null,
             room_id: (req.body.room_id) ? req.body.room_id : null,
-            guest_id: req.body.guest_id,
-            user_id: req.body.user_id
+            guest_id: (req.body.guest_id) ? req.body.guest_id : null,
+            user_id: 1
         };
 
-        // create record
-        models.bookings.create(form).then((data) => {
-            res.json(data);
-            return next();
+        const days = moment(form.checkout).diff(form.checkin, 'days');
+        form.nights = days;
+
+        models.rooms.findOne({
+            where: { id: { [Sequelize.Op.eq]: form.room_id } },
+            attributes: ['price_night'],
+            limit: 1
+        }).then((data) => {
+            form.amount = (days * data.price_night);
+
+            // create record
+            models.bookings.create(form).then((data) => {
+                res.json(data);
+                return next();
+            }).catch((err) => {
+                res.status(400);
+                if (err.name === 'SequelizeValidationError') {
+                    res.json({
+                        errors: err.errors,
+                        name: err.name
+                    });
+                } else {
+                    res.json(err);
+                }
+
+                return next();
+            });
         }).catch((err) => {
+            res.status(400);
             if (err.name === 'SequelizeValidationError') {
                 res.json({
-                    message: err.message,
-                    type: err.type,
-                    path: err.path
+                    errors: err.errors,
+                    name: err.name
                 });
             } else {
-                res.json(err);
+                res.json({
+                    errors: [{
+                        message: err.message
+                    }]
+                });
             }
 
             return next();
@@ -240,11 +291,11 @@ routes.push({
             res.json(data);
             return next();
         }).catch((err) => {
+            res.status(400);
             if (err.name === 'SequelizeValidationError') {
                 res.json({
-                    message: err.message,
-                    type: err.type,
-                    path: err.path
+                    errors: err.errors,
+                    name: err.name
                 });
             } else {
                 res.json(err);

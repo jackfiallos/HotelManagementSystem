@@ -44,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: 0,
             get() {
                 const hasBreakfast = this.getDataValue('breakfast');
-                return (hasBreakfast) ? true : false
+                return (hasBreakfast) ? 'yes' : 'no'
             }
         },
         nights: {
@@ -94,17 +94,17 @@ module.exports = function(sequelize, DataTypes) {
     Bookings.associate = function(models) {
         Bookings.belongsTo(models.rooms, {
             as: 'room',
-            foreignKey: 'id'
+            foreignKey: 'room_id'
         });
 
         Bookings.belongsTo(models.guests, {
             as: 'guest',
-            foreignKey: 'id'
+            foreignKey: 'guest_id'
         });
 
         Bookings.belongsTo(models.users, {
             as: 'user',
-            foreignKey: 'id'
+            foreignKey: 'user_id'
         });
     }
 

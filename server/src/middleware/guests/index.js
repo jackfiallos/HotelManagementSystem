@@ -123,10 +123,10 @@ routes.push({
             return next();
         }).catch((err) => {
             if (err.name === 'SequelizeValidationError') {
+                res.status(400);
                 res.json({
-                    message: err.message,
-                    type: err.type,
-                    path: err.path
+                    errors: err.errors,
+                    name: err.name
                 });
             } else {
                 res.json(err);
@@ -182,10 +182,10 @@ routes.push({
             return next();
         }).catch((err) => {
             if (err.name === 'SequelizeValidationError') {
+                res.status(400);
                 res.json({
-                    message: err.message,
-                    type: err.type,
-                    path: err.path
+                    errors: err.errors,
+                    name: err.name
                 });
             } else {
                 res.json(err);
