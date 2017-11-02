@@ -53,7 +53,7 @@ export class BookingsListComponent implements OnInit {
         }, (error: any) => {
             this._store.dispatch({
                 type: types.LIST_BOOKINGS_FAILURE,
-                error: error
+                error: error.error
             });
         });
     }

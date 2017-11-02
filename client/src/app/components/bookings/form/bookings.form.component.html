@@ -13,7 +13,16 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title">Fill the following fields</h2>
-                <form class="forms-sample" (ngSubmit)="onSubmit($event)">
+                <div class="alert alert-danger" role="alert" *ngIf="booking$.error">
+                    <h4 class="alert-heading">Holy guacamole!</h4>
+                    <div *ngFor="let error of booking$.error.errors">
+                        {{ error.message }}
+                    </div>
+                </div>
+                <form class="forms-sample" (ngSubmit)="onSubmit($event)" [ngClass]="{'d-none': booking$.isLoading == true}">
+                    <div class="form-group text-center" *ngIf="booking$.isLoading == true">
+                        <loading-spinner></loading-spinner>
+                    </div>
                     <div class="form-group">
                         <label for="checkin">CheckIn</label>
                         <input readonly matInput [ngModelOptions]="{standalone: true}" [(ngModel)]="form.checkin" [matDatepicker]="checkin" id="checkin" autocomplete="off" class="form-control" placeholder="Choose a date" (click)="checkin.open()">
@@ -27,11 +36,6 @@
                         <small id="checkout_help" class="form-text text-muted text-success">Checkout help</small>
                     </div>
                     <div class="form-group">
-                        <label for="nights">Nights</label>
-                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.nights" type="number" step="1" min="0" class="form-control" id="nights" aria-describedby="nights_help" placeholder="Number of nights" autocomplete="off">
-                        <small id="nights_help" class="form-text text-muted text-success">Nights help</small>
-                    </div>
-                    <div class="form-group">
                         <label for="adults">Adults</label>
                         <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.adults" type="number" step="1" min="0" class="form-control" id="adults" aria-describedby="adults_help" placeholder="Number of adults" autocomplete="off">
                         <small id="adults_help" class="form-text text-muted text-success">Adults help</small>
@@ -43,7 +47,7 @@
                     </div>
                     <div class="form-group">
                         <label for="room">Room</label>
-                        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="form.room" class="form-control" id="room" aria-describedby="room_help">
+                        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="form.room_id" class="form-control" id="room" aria-describedby="room_help">
                             <option>Select an option</option>
                             <option *ngFor="let room of rooms$.data" [ngValue]="room.uid">{{ room.name }}</option>
                         </select>
@@ -51,13 +55,21 @@
                     </div>
                     <div class="form-group">
                         <label for="guest">Guest</label>
-                        <!-- <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.guest" type="text" class="form-control" id="guest" aria-describedby="guest_help" placeholder="Guest" autocomplete="off"> -->
-                        <input matInput [formControl]="myControl" [matAutocomplete]="auto" type="text" class="form-control" id="guest" aria-describedby="guest_help" placeholder="Guest" autocomplete="off">
-                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-                                {{ option.name }}
-                            </mat-option>
-                        </mat-autocomplete>
+                        <div class="form-row">
+                            <div class="col-9">
+                                <input matInput [formControl]="guestControl" [matAutocomplete]="auto" type="text" class="form-control" id="guest" aria-describedby="guest_help" placeholder="Guest" autocomplete="off">
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                    <mat-option *ngFor="let option of guestFiltered | async" [value]="option">
+                                        {{ option.name }}
+                                    </mat-option>
+                                </mat-autocomplete>
+                            </div>
+                            <div class="col-3">
+                                <a [routerLink]="['/guests/create']" class="btn btn-primary">
+                                    <i class="mdi mdi-account-plus"></i> New Guest
+                                </a>
+                            </div>
+                        </div>
                         <small id="guest_help" class="form-text text-muted text-success">Guest help</small>
                     </div>
                     <div class="form-group">
@@ -66,7 +78,9 @@
                         <small id="comments_help" class="form-text text-muted text-success">Comments help</small>
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="button" class="btn btn-light">Cancel</button>
+                    <a [routerLink]="['/bookings']" class="btn btn-light">
+                        Cancel
+                    </a>
                 </form>
             </div>
         </div>

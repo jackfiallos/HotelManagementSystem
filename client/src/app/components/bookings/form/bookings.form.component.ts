@@ -4,18 +4,17 @@ import { FormControl } from '@angular/forms';
 import { DateAdapter, NativeDateAdapter } from '@angular/material';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import _ from 'lodash';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/finally';
 
 import { BookingsController } from '../../../ducks/bookings/bookings.controller';
 import { RoomsController } from '../../../ducks/rooms/rooms.controller';
+import { GuestsController } from '../../../ducks/guests/guests.controller';
 import { types as BookingTypes } from '../../../ducks/bookings/bookings.types';
 import { types as RoomTypes } from '../../../ducks/rooms/rooms.types';
-
-export class User {
-    constructor(public name: string) { }
-}
+import { types as GuestTypes } from '../../../ducks/guests/guests.types';
 
 @Component({
     selector: 'form-bookings',
@@ -23,28 +22,21 @@ export class User {
     encapsulation: ViewEncapsulation.None
 })
 export class BookingsFormComponent implements OnInit {
-    private sub: any;
     private booking$: any;
     private rooms$: any;
+    private guests$: any;
 
-    myControl = new FormControl();
-
-    options = [
-        new User('Mary'),
-        new User('Shelley'),
-        new User('Igor')
-    ];
-
-    filteredOptions: Observable<User[]>;
+    private guestControl: FormControl = new FormControl();
+    private guestOptions: any[] = [];
+    private guestFiltered: Observable<any[]>;
 
     private form: any = {
         checkin: new Date(),
         checkout: new Date(),
-        nights: 1,
         adults: 1,
         children: 0,
-        room: null,
-        guest: null,
+        guest_id: null,
+        room_id: null,
         comments: null
     }
 
@@ -61,7 +53,7 @@ export class BookingsFormComponent implements OnInit {
      * @param   {[type]} private [description]
      * @return  {[type]} [description]
      */
-    constructor(private route: ActivatedRoute, private _bookings: BookingsController, private _room: RoomsController, private _store: Store<any>, private dateAdapter: DateAdapter<NativeDateAdapter>) {
+    constructor(private route: ActivatedRoute, private _bookings: BookingsController, private _room: RoomsController, private _guest: GuestsController, private _store: Store<any>, private dateAdapter: DateAdapter<NativeDateAdapter>) {
         this.dateAdapter.setLocale('en-US');
 
         _store.select('bookings').subscribe((response) => {
@@ -71,6 +63,10 @@ export class BookingsFormComponent implements OnInit {
         _store.select('rooms').subscribe((response) => {
             this.rooms$ = response;
         });
+
+        _store.select('guests').subscribe((response) => {
+            this.guests$ = response;
+        });
     }
 
     /**
@@ -78,46 +74,78 @@ export class BookingsFormComponent implements OnInit {
      * @type {[type]}
      */
     public ngOnInit() {
-        this.filteredOptions = this.myControl.valueChanges
-            .startWith(null)
-                .map(user => user && typeof user === 'object' ? user.name : user)
-                .map(name => name ? this.filter(name) : this.options.slice());
+        this._store.dispatch({
+            type: GuestTypes.LIST_GUESTS
+        });
 
-        this.sub = this.route.params.subscribe(params => {
-            this._store.dispatch({
-                type: RoomTypes.LIST_ROOMS
+        // request guest list
+        this._guest.getGuests().finally(() => {
+            console.log('finally logic');
+        }).subscribe((data: any) => {
+            this.guestOptions = _.map(data, (guest) => {
+                const email = (guest.email !== null) ? `(${guest.email})` : '';
+                return Object.assign({}, {
+                    id: guest.uid,
+                    name: `${guest.first_name} ${guest.last_name} ${email}`
+                });
             });
 
-            this._room.getRooms().finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
-                this._store.dispatch({
-                    type: RoomTypes.LIST_ROOMS_SUCCESS,
-                    payload: data
-                });
-            }, (error: any) => {
-                this._store.dispatch({
-                    type: RoomTypes.GET_ROOMS_FAILURE,
-                    error: error
-                });
+            this.guestFiltered = this.guestControl.valueChanges
+                .startWith(null)
+                    .map((guest) => {
+                        return (guest && typeof guest === 'object') ? guest.name : guest;
+                    })
+                    .map((name) => {
+                        return name ? this.filter(name) : this.guestOptions.slice();
+                    });
+
+            this._store.dispatch({
+                type: GuestTypes.LIST_GUESTS_SUCCESS,
+                payload: data
+            });
+        }, (error: any) => {
+            this._store.dispatch({
+                type: GuestTypes.LIST_GUESTS_FAILURE,
+                error: error.error
+            });
+        });
+
+        this._store.dispatch({
+            type: RoomTypes.LIST_ROOMS
+        });
+
+        this._room.getRooms().finally(() => {
+            console.log('finally logic');
+        }).subscribe((data: any) => {
+            this._store.dispatch({
+                type: RoomTypes.LIST_ROOMS_SUCCESS,
+                payload: data
+            });
+        }, (error: any) => {
+            this._store.dispatch({
+                type: RoomTypes.LIST_ROOMS_FAILURE,
+                error: error.error
             });
         });
     }
 
-    public ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
-
+    /**
+     * [e description]
+     * @type {[type]}
+     */
     private onSubmit(e: MouseEvent) {
         e.preventDefault();
 
-        console.log(this.myControl);
+        // get guest id value
+        this.form.guest_id = this.guestControl.value ? this.guestControl.value.id : null,
 
+        // dispatch create
         this._store.dispatch({
             type: BookingTypes.CREATE_BOOKINGS,
             payload: this.form
         });
 
+        // request create booking
         this._bookings.createBooking(this.form).finally(() => {
             console.log('finally logic');
         }).subscribe((data: any) => {
@@ -128,16 +156,27 @@ export class BookingsFormComponent implements OnInit {
         }, (error: any) => {
             this._store.dispatch({
                 type: BookingTypes.CREATE_BOOKINGS_FAILURE,
-                error: error
+                error: error.error
             });
         });
     }
 
-    filter(name: string): User[] {
-        return this.options.filter(option => option.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
+    /**
+     * [name description]
+     * @type {[type]}
+     */
+    filter(name: any): any[] {
+        return this.guestOptions.filter((option) => {
+            const selected = (name && typeof name === 'object') ? name.name : name;
+            return option.name.toLowerCase().indexOf(selected.toLowerCase()) >= 0;
+        });
     }
 
-    displayFn(user: User): any {
-        return user ? user.name : user;
+    /**
+     * [option description]
+     * @type {[type]}
+     */
+    displayFn(option: any): any {
+        return option ? option.name : option;
     }
 }

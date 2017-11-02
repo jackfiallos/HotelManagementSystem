@@ -60,7 +60,7 @@ export class BookingsDetailComponent implements OnInit, OnDestroy {
             }, (error: any) => {
                 this._store.dispatch({
                     type: types.GET_BOOKINGS_FAILURE,
-                    error: error
+                    error: error.error
                 });
             });
         });
