@@ -10,6 +10,7 @@
     "bunyan": "^1.8.12",
     "bunyan-format": "^0.2.1",
     "lodash": "^4.17.4",
+    "moment": "^2.19.1",
     "mysql2": "^1.4.2",
     "nconf": "^0.8.5",
     "request": "^2.83.0",
