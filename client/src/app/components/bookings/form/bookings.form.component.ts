@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { DateAdapter, NativeDateAdapter } from '@angular/material';
 import { Store } from '@ngrx/store';
@@ -53,7 +53,7 @@ export class BookingsFormComponent implements OnInit {
      * @param   {[type]} private [description]
      * @return  {[type]} [description]
      */
-    constructor(private route: ActivatedRoute, private _bookings: BookingsController, private _room: RoomsController, private _guest: GuestsController, private _store: Store<any>, private dateAdapter: DateAdapter<NativeDateAdapter>) {
+    constructor(private _router: Router, private _bookings: BookingsController, private _room: RoomsController, private _guest: GuestsController, private _store: Store<any>, private dateAdapter: DateAdapter<NativeDateAdapter>) {
         this.dateAdapter.setLocale('en-US');
 
         _store.select('bookings').subscribe((response) => {
@@ -141,8 +141,7 @@ export class BookingsFormComponent implements OnInit {
 
         // dispatch create
         this._store.dispatch({
-            type: BookingTypes.CREATE_BOOKINGS,
-            payload: this.form
+            type: BookingTypes.CREATE_BOOKINGS
         });
 
         // request create booking
@@ -153,6 +152,8 @@ export class BookingsFormComponent implements OnInit {
                 type: BookingTypes.CREATE_BOOKINGS_SUCCESS,
                 payload: data
             });
+
+            this._router.navigate(['/bookings/view', data.id]);
         }, (error: any) => {
             this._store.dispatch({
                 type: BookingTypes.CREATE_BOOKINGS_FAILURE,

@@ -1,15 +1,87 @@
-<h1 class="page-title">Guest Form</h1>
+<h1 class="page-title">New Guest</h1>
 <div class="row grid-margin">
     <div class="col-lg-12">
     	<div class="btn-group float-right">
-    		<a class="btn btn-success" [routerLink]="['new']">
-                <i class="fa fa-plus"></i> New Booking
+    		<a class="btn btn-success" [routerLink]="['/guests']">
+                <i class="mdi mdi-arrow-left-bold-circle"></i> Go Back
             </a>
     	</div>
     </div>
 </div>
 <div class="row grid-margin">
     <div class="col-lg-12 grid-margin grid-margin-lg-0">
-
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Fill the following fields</h2>
+                <div class="alert alert-danger" role="alert" *ngIf="guest$.error">
+                    <h4 class="alert-heading">Holy guacamole!</h4>
+                    <div *ngFor="let error of guest$.error.errors">
+                        {{ error.message }}
+                    </div>
+                </div>
+                <form class="forms-sample" (ngSubmit)="onSubmit($event)" [ngClass]="{'d-none': guest$.isLoading == true}">
+                    <div class="form-group text-center" *ngIf="guest$.isLoading == true">
+                        <loading-spinner></loading-spinner>
+                    </div>
+                    <div class="form-group">
+                        <label for="first_name">First name *</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.first_name" class="form-control" id="first_name" aria-describedby="first_name_help" placeholder="First name" autocomplete="off">
+                        <small id="first_name_help" class="form-text text-muted text-success">First name help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last name *</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.last_name" class="form-control" id="last_name" aria-describedby="last_name_help" placeholder="Last name" autocomplete="off">
+                        <small id="last_name_help" class="form-text text-muted text-success">Last name help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.phone" class="form-control" id="phone" aria-describedby="phone_help" placeholder="Phone number" autocomplete="off">
+                        <small id="phone_help" class="form-text text-muted text-success">Phone help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">Mobile</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.mobile" class="form-control" id="mobile" aria-describedby="mobile_help" placeholder="Mobile number" autocomplete="off">
+                        <small id="mobile_help" class="form-text text-muted text-success">Mobile help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="city">City *</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.city" class="form-control" id="city" aria-describedby="city_help" placeholder="City" autocomplete="off">
+                        <small id="city_help" class="form-text text-muted text-success">City help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="country">Country *</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.country" class="form-control" id="country" aria-describedby="country_help" placeholder="Country" autocomplete="off">
+                        <small id="country_help" class="form-text text-muted text-success">Country help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.email" class="form-control" id="email" aria-describedby="email_help" placeholder="Email" autocomplete="off">
+                        <small id="email_help" class="form-text text-muted text-success">Email help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.age" type="number" step="1" min="0" class="form-control" id="age" aria-describedby="age_help" placeholder="Age" autocomplete="off">
+                        <small id="age_help" class="form-text text-muted text-success">Age help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender</label>
+                        <select [ngModelOptions]="{standalone: true}" [(ngModel)]="form.gender" class="form-control" id="gender" aria-describedby="gender_help">
+                            <option>Select an option</option>
+                            <option *ngFor="let gender of genders" [ngValue]="gender.id">{{ gender.name }}</option>
+                        </select>
+                        <small id="gender_help" class="form-text text-muted text-success">Gender help</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="organization">Organization</label>
+                        <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.organization" class="form-control" id="organization" aria-describedby="organization_help" placeholder="Last name" autocomplete="off">
+                        <small id="organization_help" class="form-text text-muted text-success">Organization help</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a [routerLink]="['/guests']" class="btn btn-light">
+                        Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

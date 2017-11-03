@@ -3,7 +3,7 @@
     <div class="col-lg-12">
     	<div class="btn-group float-right">
     		<a class="btn btn-success" [routerLink]="['create']">
-                <i class="fa fa-plus"></i> New Guest
+                <i class="mdi mdi-account-plus"></i> New Guest
             </a>
     	</div>
     </div>
@@ -16,9 +16,8 @@
                 <table class="table table-hover table-responsive-sm">
                     <thead class="thead-light">
                         <tr class="">
-                            <th>No.</th>
-                            <th>Firts Name</th>
-                            <th>Lastname</th>
+                            <th>ID</th>
+                            <th>Name</th>
                             <th>Email</th>
                             <th>Mobile</th>
                             <th>#</th>
@@ -26,18 +25,33 @@
                     </thead>
                     <tbody *ngIf="guests$.isLoading == true">
                         <tr>
-                            <th colspan="6" class="text-center">
+                            <th colspan="5" class="text-center">
                                 <loading-spinner></loading-spinner>
                             </th>
                         </tr>
                     </tbody>
                     <tbody *ngIf="guests$.data.length > 0 && guests$.isLoading == false">
                         <tr *ngFor="let guest of guests$.data">
-                            <th scope="row">{{ guest.uid }}</th>
-                            <td>{{ guest.first_name }}</td>
-                            <td>{{ guest.last_name }}</td>
-                            <td>{{ guest.email }}</td>
-                            <td>{{ guest.mobile }}</td>
+                            <td scope="row">
+                                <a [routerLink]="['view', guest.uid]" title="View Guest Details">
+                                    {{ guest.uid }}
+                                </a>
+                            </td>
+                            <td>
+                                <a [routerLink]="['view', guest.uid]" title="View Guest Details">
+                                    {{ guest.first_name }} {{ guest.last_name }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="mailto:{{ guest.email }}" title="Send an email">
+                                    {{ guest.email }}
+                                </a>
+                            </td>
+                            <td>
+                                <a href="tel:{{ guest.mobile }}" title="Make a call">
+                                    {{ guest.mobile }}
+                                </a>
+                            </td>
                             <td>
                                 <a [routerLink]="['edit', guest.uid]" title="Edit Guest">
                                     <i class="mdi mdi-pencil"></i>

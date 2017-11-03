@@ -1,15 +1,98 @@
-<h1 class="page-title">Guest Details</h1>
+<h1 class="page-title">Guest No. {{ id }}</h1>
 <div class="row grid-margin">
     <div class="col-lg-12">
+        <small>Created by {{ guest$.view.user.name }}</small>
+        <small>on {{ guest$.view.created_at | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
     	<div class="btn-group float-right">
-    		<a class="btn btn-success" [routerLink]="['new']">
-                <i class="fa fa-plus"></i> New Guest
+            <a class="btn btn-success" [routerLink]="['/guests']">
+                <i class="mdi mdi-arrow-left-bold-circle"></i> Go Back
             </a>
     	</div>
     </div>
 </div>
 <div class="row grid-margin">
     <div class="col-lg-12 grid-margin grid-margin-lg-0">
-
+        <div class="card">
+            <div class="card-body" *ngIf="guest$.isLoading == true">
+                <loading-spinner></loading-spinner>
+            </div>
+            <div class="card-body" *ngIf="guest$.view !== null && guest$.isLoading == false">
+                <div class="alert alert-success" role="alert" *ngIf="guest$.saved">
+                    <h4 class="alert-heading">Guest Created!</h4>
+                    A new guest have been created correctly!
+                </div>
+                <h3>
+                    Guest Information
+                </h3>
+                <div class="row" *ngIf="guest$.view">
+                    <div class="col">
+                        <b>Name</b>
+                        <p>{{ guest$.view.first_name }} {{ guest$.view.last_name }}</p>
+                    </div>
+                    <div class="col">
+                        <b>Email</b>
+                        <p>
+                            <a href="mailto:{{ guest$.view.email }}" title="Send an email">
+                                {{ guest$.view.email }}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row" *ngIf="guest$.view">
+                    <div class="col">
+                        <b>Age</b>
+                        <p>
+                            {{ guest$.view.age }}
+                        </p>
+                    </div>
+                    <div class="col">
+                        <b>Gender</b>
+                        <p>
+                            {{ guest$.view.gender }}
+                        </p>
+                    </div>
+                </div>
+                <div class="row" *ngIf="guest$.view">
+                    <div class="col">
+                        <b>Phone</b>
+                        <p>
+                            <a href="tel:{{ guest$.view.phone }}" title="Make a call">
+                                {{ guest$.view.phone }}
+                            </a>
+                        </p>
+                    </div>
+                    <div class="col">
+                        <b>Mobile</b>
+                        <p>
+                            <a href="tel:{{ guest$.view.mobile }}" title="Make a call">
+                                {{ guest$.view.mobile }}
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <div class="row" *ngIf="guest$.view">
+                    <div class="col">
+                        <b>City</b>
+                        <p>
+                            {{ guest$.view.city }}
+                        </p>
+                    </div>
+                    <div class="col">
+                        <b>Country</b>
+                        <p>
+                            {{ guest$.view.country }}
+                        </p>
+                    </div>
+                </div>
+                <div class="row" *ngIf="guest$.view">
+                    <div class="col">
+                        <b>Organization</b>
+                        <p>
+                            {{ guest$.view.organization }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

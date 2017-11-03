@@ -26,7 +26,7 @@ export class GuestsController {
      * @return  {Observable<any>} [description]
      */
     public getGuests(): Observable<any> {
-        return this.http.get<any>(environment.api_url + '/customer');
+        return this.http.get<any>(environment.api_url + '/guest');
     }
 
     /**
@@ -39,7 +39,7 @@ export class GuestsController {
      * @return  {Observable<any>} [description]
      */
     public getGuestById(guestId: number): Observable<any> {
-        return this.http.get<any>(environment.api_url + '/customer/' + guestId);
+        return this.http.get<any>(environment.api_url + '/guest/' + guestId);
     }
 
     /**
@@ -52,7 +52,7 @@ export class GuestsController {
      * @return  {[type]} [description]
      */
     public createGuest(guest: any) {
-        return this.http.post(environment.api_url + '/customer/', guest);
+        return this.http.post(environment.api_url + '/guest/', guest);
     }
 
     /**
@@ -66,6 +66,6 @@ export class GuestsController {
      * @return  {Observable<any>} [description]
      */
     public updateGuest(guestId: number, guest: any): Observable<any> {
-        return this.http.put<any>(environment.api_url + '/customer/' + guestId, guest);
+        return this.http.put<any>(environment.api_url + '/guest/' + guestId, guest);
     }
 }

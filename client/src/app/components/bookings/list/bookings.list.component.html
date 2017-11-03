@@ -17,8 +17,8 @@
                     <thead class="thead-light">
                         <tr class="">
                             <th>ID</th>
-                            <th>Room</th>
                             <th>Guest</th>
+                            <th>Room</th>
                             <th>Checkin</th>
                             <th>Checkout</th>
                             <th>#</th>
@@ -39,13 +39,13 @@
                                 </a>
                             </td>
                             <td>
-                                <a [routerLink]="['/rooms', booking.room.uid]" title="View Room Details">
-                                    {{ booking.room.name }}
+                                <a [routerLink]="['/guests/view', booking.guest.uid]" title="View Guest Details">
+                                    {{ booking.guest.first_name }} {{ booking.guest.last_name }}
                                 </a>
                             </td>
                             <td>
-                                <a [routerLink]="['/guests', booking.guest.uid]" title="View Guest Details">
-                                    {{ booking.guest.first_name }} {{ booking.guest.last_name }}
+                                <a [routerLink]="['/rooms/view', booking.room.uid]" title="View Room Details">
+                                    {{ booking.room.name }}
                                 </a>
                             </td>
                             <td>

@@ -17,21 +17,37 @@
                 <loading-spinner></loading-spinner>
             </div>
             <div class="card-body" *ngIf="booking$.view !== null && booking$.isLoading == false">
+                <div class="alert alert-success" role="alert" *ngIf="booking$.saved">
+                    <h4 class="alert-heading">Booking Created!</h4>
+                    Your booking have been created correctly!
+                </div>
                 <h3>
                     Guest Information
                 </h3>
                 <div class="row" *ngIf="booking$.view.guest">
                     <div class="col">
                         <b>Name</b>
-                        <p>{{ booking$.view.guest.first_name }} {{ booking$.view.guest.last_name }}</p>
+                        <p>
+                            <a [routerLink]="['/guests/view', booking$.view.guest.uid]" title="View Guest Details">
+                                {{ booking$.view.guest.first_name }} {{ booking$.view.guest.last_name }}
+                            </a>
+                        </p>
                     </div>
                     <div class="col">
                         <b>Mobile</b>
-                        <p>{{ booking$.view.guest.mobile }}</p>
+                        <p>
+                            <a href="tel:{{ booking$.view.guest.mobile }}" title="Make a call">
+                                {{ booking$.view.guest.mobile }}
+                            </a>
+                        </p>
                     </div>
                     <div class="col">
                         <b>Email</b>
-                        <p>{{ booking$.view.guest.email }}</p>
+                        <p>
+                            <a href="mailto:{{ booking$.view.guest.email }}" title="Send an email">
+                                {{ booking$.view.guest.email }}
+                            </a>
+                        </p>
                     </div>
                 </div>
                 <div class="row">
@@ -67,7 +83,11 @@
                     </div>
                     <div class="col-sm-4 offset-sm-4">
                         <b>Room Name</b>
-                        <p>{{ booking$.view.room.name }}</p>
+                        <p>
+                            <a [routerLink]="['/rooms/view', booking$.view.room.uid]" title="View Room Details">
+                                {{ booking$.view.room.name }}
+                            </a>
+                        </p>
                     </div>
                 </div>
                 <div class="row">
