@@ -11,10 +11,10 @@ const routes = [];
  */
 routes.push({
     meta: {
-        name: 'customerList',
+        name: 'guestList',
         method: 'GET',
         paths: [
-            '/customer'
+            '/guest'
         ],
         version: '1.0.0'
     },
@@ -23,19 +23,46 @@ routes.push({
             order: [
                 ['id', 'DESC']
             ],
-            attributes: [
-                ['id', 'uid'],
-                'created_at',
-                'first_name',
-                'last_name',
-                'phone',
-                'mobile',
-                'city',
-                'email',
-                'user_id'
-            ]
+            include: [{
+                model: models.users,
+                as: 'user',
+                required: true
+            }],
         }).then((data) => {
-            res.json(data);
+            const resObj = data.map((guest) => {
+                // tidy up the user data
+                return Object.assign({}, {
+                    uid: guest.id,
+                    created_at: guest.created_at,
+                    first_name: guest.first_name,
+                    last_name: guest.last_name,
+                    phone: guest.phone,
+                    mobile: guest.mobile,
+                    city: guest.city,
+                    country: guest.country,
+                    email: guest.email,
+                    organization: guest.organization,
+                    age: guest.age,
+                    gender: guest.gender,
+                    user: Object.assign({}, {
+                        uid: guest.user.id,
+                        name: guest.user.name
+                    })
+                });
+            });
+            res.json(resObj);
+            return next();
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json(err);
+            }
+
             return next();
         });
     }
@@ -49,10 +76,10 @@ routes.push({
  */
 routes.push({
     meta: {
-        name: 'customerRead',
+        name: 'guestRead',
         method: 'GET',
         paths: [
-            '/customer/:id'
+            '/guest/:id'
         ],
         version: '1.0.0'
     },
@@ -63,25 +90,44 @@ routes.push({
                     [Sequelize.Op.eq]: req.params.id
                 }
             },
-            attributes: [
-                ['id', 'uid'],
-                'created_at',
-                'first_name',
-                'last_name',
-                'phone',
-                'mobile',
-                'city',
-                'country',
-                'email',
-                'organization',
-                'age',
-                'gender',
-                'user_id'
-            ],
-            limit: 1,
-            raw: true
-        }).then((data) => {
-            res.json(data);
+            include: [{
+                model: models.users,
+                as: 'user',
+                required: true
+            }],
+            limit: 1
+        }).then((guest) => {
+            const resObj = Object.assign({}, {
+                uid: guest.id,
+                created_at: guest.created_at,
+                first_name: guest.first_name,
+                last_name: guest.last_name,
+                phone: guest.phone,
+                mobile: guest.mobile,
+                city: guest.city,
+                country: guest.country,
+                email: guest.email,
+                organization: guest.organization,
+                age: guest.age,
+                gender: guest.gender,
+                user: Object.assign({}, {
+                    uid: guest.user.id,
+                    name: guest.user.name
+                })
+            });
+            res.json(resObj);
+            return next();
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json(err);
+            }
+
             return next();
         });
     }
@@ -94,10 +140,10 @@ routes.push({
  */
 routes.push({
     meta: {
-        name: 'customerCreate',
+        name: 'guestCreate',
         method: 'POST',
         paths: [
-            '/customer'
+            '/guest'
         ],
         version: '1.0.0'
     },
@@ -114,7 +160,7 @@ routes.push({
             organization: (req.body.organization) ? req.body.organization : null,
             age: (req.body.age) ? req.body.age : null,
             gender: (req.body.gender) ? req.body.gender : null,
-            user_id: req.body.user_id
+            user_id: 1
         };
 
         // create record
@@ -122,8 +168,8 @@ routes.push({
             res.json(data);
             return next();
         }).catch((err) => {
+            res.status(400);
             if (err.name === 'SequelizeValidationError') {
-                res.status(400);
                 res.json({
                     errors: err.errors,
                     name: err.name
@@ -145,10 +191,10 @@ routes.push({
  */
 routes.push({
     meta: {
-        name: 'customerUpdate',
+        name: 'guestUpdate',
         method: 'PUT',
         paths: [
-            '/customer/:id'
+            '/guest/:id'
         ],
         version: '1.0.0'
     },
@@ -181,8 +227,8 @@ routes.push({
             res.json(data);
             return next();
         }).catch((err) => {
+            res.status(400);
             if (err.name === 'SequelizeValidationError') {
-                res.status(400);
                 res.json({
                     errors: err.errors,
                     name: err.name

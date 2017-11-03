@@ -50,7 +50,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: true,
-                len: [3, 50]
+                len: [2, 50]
             }
         },
         country: {
@@ -58,7 +58,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             validate: {
                 notEmpty: true,
-                len: [3, 50]
+                len: [2, 50]
             }
         },
         email: {
@@ -73,7 +73,7 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true,
             validate: {
                 notEmpty: true,
-                len: [5, 50]
+                len: [2, 50]
             }
         },
         age: {
@@ -82,7 +82,14 @@ module.exports = function(sequelize, DataTypes) {
         },
         gender: {
             type: Sequelize.ENUM(),
-            values: ['M', 'F']
+            values: ['M', 'F'],
+            set(val) {
+                this.setDataValue('gender', val.toUpperCase());
+            },
+            get() {
+                const guestGender = this.getDataValue('gender');
+                return (guestGender == 'M') ? 'Male' : 'Female'
+            }
         },
         user_id: {
             type: Sequelize.INTEGER,
@@ -93,6 +100,13 @@ module.exports = function(sequelize, DataTypes) {
             }
         }
     });
+
+    Guests.associate = function(models) {
+        Guests.belongsTo(models.users, {
+            as: 'user',
+            foreignKey: 'user_id'
+        });
+    }
 
     return Guests;
 };
