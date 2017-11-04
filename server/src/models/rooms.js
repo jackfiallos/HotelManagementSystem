@@ -45,7 +45,15 @@ module.exports = function(sequelize, DataTypes) {
             type: Sequelize.INTEGER,
             allowNull: true,
             defaultValue: 1
-        }
+        },
+        available: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: 1,
+            get() {
+                const isAvailable = this.getDataValue('available');
+                return (isAvailable) ? 'yes' : 'no'
+            }
+        },
     });
 
     return Rooms;

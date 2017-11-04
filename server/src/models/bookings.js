@@ -65,12 +65,21 @@ module.exports = function(sequelize, DataTypes) {
                 notEmpty: true,
             }
         },
-        room_id: {
-            type: Sequelize.INTEGER,
+        type: {
+            type: Sequelize.ENUM(),
+            values: ['online', 'phone', 'agency', 'desk'],
             allowNull: true,
-            references: {
-                model: Rooms,
-                key: 'id',
+            defaultValue: 'desk',
+            set(val) {
+                this.setDataValue('type', val.toLowerCase());
+            }
+        },
+        confirmed: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: 0,
+            get() {
+                const isConfirmed = this.getDataValue('confirmed');
+                return (isConfirmed) ? 'yes' : 'no'
             }
         },
         guest_id: {
@@ -92,10 +101,12 @@ module.exports = function(sequelize, DataTypes) {
     });
 
     Bookings.associate = function(models) {
-        Bookings.belongsTo(models.rooms, {
+        Bookings.belongsToMany(models.rooms, {
             as: 'room',
-            foreignKey: 'room_id'
-        });
+            through: 'bookings_has_rooms',
+            foreignKey: 'booking_id',
+            otherKey: 'room_id'
+        })
 
         Bookings.belongsTo(models.guests, {
             as: 'guest',

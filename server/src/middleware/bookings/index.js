@@ -47,13 +47,14 @@ routes.push({
                     checkout: booking.checkout,
                     currency: booking.currency,
                     amount: booking.amount,
-                    room: Object.assign({}, {
-                        uid: booking.room.id,
-                        name: booking.room.name,
-                        currency: booking.room.currency,
-                        price_night: booking.room.price_night,
-                        type: booking.room.type,
-                        max_persons: booking.room.max_persons
+                    type: booking.type,
+                    confirmed: booking.confirmed,
+                    room: booking.room.map((item) => {
+                        return Object.assign({}, {
+                            uid: item.id,
+                            name: item.name,
+                            type: item.type
+                        })
                     }),
                     guest: Object.assign({}, {
                         uid: booking.guest.id,
@@ -123,37 +124,38 @@ routes.push({
                 required: true
             }],
             limit: 1
-        }).then((data) => {
+        }).then((booking) => {
             const resObj = Object.assign({}, {
-                uid: data.id,
-                created_at: data.created_at,
-                checkin: data.checkin,
-                checkout: data.checkout,
-                currency: data.currency,
-                amount: data.amount,
-                breakfast: data.breakfast,
-                nights: data.nights,
-                adults: data.adults,
-                children: data.children,
-                comments: data.comments,
-                room: Object.assign({}, {
-                    uid: data.room.id,
-                    name: data.room.name,
-                    currency: data.room.currency,
-                    price_night: data.room.price_night,
-                    type: data.room.type,
-                    max_persons: data.room.max_persons
+                uid: booking.id,
+                created_at: booking.created_at,
+                checkin: booking.checkin,
+                checkout: booking.checkout,
+                currency: booking.currency,
+                amount: booking.amount,
+                breakfast: booking.breakfast,
+                nights: booking.nights,
+                adults: booking.adults,
+                children: booking.children,
+                comments: booking.comments,
+                type: booking.type,
+                confirmed: booking.confirmed,
+                room: booking.room.map((item) => {
+                    return Object.assign({}, {
+                        uid: item.id,
+                        name: item.name,
+                        type: item.type
+                    })
                 }),
                 guest: Object.assign({}, {
-                    uid: data.guest.id,
-                    first_name: data.guest.first_name,
-                    last_name: data.guest.last_name,
-                    mobile: data.guest.mobile,
-                    email: data.guest.email
+                    uid: booking.guest.id,
+                    first_name: booking.guest.first_name,
+                    last_name: booking.guest.last_name,
+                    mobile: booking.guest.mobile,
+                    email: booking.guest.email
                 }),
                 user: Object.assign({}, {
-                    uid: data.user.id,
-                    name: data.user.name
+                    uid: booking.user.id,
+                    name: booking.user.name
                 })
             });
             res.json(resObj);

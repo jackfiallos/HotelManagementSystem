@@ -30,10 +30,23 @@ routes.push({
                 'price_night',
                 'type',
                 'name',
-                'max_persons'
+                'max_persons',
+                'available'
             ]
         }).then((data) => {
             res.json(data);
+            return next();
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json(err);
+            }
+
             return next();
         });
     }
@@ -68,12 +81,24 @@ routes.push({
                 'price_night',
                 'type',
                 'name',
-                'max_persons'
+                'max_persons',
+                'available'
             ],
-            limit: 1,
-            raw: true
+            limit: 1
         }).then((data) => {
             res.json(data);
+            return next();
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json(err);
+            }
+
             return next();
         });
     }
@@ -100,7 +125,8 @@ routes.push({
             price_night: req.body.price_night,
             type: req.body.type,
             name: req.body.name,
-            max_persons: (req.body.max_persons) ? req.body.max_persons : null
+            max_persons: (req.body.max_persons) ? req.body.max_persons : null,
+            available: req.body.available
         };
 
         // create record
@@ -108,8 +134,8 @@ routes.push({
             res.json(data);
             return next();
         }).catch((err) => {
+            res.status(400);
             if (err.name === 'SequelizeValidationError') {
-                res.status(400);
                 res.json({
                     errors: err.errors,
                     name: err.name
@@ -146,7 +172,8 @@ routes.push({
             price_night: req.body.price_night,
             type: req.body.type,
             name: req.body.name,
-            max_persons: (req.body.max_persons) ? req.body.max_persons : null
+            max_persons: (req.body.max_persons) ? req.body.max_persons : null,
+            available: req.body.available
         };
 
         // update record
@@ -162,8 +189,8 @@ routes.push({
             res.json(data);
             return next();
         }).catch((err) => {
+            res.status(400);
             if (err.name === 'SequelizeValidationError') {
-                res.status(400);
                 res.json({
                     errors: err.errors,
                     name: err.name
