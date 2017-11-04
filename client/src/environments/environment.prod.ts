@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    api_url: 'http://api.hms.com'
+    api_url: 'http://[::]:1337'
 };
