@@ -1,3 +1,7 @@
 .border-right {
   border-right: 1px solid $border-color;
 }
+
+.capitalized-text {
+    text-transform: capitalize;
+}

@@ -24,7 +24,7 @@ export class GuestsDetailComponent implements OnInit {
      * @version [version]
      * @date    2017-10-31
      * @param   {ActivatedRoute} private route [description]
-     * @param   {BookingsController} private _guests [description]
+     * @param   {GuestsController} private _guests [description]
      * @param   {Store<any>} private _store [description]
      * @return  {[type]} [description]
      */

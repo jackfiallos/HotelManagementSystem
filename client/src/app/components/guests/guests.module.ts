@@ -9,13 +9,15 @@ import { GuestsFormComponent } from './form/guests.form.component';
 import { GuestsDetailComponent } from './detail/guests.detail.component';
 
 import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
+import { SearchFilterModule } from '../../pipes/searchFilter/searchFilter.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         RouterModule.forChild(routes),
-        LoadingSpinnerModule
+        LoadingSpinnerModule,
+        SearchFilterModule
     ],
     declarations: [
         GuestsListComponent,

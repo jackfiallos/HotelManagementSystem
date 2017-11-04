@@ -9,13 +9,15 @@ import { RoomsFormComponent } from './form/rooms.form.component';
 import { RoomsDetailComponent } from './detail/rooms.detail.component';
 
 import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
+import { SearchFilterModule } from '../../pipes/searchFilter/searchFilter.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         RouterModule.forChild(routes),
-        LoadingSpinnerModule
+        LoadingSpinnerModule,
+        SearchFilterModule
     ],
     declarations: [
         RoomsListComponent,

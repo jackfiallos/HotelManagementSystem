@@ -1,6 +1,11 @@
 <h1 class="page-title">Guest List</h1>
 <div class="row grid-margin">
-    <div class="col-lg-12">
+    <div class="col">
+        <form>
+            <input #search (keyup)="0" class="form-control" type="text" placeholder="Search">
+        </form>
+    </div>
+    <div class="col">
     	<div class="btn-group float-right">
     		<a class="btn btn-success" [routerLink]="['create']">
                 <i class="mdi mdi-account-plus"></i> New Guest
@@ -31,16 +36,14 @@
                         </tr>
                     </tbody>
                     <tbody *ngIf="guests$.data.length > 0 && guests$.isLoading == false">
-                        <tr *ngFor="let guest of guests$.data">
+                        <tr *ngFor="let guest of guests$.data | searchFilter: search.value">
                             <td scope="row">
                                 <a [routerLink]="['view', guest.uid]" title="View Guest Details">
                                     {{ guest.uid }}
                                 </a>
                             </td>
                             <td>
-                                <a [routerLink]="['view', guest.uid]" title="View Guest Details">
-                                    {{ guest.first_name }} {{ guest.last_name }}
-                                </a>
+                                {{ guest.first_name }} {{ guest.last_name }}
                             </td>
                             <td>
                                 <a href="mailto:{{ guest.email }}" title="Send an email">

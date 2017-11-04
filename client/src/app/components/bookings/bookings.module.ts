@@ -11,6 +11,7 @@ import { BookingsFormComponent } from './form/bookings.form.component';
 import { BookingsDetailComponent } from './detail/bookings.detail.component';
 
 import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
+import { SearchFilterModule } from '../../pipes/searchFilter/searchFilter.module';
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module'
         MatDatepickerModule,
         MatNativeDateModule,
         LoadingSpinnerModule,
+        SearchFilterModule
     ],
     declarations: [
         BookingsListComponent,

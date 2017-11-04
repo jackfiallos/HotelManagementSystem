@@ -5,7 +5,10 @@ import { types } from './rooms.types';
 export const initialState: any = {
     isLoading: false,
     lastUpdated: Date.now(),
+    id: null,
     data: [],
+    view: null,
+    error: null
 };
 
 /**
@@ -25,84 +28,99 @@ export function roomsReducer(state: any = initialState, action: any) {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: []
+                data: [],
+                error: null,
+                saved: null,
             });
         case types.LIST_ROOMS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: action.payload
+                data: action.payload,
+                error: null,
+                saved: null,
             });
         case types.LIST_ROOMS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: []
+                data: [],
+                error: action.error,
+                saved: null,
             });
         case types.GET_ROOMS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                id: action.uid,
+                error: null,
             });
         case types.GET_ROOMS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                view: action.payload,
+                error: null,
             });
         case types.GET_ROOMS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                view: {},
+                error: action.error,
+                saved: null,
             });
         case types.CREATE_ROOMS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                saved: null,
+                error: null
             });
         case types.CREATE_ROOMS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                saved: action.payload,
+                error: null
             });
         case types.CREATE_ROOMS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                saved: null,
+                error: action.error
             });
         case types.UPDATE_ROOMS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                error: null,
+                saved: null,
             });
         case types.UPDATE_ROOMS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                error: null,
+                saved: null,
             });
         case types.UPDATE_ROOMS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                saved: null,
             });
         default:
             return state;

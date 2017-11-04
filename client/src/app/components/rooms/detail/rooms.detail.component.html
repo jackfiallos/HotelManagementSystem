@@ -1,15 +1,56 @@
-<h1 class="page-title">Room Detail</h1>
+<h1 class="page-title">Room No. {{ id }}</h1>
 <div class="row grid-margin">
     <div class="col-lg-12">
+        <small>Created on {{ room$.view.created_at | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
     	<div class="btn-group float-right">
-    		<a class="btn btn-success" [routerLink]="['new']">
-                <i class="fa fa-plus"></i> New Booking
+            <a class="btn btn-success" [routerLink]="['/rooms']">
+                <i class="mdi mdi-arrow-left-bold-circle"></i> Go Back
             </a>
     	</div>
     </div>
 </div>
 <div class="row grid-margin">
     <div class="col-lg-12 grid-margin grid-margin-lg-0">
-
+        <div class="card">
+            <div class="card-body" *ngIf="room$.isLoading == true">
+                <loading-spinner></loading-spinner>
+            </div>
+            <div class="card-body" *ngIf="room$.view !== null && room$.isLoading == false">
+                <div class="alert alert-success" role="alert" *ngIf="room$.saved">
+                    <h4 class="alert-heading">Room Created!</h4>
+                    A new room have been created correctly!
+                </div>
+                <h3>
+                    Room Information
+                    <span class="badge" *ngClass="{'badge-danger': !room.available, 'badge-success': room.available}">{{ room.available }}</span>
+                </h3>
+                <div class="row" *ngIf="room$.view">
+                    <div class="col">
+                        <b>Name</b>
+                        <p>{{ room$.view.name }}</p>
+                    </div>
+                    <div class="col">
+                        <b>Price per night</b>
+                        <p>
+                            {{ room$.view.price_night | currency: room$.view.currency:true:'1.2' }}
+                        </p>
+                    </div>
+                </div>
+                <div class="row" *ngIf="room$.view">
+                    <div class="col">
+                        <b>Type</b>
+                        <p class="capitalized-text">
+                            {{ room$.view.type }}
+                        </p>
+                    </div>
+                    <div class="col">
+                        <b>Max persons</b>
+                        <p>
+                            {{ room$.view.max_persons }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
