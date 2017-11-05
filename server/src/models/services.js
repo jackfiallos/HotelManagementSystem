@@ -25,8 +25,14 @@ module.exports = function(sequelize, DataTypes) {
         },
         currency: {
             type: Sequelize.STRING(3),
-            allowNull: false,
-            defaultValue: 'USD'
+            allowNull: true,
+            defaultValue: 'USD',
+            validate: {
+                len: [3,3]
+            },
+            set(val) {
+                this.setDataValue('curency', val.toUpperCase());
+            }
         },
         amount: {
             type: Sequelize.DECIMAL(6,2),

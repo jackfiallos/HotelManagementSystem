@@ -20,17 +20,29 @@ module.exports = function(sequelize, DataTypes) {
         checkin: {
             type: Sequelize.DATE,
             allowNull: false,
-            defaultValue: true
+            defaultValue: true,
+            validate: {
+                isDate: true,
+            }
         },
         checkout: {
             type: Sequelize.DATE,
             allowNull: false,
-            defaultValue: true
+            defaultValue: true,
+            validate: {
+                isDate: true,
+            }
         },
         currency: {
             type: Sequelize.STRING(3),
-            allowNull: false,
-            defaultValue: 'USD'
+            allowNull: true,
+            defaultValue: 'USD',
+            validate: {
+                len: [3,3]
+            },
+            set(val) {
+                this.setDataValue('curency', val.toUpperCase());
+            }
         },
         amount: {
             type: Sequelize.DECIMAL(6,2),
@@ -41,23 +53,28 @@ module.exports = function(sequelize, DataTypes) {
         },
         breakfast: {
             type: Sequelize.BOOLEAN,
-            defaultValue: 0,
-            get() {
-                const hasBreakfast = this.getDataValue('breakfast');
-                return (hasBreakfast) ? 'yes' : 'no'
-            }
+            defaultValue: 1
         },
         nights: {
             type: Sequelize.INTEGER,
-            defaultValue: 1
+            defaultValue: 1,
+            validate: {
+                isNumeric: true
+            }
         },
         adults: {
             type: Sequelize.INTEGER,
-            defaultValue: 1
+            defaultValue: 1,
+            validate: {
+                isNumeric: true
+            }
         },
         children: {
             type: Sequelize.INTEGER,
-            defaultValue: 0
+            defaultValue: 0,
+            validate: {
+                isNumeric: true
+            }
         },
         comments: {
             type: Sequelize.TEXT,
@@ -70,21 +87,23 @@ module.exports = function(sequelize, DataTypes) {
             values: ['online', 'phone', 'agency', 'desk'],
             allowNull: true,
             defaultValue: 'desk',
+            validate: {
+                isIn: [['online', 'phone', 'agency', 'desk']],
+            },
             set(val) {
                 this.setDataValue('type', val.toLowerCase());
             }
         },
         confirmed: {
             type: Sequelize.BOOLEAN,
-            defaultValue: 0,
-            get() {
-                const isConfirmed = this.getDataValue('confirmed');
-                return (isConfirmed) ? 'yes' : 'no'
-            }
+            defaultValue: 0
         },
         guest_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
+            validate: {
+                isNumeric: true
+            },
             references: {
                 model: Guests,
                 key: 'id',
@@ -93,9 +112,12 @@ module.exports = function(sequelize, DataTypes) {
         user_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
+            validate: {
+                isNumeric: true
+            },
             references: {
                 model: Users,
-                key: 'id',
+                key: 'id'
             }
         }
     });

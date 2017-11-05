@@ -66,6 +66,13 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: true,
             validate: {
                 isEmail: true,
+            },
+            set(val) {
+                this.setDataValue('email', val.toLowerCase());
+            },
+            get() {
+                const email = this.getDataValue('email');
+                return (email) ? email : '';
             }
         },
         organization: {
@@ -78,22 +85,27 @@ module.exports = function(sequelize, DataTypes) {
         },
         age: {
             type: Sequelize.INTEGER,
-            allowNull: true
+            allowNull: true,
+            validate: {
+                isNumeric: true
+            }
         },
         gender: {
             type: Sequelize.ENUM(),
             values: ['M', 'F'],
+            validate: {
+                isIn: [['M', 'F']],
+            },
             set(val) {
                 this.setDataValue('gender', val.toUpperCase());
-            },
-            get() {
-                const guestGender = this.getDataValue('gender');
-                return (guestGender == 'M') ? 'Male' : 'Female'
             }
         },
         user_id: {
             type: Sequelize.INTEGER,
             allowNull: true,
+            validate: {
+                isNumeric: true
+            },
             references: {
                 model: Users,
                 key: 'id',

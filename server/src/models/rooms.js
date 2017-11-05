@@ -24,24 +24,36 @@ module.exports = function(sequelize, DataTypes) {
         },
         currency: {
             type: Sequelize.STRING(3),
-            allowNull: false,
-            defaultValue: 'USD'
+            allowNull: true,
+            defaultValue: 'USD',
+            validate: {
+                len: [3,3]
+            },
+            set(val) {
+                this.setDataValue('currency', val.toUpperCase());
+            }
         },
         price_night: {
             type: Sequelize.DECIMAL(6,2),
             allowNull: false,
-            defaultValue: 0
+            defaultValue: 0,
+            validate: {
+                isDecimal: true
+            }
         },
         type: {
             type: Sequelize.ENUM(),
-            values: ['standard', 'double'],
+            values: ['standard', 'double', 'suite'],
             allowNull: false,
             defaultValue: 'standard',
+            validate: {
+                isIn: [['standard', 'double', 'suite']],
+            },
             set(val) {
                 this.setDataValue('type', val.toLowerCase());
             }
         },
-        max_persons: {
+        max_guests: {
             type: Sequelize.INTEGER,
             allowNull: true,
             defaultValue: 1
@@ -51,7 +63,7 @@ module.exports = function(sequelize, DataTypes) {
             defaultValue: 1,
             get() {
                 const isAvailable = this.getDataValue('available');
-                return (isAvailable) ? 'yes' : 'no'
+                return (isAvailable) ? true : false;
             }
         },
     });

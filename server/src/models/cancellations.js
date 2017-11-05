@@ -25,6 +25,9 @@ module.exports = function(sequelize, DataTypes) {
         booking_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
+            validate: {
+                isNumeric: true
+            },
             references: {
                 model: Bookings,
                 key: 'id',
@@ -33,6 +36,9 @@ module.exports = function(sequelize, DataTypes) {
         user_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
+            validate: {
+                isNumeric: true
+            },
             references: {
                 model: Users,
                 key: 'id',

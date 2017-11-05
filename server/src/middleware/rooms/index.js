@@ -30,7 +30,7 @@ routes.push({
                 'price_night',
                 'type',
                 'name',
-                'max_persons',
+                'max_guests',
                 'available'
             ]
         }).then((data) => {
@@ -81,7 +81,7 @@ routes.push({
                 'price_night',
                 'type',
                 'name',
-                'max_persons',
+                'max_guests',
                 'available'
             ],
             limit: 1
@@ -125,7 +125,7 @@ routes.push({
             price_night: req.body.price_night,
             type: req.body.type,
             name: req.body.name,
-            max_persons: (req.body.max_persons) ? req.body.max_persons : null,
+            max_guests: (req.body.max_guests) ? req.body.max_guests : null,
             available: req.body.available
         };
 
@@ -172,7 +172,7 @@ routes.push({
             price_night: req.body.price_night,
             type: req.body.type,
             name: req.body.name,
-            max_persons: (req.body.max_persons) ? req.body.max_persons : null,
+            max_guests: (req.body.max_guests) ? req.body.max_guests : null,
             available: req.body.available
         };
 

@@ -1,6 +1,7 @@
 'use strict';
 const moment = require('moment');
 const Sequelize = require('sequelize');
+const Promise = require('bluebird');
 const models = require('../../models');
 const routes = [];
 
@@ -143,8 +144,11 @@ routes.push({
                     return Object.assign({}, {
                         uid: item.id,
                         name: item.name,
+                        max_guests: item.max_guests,
+                        price_night: item.price_night,
+                        currency: item.currency,
                         type: item.type
-                    })
+                    });
                 }),
                 guest: Object.assign({}, {
                     uid: booking.guest.id,
@@ -202,25 +206,70 @@ routes.push({
             adults: req.body.adults,
             children: req.body.children,
             comments: (req.body.comments) ? req.body.comments : null,
-            room_id: (req.body.room_id) ? req.body.room_id : null,
+            rooms: (req.body.rooms) ? req.body.rooms : null,
             guest_id: (req.body.guest_id) ? req.body.guest_id : null,
             user_id: 1
         };
 
-        const days = moment(form.checkout).diff(form.checkin, 'days');
-        form.nights = days;
+        const nights = moment(form.checkout).diff(form.checkin, 'days', true);
+        form.nights = Math.round(nights);
 
-        models.rooms.findOne({
-            where: { id: { [Sequelize.Op.eq]: form.room_id } },
-            attributes: ['price_night'],
-            limit: 1
-        }).then((data) => {
-            form.amount = (days * data.price_night);
+        if (form.nights > 0) {
+            models.rooms.findAll({
+                where: {
+                    id: {
+                        [Sequelize.Op.in]: form.rooms
+                    }
+                },
+                attributes: ['price_night']
+            }).then((data) => {
+                if (data.length > 0) {
+                    const amount = data.reduce((sum, item) => {
+                        return parseFloat(sum.dataValues.price_night) + parseFloat(item.dataValues.price_night);
+                    });
+                    form.amount = (form.nights * amount);
 
-            // create record
-            models.bookings.create(form).then((data) => {
-                res.json(data);
-                return next();
+                    // open transaction
+                    return models.sequelize.transaction((t) => {
+                        // create booking
+                        return models.bookings.create(form).then((data) => {
+                            // map rooms and create one by one
+                            return Promise.map(form.rooms, (room) => {
+                                return models.sequelize.query('INSERT INTO bookings_has_rooms (booking_id, room_id) VALUES (:booking_id, :room_id)', {
+                                    transaction: t,
+                                    replacements: {
+                                        booking_id: data.id,
+                                        room_id: room
+                                    },
+                                    type: Sequelize.QueryTypes.INSERT
+                                })
+                            }).then(() => {
+                                return data;
+                            });
+                        });
+                    }).then((data) => {
+                        res.json(data);
+                        return next();
+                    }).catch((err) => {
+                        res.status(400);
+                        if (err.name === 'SequelizeValidationError') {
+                            res.json({
+                                errors: err.errors,
+                                name: err.name
+                            });
+                        } else {
+                            res.json({
+                                errors: [{
+                                    message: err.message
+                                }]
+                            });
+                        }
+
+                        return next();
+                    });
+                } else {
+                    throw Error ('Select at least one room');
+                }
             }).catch((err) => {
                 res.status(400);
                 if (err.name === 'SequelizeValidationError') {
@@ -229,28 +278,25 @@ routes.push({
                         name: err.name
                     });
                 } else {
-                    res.json(err);
+                    res.json({
+                        errors: [{
+                            message: err.message
+                        }]
+                    });
                 }
 
                 return next();
             });
-        }).catch((err) => {
+        } else {
             res.status(400);
-            if (err.name === 'SequelizeValidationError') {
-                res.json({
-                    errors: err.errors,
-                    name: err.name
-                });
-            } else {
-                res.json({
-                    errors: [{
-                        message: err.message
-                    }]
-                });
-            }
+            res.json({
+                errors: [{
+                    message: 'Dates given are not valid'
+                }]
+            });
 
             return next();
-        });
+        }
     }
 });
 
@@ -271,14 +317,125 @@ routes.push({
     },
     middleware: (req, res, next) => {
         const id = req.params.id;
+
         // object
         const form = {
-            breakfast: req.body.breakfast,
+            checkin: new Date(req.body.checkin),
+            checkout: new Date(req.body.checkout),
+            // currency: req.body.currency,
+            // amount: req.body.amount,
+            // breakfast: req.body.breakfast,
+            // nights: req.body.nights,
             adults: req.body.adults,
             children: req.body.children,
             comments: (req.body.comments) ? req.body.comments : null,
-            room_id: req.body.room_id
+            rooms: (req.body.rooms) ? req.body.rooms : null,
+            guest_id: (req.body.guest_id) ? req.body.guest_id : null
         };
+
+        const nights = moment(form.checkout).diff(form.checkin, 'days', true);
+        form.nights = Math.round(nights);
+
+        if (form.nights > 0) {
+            models.rooms.findAll({
+                where: {
+                    id: {
+                        [Sequelize.Op.in]: form.rooms
+                    }
+                },
+                attributes: ['price_night']
+            }).then((data) => {
+                if (data.length > 0) {
+                    const amount = data.reduce((sum, item) => {
+                        return parseFloat(sum) + parseFloat(item.dataValues.price_night);
+                    }, 0);
+                    form.amount = (form.nights * amount);
+
+                    // open transaction
+                    return models.sequelize.transaction((t) => {
+                        // find record and update it
+                        return models.bookings.find({
+                            where: {
+                                id: {
+                                    [Sequelize.Op.eq]: req.params.id
+                                }
+                            },
+                        }).then((data) => {
+                            // update record
+                            return data.updateAttributes(form).then((updated) => {
+                                return models.sequelize.query('DELETE FROM bookings_has_rooms WHERE booking_id = :booking_id', {
+                                    transaction: t,
+                                    replacements: {
+                                        booking_id: updated.id
+                                    },
+                                    type: Sequelize.QueryTypes.DELETE
+                                }).then(() => {
+                                    // map rooms and create one by one
+                                    return Promise.map(form.rooms, (room) => {
+                                        return models.sequelize.query('INSERT INTO bookings_has_rooms (booking_id, room_id) VALUES (:booking_id, :room_id)', {
+                                            transaction: t,
+                                            replacements: {
+                                                booking_id: data.id,
+                                                room_id: room
+                                            },
+                                            type: Sequelize.QueryTypes.INSERT
+                                        });
+                                    }).then(() => {
+                                        return updated;
+                                    });
+                                });
+                            });
+                        })
+                    }).then((data) => {
+                        res.json(data);
+                        return next();
+                    }).catch((err) => {
+                        res.status(400);
+                        if (err.name === 'SequelizeValidationError') {
+                            res.json({
+                                errors: err.errors,
+                                name: err.name
+                            });
+                        } else {
+                            res.json({
+                                errors: [{
+                                    message: err.message
+                                }]
+                            });
+                        }
+
+                        return next();
+                    });
+                } else {
+                    throw Error ('Select at least one room');
+                }
+            }).catch((err) => {
+                res.status(400);
+                if (err.name === 'SequelizeValidationError') {
+                    res.json({
+                        errors: err.errors,
+                        name: err.name
+                    });
+                } else {
+                    res.json({
+                        errors: [{
+                            message: err.message
+                        }]
+                    });
+                }
+
+                return next();
+            });
+        } else {
+            res.status(400);
+            res.json({
+                errors: [{
+                    message: 'Dates given are not valid'
+                }]
+            });
+
+            return next();
+        }
 
         // update record
         models.bookings.find({
