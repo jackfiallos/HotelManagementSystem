@@ -79,6 +79,7 @@ export function bookingsReducer(state: any = initialState, action: any) {
             });
         // CREATE BOOKINGS
         case types.CREATE_BOOKINGS:
+        case types.UPDATE_BOOKINGS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
@@ -87,6 +88,7 @@ export function bookingsReducer(state: any = initialState, action: any) {
                 error: null
             });
         case types.CREATE_BOOKINGS_SUCCESS:
+        case types.UPDATE_BOOKINGS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
@@ -95,36 +97,13 @@ export function bookingsReducer(state: any = initialState, action: any) {
                 error: null
             });
         case types.CREATE_BOOKINGS_FAILURE:
-            return Object.assign({}, state, {
-                ...state,
-                isLoading: false,
-                lastUpdated: Date.now(),
-                saved: null,
-                error: action.error
-            });
-        // UPDATE BOOKINGS
-        case types.UPDATE_BOOKINGS:
-            return Object.assign({}, state, {
-                ...state,
-                isLoading: true,
-                lastUpdated: Date.now(),
-                error: null,
-                saved: null,
-            });
-        case types.UPDATE_BOOKINGS_SUCCESS:
-            return Object.assign({}, state, {
-                ...state,
-                isLoading: false,
-                lastUpdated: Date.now(),
-                error: null,
-                saved: null,
-            });
         case types.UPDATE_BOOKINGS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
                 saved: null,
+                error: action.error
             });
         default:
             return state;

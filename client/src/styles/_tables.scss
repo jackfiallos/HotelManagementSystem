@@ -1,0 +1,44 @@
+.table-hover {
+    tbody {
+        tr {
+            background-color: inherit;
+            transition: background-color 0.5s ease;
+            &:hover {
+                background-color: $sky-blue;
+                transition: background-color 0.5s ease;
+            }
+        }
+    }
+}
+
+td {
+    &:last-child {
+        a {
+            &.btn {
+                visibility: hidden;
+                opacity: 0;
+                transition: visibility 0s, opacity 0.2s linear;
+                &:hover {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            }
+        }
+    }
+}
+
+tr {
+    &:hover {
+        td {
+            &:last-child {
+                a {
+                    &.btn {
+                        transition: visibility 0s, opacity 0.2s linear;
+                        visibility: visible;
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}

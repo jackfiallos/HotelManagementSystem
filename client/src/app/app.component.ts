@@ -1,19 +1,23 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { AppState } from './app.service';
+import { environment } from '../environments/environment';
 
 @Component({
-    selector: 'app',
+    selector: 'app-component',
     templateUrl: './app.component.html',
     encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit {
-    private name = 'App';
-    private openSidebar: boolean = false;
-    private openNotifications: boolean = false;
+    private name = 'HMS';
+    private openSidebar = false;
+    private openNotifications = false;
 
-    constructor(public appState: AppState) {}
+    constructor(public _appState: AppState, private _titleService: Title) {}
 
     public ngOnInit() {
-        console.log('Initial App State', this.appState.state);
+        this.name = environment.name;
+        this._titleService.setTitle(`${environment.name} Admin`);
+        console.log('Initial App State', this._appState.state);
     }
 }

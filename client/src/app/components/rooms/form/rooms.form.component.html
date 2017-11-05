@@ -1,15 +1,80 @@
-<h1 class="page-title">Room Form</h1>
+<h1 class="page-title">
+    {{ (!id) ? 'New Room' : 'Edit Room' }}
+</h1>
+<hr>
 <div class="row grid-margin">
     <div class="col-lg-12">
     	<div class="btn-group float-right">
-    		<a class="btn btn-success" [routerLink]="['new']">
-                <i class="fa fa-plus"></i> New Booking
+    		<a class="btn btn-success" [routerLink]="['/rooms']">
+                <i class="fa fa-chevron-circle-left"></i> Go Back
             </a>
     	</div>
     </div>
 </div>
 <div class="row grid-margin">
     <div class="col-lg-12 grid-margin grid-margin-lg-0">
-
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Fill the following fields</h2>
+                <div class="alert alert-danger" role="alert" *ngIf="room$.error">
+                    <h4 class="alert-heading">Holy guacamole!</h4>
+                    <div *ngFor="let error of room$.error.errors">
+                        {{ error.message }}
+                    </div>
+                </div>
+                <form class="forms-sample" (ngSubmit)="onSubmit($event)" [ngClass]="{'d-none': room$.isLoading == true}">
+                    <div class="form-group text-center" *ngIf="room$.isLoading == true">
+                        <loading-spinner></loading-spinner>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="name">Name *</label>
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.name" class="form-control" id="name" aria-describedby="name_help" placeholder="Room name" autocomplete="off">
+                            <small id="name_help" class="form-text text-muted">Name help</small>
+                        </div>
+                        <div class="form-group col">
+                            <label for="type">Room Type</label>
+                            <select [ngModelOptions]="{standalone: true}" [(ngModel)]="form.type" class="form-control" id="type" aria-describedby="type_help">
+                                <option>Select an option</option>
+                                <option *ngFor="let type of types" [ngValue]="type.id">{{ type.name }}</option>
+                            </select>
+                            <small id="type_help" class="form-text text-muted">Room type help</small>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="currency">Currency *</label>
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.currency" class="form-control" id="currency" aria-describedby="currency_help" placeholder="USD" autocomplete="off">
+                            <small id="currency_help" class="form-text text-muted">Currency help</small>
+                        </div>
+                        <div class="form-group col">
+                            <label for="price_night">Rate</label>
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.price_night" class="form-control" id="price_night" aria-describedby="price_night_help" placeholder="50.00" autocomplete="off" type="number" min="0.00" max="10000.00" step="0.01">
+                            <small id="price_night_help" class="form-text text-muted">Rate help</small>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="max_guests">Max Guests</label>
+                            <input [ngModelOptions]="{standalone: true}" [(ngModel)]="form.max_guests" class="form-control" id="max_guests" aria-describedby="max_guests_help" placeholder="2" autocomplete="off">
+                            <small id="max_guests_help" class="form-text text-muted">Max guests help</small>
+                        </div>
+                        <div class="form-group col">
+                            <label class="d-block" for="type">Room is available</label>
+                            <label class="form-check-label" for="available">
+                                <input class="form-check-input" type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="form.available" id="available" aria-describedby="available_help">
+                                Yes
+                            </label>
+                            <small id="confirmed_help" class="form-text text-muted text-success">Available help</small>
+                        </div>
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a [routerLink]="['/guests']" class="btn btn-light">
+                        Cancel
+                    </a>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

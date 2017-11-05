@@ -5,6 +5,8 @@ import { RouterModule } from '@angular/router';
 import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material';
 
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+
 import { routes } from './bookings.routes';
 import { BookingsListComponent } from './list/bookings.list.component';
 import { BookingsFormComponent } from './form/bookings.form.component';
@@ -22,6 +24,7 @@ import { SearchFilterModule } from '../../pipes/searchFilter/searchFilter.module
         MatAutocompleteModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        AngularMultiSelectModule,
         LoadingSpinnerModule,
         SearchFilterModule
     ],

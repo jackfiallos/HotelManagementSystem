@@ -11,7 +11,7 @@ export const routes = [{
         path: 'create',
         component: GuestsFormComponent
     }, {
-        path: 'edit',
+        path: 'edit/:id',
         component: GuestsFormComponent
     }, {
         path: 'view/:id',

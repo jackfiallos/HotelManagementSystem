@@ -1,4 +1,5 @@
 <h1 class="page-title">Booking List</h1>
+<hr>
 <div class="row grid-margin">
     <div class="col">
         <form>
@@ -8,7 +9,7 @@
     <div class="col">
     	<div class="btn-group float-right">
     		<a class="btn btn-success" [routerLink]="['create']">
-                <i class="mdi mdi-calendar-plus"></i> New Booking
+                <i class="fa fa-plus-circle"></i> New Booking
             </a>
     	</div>
     </div>
@@ -21,18 +22,17 @@
                 <table class="table table-hover table-responsive-sm">
                     <thead class="thead-light">
                         <tr class="">
-                            <th>ID</th>
+                            <th>Details</th>
                             <th>Guest</th>
-                            <th>Room</th>
                             <th>Checkin</th>
                             <th>Checkout</th>
                             <th>Confirmed</th>
-                            <th>#</th>
+                            <th width="1%">#</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="bookings$.isLoading == true">
                         <tr>
-                            <th colspan="7" class="text-center">
+                            <th colspan="6" class="text-center">
                                 <loading-spinner></loading-spinner>
                             </th>
                         </tr>
@@ -41,17 +41,12 @@
                         <tr *ngFor="let booking of bookings$.data | searchFilter: search.value">
                             <td scope="row">
                                 <a [routerLink]="['view', booking.uid]" title="View Booking Details">
-                                    {{ booking.uid }}
+                                    <i class="fa fa-file-text-o "></i>
                                 </a>
                             </td>
                             <td>
-                                <a [routerLink]="['/guests/view', booking.guest.uid]" title="View Guest Details">
+                                <a [routerLink]="['/guests/view', booking.guest.uid]" title="View Guest Details" class="btn">
                                     {{ booking.guest.first_name }} {{ booking.guest.last_name }}
-                                </a>
-                            </td>
-                            <td>
-                                <a *ngFor="let room of booking.room" [routerLink]="['/rooms/view', room.uid]" title="View Room Details">
-                                    {{ room.name }}
                                 </a>
                             </td>
                             <td>
@@ -62,11 +57,11 @@
                                 {{ booking.checkout | date: 'dd/MM/yyyy' }}<br>
                             </td>
                             <td class="text-center">
-                                <span class="badge capitalized-text" [ngClass]="{'badge-danger': (booking.confirmed == 'no'), 'badge-success': (booking.confirmed == 'yes')}">{{ booking.confirmed }}</span>
+                                <span class="badge capitalized-text" [ngClass]="{'badge-danger': (booking.confirmed == false), 'badge-success': (booking.confirmed == true)}">{{ (booking.confirmed) ? 'Yes' : 'No' }}</span>
                             </td>
                             <td>
-                                <a [routerLink]="['edit', booking.uid]" title="Edit Booking">
-                                    <i class="mdi mdi-pencil"></i>
+                                <a [routerLink]="['edit', booking.uid]" title="Edit Booking" class="btn">
+                                    <i class="fa fa-pencil"></i>
                                 </a>
                             </td>
                         </tr>

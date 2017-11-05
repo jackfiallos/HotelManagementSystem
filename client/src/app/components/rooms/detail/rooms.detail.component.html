@@ -1,10 +1,11 @@
 <h1 class="page-title">Room No. {{ id }}</h1>
+<hr>
 <div class="row grid-margin">
-    <div class="col-lg-12">
+    <div class="col-lg-12" *ngIf="room$.view !== null">
         <small>Created on {{ room$.view.created_at | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
     	<div class="btn-group float-right">
             <a class="btn btn-success" [routerLink]="['/rooms']">
-                <i class="mdi mdi-arrow-left-bold-circle"></i> Go Back
+                <i class="fa fa-chevron-circle-left"></i> Go Back
             </a>
     	</div>
     </div>
@@ -16,15 +17,15 @@
                 <loading-spinner></loading-spinner>
             </div>
             <div class="card-body" *ngIf="room$.view !== null && room$.isLoading == false">
-                <div class="alert alert-success" role="alert" *ngIf="room$.saved">
-                    <h4 class="alert-heading">Room Created!</h4>
-                    A new room have been created correctly!
+                <div class="alert alert-success" role="alert" *ngIf="room$.saved !== null">
+                    <h4 class="alert-heading">Success!</h4>
+                    Room registered correctly!
                 </div>
                 <h3>
                     Room Information
-                    <span class="badge" *ngClass="{'badge-danger': !room.available, 'badge-success': room.available}">{{ room.available }}</span>
+                    <span class="float-right badge capitalized-text" [ngClass]="{'badge-danger': (room$.view.available == false), 'badge-info': (room$.view.available == true)}">Available: {{ (room$.view.available) ? 'Yes' : 'No' }}</span>
                 </h3>
-                <div class="row" *ngIf="room$.view">
+                <div class="row" *ngIf="room$.view !== null">
                     <div class="col">
                         <b>Name</b>
                         <p>{{ room$.view.name }}</p>
@@ -36,7 +37,7 @@
                         </p>
                     </div>
                 </div>
-                <div class="row" *ngIf="room$.view">
+                <div class="row" *ngIf="room$.view !== null">
                     <div class="col">
                         <b>Type</b>
                         <p class="capitalized-text">
@@ -44,9 +45,9 @@
                         </p>
                     </div>
                     <div class="col">
-                        <b>Max persons</b>
+                        <b>Max Guests</b>
                         <p>
-                            {{ room$.view.max_persons }}
+                            {{ room$.view.max_guests }}
                         </p>
                     </div>
                 </div>

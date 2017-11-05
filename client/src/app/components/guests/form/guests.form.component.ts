@@ -18,6 +18,8 @@ import { types as GuestTypes } from '../../../ducks/guests/guests.types';
     encapsulation: ViewEncapsulation.None
 })
 export class GuestsFormComponent implements OnInit {
+    private id: number;
+    private sub: any;
     private guest$: any;
 
     private genders: any[] = [{
@@ -54,17 +56,72 @@ export class GuestsFormComponent implements OnInit {
      * @param   {[type]} private [description]
      * @return  {[type]} [description]
      */
-    constructor(private _router: Router, private _guest: GuestsController, private _store: Store<any>) {
+    constructor(private route: ActivatedRoute, private _router: Router, private _guest: GuestsController, private _store: Store<any>) {
         _store.select('guests').subscribe((response) => {
             this.guest$ = response;
         });
     }
 
     /**
-     * [sub description]
-     * @type {[type]}
+     * [ngOnInit description]
+     * @method  ngOnInit
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-10-31
+     * @return  {[type]} [description]
      */
-    public ngOnInit() { }
+    public ngOnInit() {
+        this.sub = this.route.params.subscribe(params => {
+            this.id = Number(params['id']);
+
+            if (!isNaN(this.id)) {
+                this._store.dispatch({
+                    type: GuestTypes.GET_GUESTS,
+                    uid: this.id
+                });
+
+                this._guest.getGuestById(this.id).finally(() => {
+                    console.log('finally logic');
+                }).subscribe((data: any) => {
+                    this.form = {
+                        first_name: data.first_name,
+                        last_name: data.last_name,
+                        phone: data.phone,
+                        mobile: data.mobile,
+                        city: data.city,
+                        country: data.country,
+                        email: data.email,
+                        organization: data.organization,
+                        age: data.age,
+                        gender: data.gender
+                    };
+
+                    this._store.dispatch({
+                        type: GuestTypes.GET_GUESTS_SUCCESS,
+                        payload: data
+                    });
+                }, (error: any) => {
+                    this._store.dispatch({
+                        type: GuestTypes.GET_GUESTS_FAILURE,
+                        error: error.error
+                    });
+                });
+            }
+        });
+    }
+
+
+    /**
+     * [ngOnDestroy description]
+     * @method  ngOnDestroy
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-10-31
+     * @return  {[type]} [description]
+     */
+    public ngOnDestroy() {
+        this.sub.unsubscribe();
+    }
 
     /**
      * [e description]
@@ -73,26 +130,50 @@ export class GuestsFormComponent implements OnInit {
     private onSubmit(e: MouseEvent) {
         e.preventDefault();
 
-        // dispatch create
-        this._store.dispatch({
-            type: GuestTypes.CREATE_GUESTS
-        });
-
-        // request create booking
-        this._guest.createGuest(this.form).finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
+        if (isNaN(this.id)) {
+            // dispatch create
             this._store.dispatch({
-                type: GuestTypes.CREATE_GUESTS_SUCCESS,
-                payload: data
+                type: GuestTypes.CREATE_GUESTS
             });
 
-            this._router.navigate(['/guests/view', data.id]);
-        }, (error: any) => {
-            this._store.dispatch({
-                type: GuestTypes.CREATE_GUESTS_FAILURE,
-                error: error.error
+            // request create guest
+            this._guest.createGuest(this.form).finally(() => {
+                console.log('finally logic');
+            }).subscribe((data: any) => {
+                this._store.dispatch({
+                    type: GuestTypes.CREATE_GUESTS_SUCCESS,
+                    payload: data
+                });
+
+                this._router.navigate(['/guests/view', data.id]);
+            }, (error: any) => {
+                this._store.dispatch({
+                    type: GuestTypes.CREATE_GUESTS_FAILURE,
+                    error: error.error
+                });
             });
-        });
+        } else {
+            // dispatch update
+            this._store.dispatch({
+                type: GuestTypes.UPDATE_GUESTS
+            });
+
+            // request create guest
+            this._guest.updateGuest(this.id, this.form).finally(() => {
+                console.log('finally logic');
+            }).subscribe((data: any) => {
+                this._store.dispatch({
+                    type: GuestTypes.UPDATE_GUESTS_SUCCESS,
+                    payload: data
+                });
+
+                this._router.navigate(['/guests/view', data.id]);
+            }, (error: any) => {
+                this._store.dispatch({
+                    type: GuestTypes.UPDATE_GUESTS_FAILURE,
+                    error: error.error
+                });
+            });
+        }
     }
 }

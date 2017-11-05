@@ -1,15 +1,15 @@
 <nav class="navbar navbar-primary col-lg-12 col-12 fixed-top d-flex flex-row">
     <div class="text-center navbar-brand-wrapper">
-        <a class="navbar-brand brand-logo">HMS
-            <i class="mdi mdi-hotel"></i>
+        <a class="navbar-brand brand-logo">{{ name }}
+            <i class="fa fa-hotel"></i>
         </a>
         <a class="navbar-brand brand-logo-mini">
-            <i class="mdi mdi-hotel"></i>
+            <i class="fa fa-hotel"></i>
         </a>
     </div>
     <div class="navbar-menu-wrapper d-flex align-items-center">
         <button class="navbar-toggler navbar-toggler align-self-center mr-2" type="button" data-toggle="minimize" (click)="openSidebar = !openSidebar">
-            <span class="mdi mdi-menu"></span>
+            <span class="fa fa-bars"></span>
         </button>
         <div class="nav-profile">
             <span>Hi, Jack</span>
@@ -65,7 +65,7 @@
             </li> -->
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas" (click)="openSidebar = !openSidebar">
-            <span class="mdi mdi-menu"></span>
+            <span class="fa fa-bars"></span>
         </button>
     </div>
 </nav>
@@ -79,19 +79,19 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['bookings']" (click)="openSidebar = false">
-                        <i class="mdi mdi-calendar-clock"></i>
+                        <i class="fa fa-calendar"></i>
                         <span class="menu-title">Booking</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['guests']" (click)="openSidebar = false">
-                        <i class="mdi mdi-account-star"></i>
+                        <i class="fa fa-user-circle-o"></i>
                         <span class="menu-title">Guest</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="['rooms']" (click)="openSidebar = false">
-                        <i class="mdi mdi-home-variant"></i>
+                        <i class="fa fa-suitcase"></i>
                         <span class="menu-title">Rooms</span>
                     </a>
                 </li>
@@ -126,7 +126,7 @@
         <footer class="footer">
             <div class="container-fluid clearfix">
                 <span class="float-right">
-                    <a href="#">HMS Admin</a> 2017
+                    <a href="#">{{ name }}</a>
                 </span>
             </div>
         </footer>

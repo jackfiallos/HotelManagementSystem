@@ -1,4 +1,5 @@
 export const environment = {
     production: true,
-    api_url: 'http://[::]:1337'
+    name: 'Ruals',
+    api_url: 'http://api.hms.com'
 };

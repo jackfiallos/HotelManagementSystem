@@ -22,6 +22,8 @@ import { types as GuestTypes } from '../../../ducks/guests/guests.types';
     encapsulation: ViewEncapsulation.None
 })
 export class BookingsFormComponent implements OnInit {
+    private id: number;
+    private sub: any;
     private booking$: any;
     private rooms$: any;
     private guests$: any;
@@ -30,15 +32,30 @@ export class BookingsFormComponent implements OnInit {
     private guestOptions: any[] = [];
     private guestFiltered: Observable<any[]>;
 
+    private availableRooms: any[];
+    private selectedRooms: any [];
+    private dropdownSettings: any = {
+        singleSelection: false,
+        text: 'Select Rooms',
+        selectAllText: 'Select All',
+        unSelectAllText: 'UnSelect All',
+        enableSearchFilter: true,
+        classes: 'multiselect'
+    };
+
     private form: any = {
         checkin: new Date(),
         checkout: new Date(),
         adults: 1,
         children: 0,
+        type: 'desk',
+        confirmed: false,
         guest_id: null,
-        room_id: null,
+        rooms: null,
         comments: null
     }
+
+    private types: string[] = ['online', 'phone', 'agency', 'desk'];
 
     /**
      * [constructor description]
@@ -53,7 +70,7 @@ export class BookingsFormComponent implements OnInit {
      * @param   {[type]} private [description]
      * @return  {[type]} [description]
      */
-    constructor(private _router: Router, private _bookings: BookingsController, private _room: RoomsController, private _guest: GuestsController, private _store: Store<any>, private dateAdapter: DateAdapter<NativeDateAdapter>) {
+    constructor(private route: ActivatedRoute, private _router: Router, private _bookings: BookingsController, private _room: RoomsController, private _guest: GuestsController, private _store: Store<any>, private dateAdapter: DateAdapter<NativeDateAdapter>) {
         this.dateAdapter.setLocale('en-US');
 
         _store.select('bookings').subscribe((response) => {
@@ -67,13 +84,32 @@ export class BookingsFormComponent implements OnInit {
         _store.select('guests').subscribe((response) => {
             this.guests$ = response;
         });
-    }
 
-    /**
-     * [sub description]
-     * @type {[type]}
-     */
-    public ngOnInit() {
+        // request room list
+        this._store.dispatch({
+            type: RoomTypes.LIST_ROOMS
+        });
+
+        this._room.getRooms('availables').finally(() => {
+            console.log('finally logic');
+        }).subscribe((data: any) => {
+            this.availableRooms = _.map(data, (item) => {
+                return {
+                    id: item.uid,
+                    itemName: `${item.name} (${item.type} - ${item.max_guests} guest)`
+                };
+            })
+            this._store.dispatch({
+                type: RoomTypes.LIST_ROOMS_SUCCESS,
+                payload: data
+            });
+        }, (error: any) => {
+            this._store.dispatch({
+                type: RoomTypes.LIST_ROOMS_FAILURE,
+                error: error.error
+            });
+        });
+
         this._store.dispatch({
             type: GuestTypes.LIST_GUESTS
         });
@@ -86,7 +122,7 @@ export class BookingsFormComponent implements OnInit {
                 const email = (guest.email !== null) ? `(${guest.email})` : '';
                 return Object.assign({}, {
                     id: guest.uid,
-                    name: `${guest.first_name} ${guest.last_name} ${email}`
+                    name: `${guest.first_name} ${guest.last_name} ${guest.email}`
                 });
             });
 
@@ -109,24 +145,71 @@ export class BookingsFormComponent implements OnInit {
                 error: error.error
             });
         });
+    }
 
-        this._store.dispatch({
-            type: RoomTypes.LIST_ROOMS
-        });
+    /**
+     * [sub description]
+     * @type {[type]}
+     */
+    public ngOnInit() {
+        this.sub = this.route.params.subscribe(params => {
+            this.id = Number(params['id']);
 
-        this._room.getRooms().finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
-            this._store.dispatch({
-                type: RoomTypes.LIST_ROOMS_SUCCESS,
-                payload: data
-            });
-        }, (error: any) => {
-            this._store.dispatch({
-                type: RoomTypes.LIST_ROOMS_FAILURE,
-                error: error.error
-            });
+            if (!isNaN(this.id)) {
+                this._store.dispatch({
+                    type: BookingTypes.GET_BOOKINGS,
+                    uid: this.id
+                });
+
+                this._bookings.getBookingById(this.id).finally(() => {
+                    console.log('finally logic');
+                }).subscribe((data: any) => {
+                    this.form = {
+                        checkin: data.checkin,
+                        checkout: data.checkout,
+                        adults: data.adults,
+                        children: data.children,
+                        type: data.type,
+                        confirmed: data.confirmed,
+                        comments: data.comments
+                    }
+
+                    this.selectedRooms = _.map(data.room, (room) => {
+                        return {
+                            id: room.uid,
+                            itemName: `${room.name} (${room.type} - ${room.max_guests} guest)`
+                        };
+                    })
+
+                    this.guestControl.setValue({
+                        id: data.guest.uid,
+                        name: `${data.guest.first_name} ${data.guest.last_name} ${data.guest.email}`
+                    });
+
+                    this._store.dispatch({
+                        type: BookingTypes.GET_BOOKINGS_SUCCESS,
+                        payload: data
+                    });
+                }, (error: any) => {
+                    this._store.dispatch({
+                        type: BookingTypes.GET_BOOKINGS_FAILURE,
+                        error: error.error
+                    });
+                });
+            }
         });
+    }
+
+    /**
+     * [ngOnDestroy description]
+     * @method  ngOnDestroy
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-10-31
+     * @return  {[type]} [description]
+     */
+    public ngOnDestroy() {
+        this.sub.unsubscribe();
     }
 
     /**
@@ -139,27 +222,54 @@ export class BookingsFormComponent implements OnInit {
         // get guest id value
         this.form.guest_id = this.guestControl.value ? this.guestControl.value.id : null,
 
-        // dispatch create
-        this._store.dispatch({
-            type: BookingTypes.CREATE_BOOKINGS
-        });
+        // get selected rooms
+        this.form.rooms = _.map(this.selectedRooms, (room) => room.id);
 
-        // request create booking
-        this._bookings.createBooking(this.form).finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
+        if (isNaN(this.id)) {
+            // dispatch create
             this._store.dispatch({
-                type: BookingTypes.CREATE_BOOKINGS_SUCCESS,
-                payload: data
+                type: BookingTypes.CREATE_BOOKINGS
             });
 
-            this._router.navigate(['/bookings/view', data.id]);
-        }, (error: any) => {
-            this._store.dispatch({
-                type: BookingTypes.CREATE_BOOKINGS_FAILURE,
-                error: error.error
+            // request create booking
+            this._bookings.createBooking(this.form).finally(() => {
+                console.log('finally logic');
+            }).subscribe((data: any) => {
+                this._store.dispatch({
+                    type: BookingTypes.CREATE_BOOKINGS_SUCCESS,
+                    payload: data
+                });
+
+                this._router.navigate(['/bookings/view', data.id]);
+            }, (error: any) => {
+                this._store.dispatch({
+                    type: BookingTypes.CREATE_BOOKINGS_FAILURE,
+                    error: error.error
+                });
             });
-        });
+        } else {
+            // dispatch update
+            this._store.dispatch({
+                type: BookingTypes.UPDATE_BOOKINGS
+            });
+
+            // request update booking
+            this._bookings.updateBooking(this.id, this.form).finally(() => {
+                console.log('finally logic');
+            }).subscribe((data: any) => {
+                this._store.dispatch({
+                    type: BookingTypes.UPDATE_BOOKINGS_SUCCESS,
+                    payload: data
+                });
+
+                this._router.navigate(['/bookings/view', data.id]);
+            }, (error: any) => {
+                this._store.dispatch({
+                    type: BookingTypes.UPDATE_BOOKINGS_FAILURE,
+                    error: error.error
+                });
+            });
+        }
     }
 
     /**

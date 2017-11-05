@@ -98,30 +98,6 @@
 
 }
 
-//sidebar color variation
-
-.sidebar-dark {
-  background: theme-color("dark");
-  .sidebar {
-    .nav {
-      .nav-item {
-        .nav-link {
-          i,
-          .menu-title {
-            color: $white;
-          }
-        }
-      }
-      &.sub-menu {
-        .nav-item {
-          .nav-link {
-            color: $white;
-          }
-        }
-      }
-    }
-  }
-}
 /* style for off-canvas menu*/
 @media screen and (max-width: 991px) {
   .row-offcanvas {
@@ -145,7 +121,7 @@
         right: 100%; // 6 columns
 
         .sidebar-offcanvas {
-            right: -100%; // 6 columns
+            right: -95%; // 6 columns
             opacity: 1;
             display: block;
         }

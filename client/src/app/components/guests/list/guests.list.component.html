@@ -1,4 +1,5 @@
 <h1 class="page-title">Guest List</h1>
+<hr>
 <div class="row grid-margin">
     <div class="col">
         <form>
@@ -8,7 +9,7 @@
     <div class="col">
     	<div class="btn-group float-right">
     		<a class="btn btn-success" [routerLink]="['create']">
-                <i class="mdi mdi-account-plus"></i> New Guest
+                <i class="fa fa-plus-circle"></i> New Guest
             </a>
     	</div>
     </div>
@@ -21,11 +22,11 @@
                 <table class="table table-hover table-responsive-sm">
                     <thead class="thead-light">
                         <tr class="">
-                            <th>ID</th>
+                            <th>Details</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Mobile</th>
-                            <th>#</th>
+                            <th width="1%">#</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="guests$.isLoading == true">
@@ -38,8 +39,8 @@
                     <tbody *ngIf="guests$.data.length > 0 && guests$.isLoading == false">
                         <tr *ngFor="let guest of guests$.data | searchFilter: search.value">
                             <td scope="row">
-                                <a [routerLink]="['view', guest.uid]" title="View Guest Details">
-                                    {{ guest.uid }}
+                                <a [routerLink]="['view', guest.uid]" title="View Guest Details" class="btn">
+                                    <i class="fa fa-file-text-o "></i>
                                 </a>
                             </td>
                             <td>
@@ -56,8 +57,8 @@
                                 </a>
                             </td>
                             <td>
-                                <a [routerLink]="['edit', guest.uid]" title="Edit Guest">
-                                    <i class="mdi mdi-pencil"></i>
+                                <a [routerLink]="['edit', guest.uid]" title="Edit Guest" class="btn">
+                                    <i class="fa fa-pencil"></i>
                                 </a>
                             </td>
                         </tr>

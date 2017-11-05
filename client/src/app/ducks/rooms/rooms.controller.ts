@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { environment } from '../../../environments/environment';
 
@@ -22,11 +22,16 @@ export class RoomsController {
      * @method  getRooms
      * @author jackfiallos
      * @version [version]
+     * @param   {string} status [description]
      * @date    2017-10-28
      * @return  {Observable<any>} [description]
      */
-    public getRooms(): Observable<any> {
-        return this.http.get<any>(environment.api_url + '/room');
+    public getRooms(status: string = ''): Observable<any> {
+        let params = new HttpParams();
+        params = params.append('status', status);
+        return this.http.get<any>(environment.api_url + '/room', {
+            params: params
+        });
     }
 
     /**

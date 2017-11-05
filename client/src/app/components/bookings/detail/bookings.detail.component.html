@@ -1,11 +1,13 @@
 <h1 class="page-title">Booking No. {{ id }}</h1>
+<hr>
 <div class="row grid-margin">
-    <div class="col-lg-12">
+    <div class="col-lg-12" *ngIf="booking$.view !== null">
         <small>Created by {{ booking$.view.user.name }}</small>
-        <small>on {{ booking$.view.created_at | date: 'dd/MM/yyyy HH:mm:ss' }}</small>
+        <small>on {{ booking$.view.created_at | date: 'dd/MM/yyyy HH:mm:ss' }}</small><br>
+        <small class="badge capitalized-text" [ngClass]="{'badge-danger': (booking$.view.confirmed == false), 'badge-success': (booking$.view.confirmed == true)}">Confirmed: {{ (booking$.view.confirmed) ? 'Yes' : 'No' }}</small>
     	<div class="btn-group float-right">
             <a class="btn btn-success" [routerLink]="['/bookings']">
-                <i class="mdi mdi-arrow-left-bold-circle"></i> Go Back
+                <i class="fa fa-chevron-circle-left"></i> Go Back
             </a>
     	</div>
     </div>
@@ -18,11 +20,14 @@
             </div>
             <div class="card-body" *ngIf="booking$.view !== null && booking$.isLoading == false">
                 <div class="alert alert-success" role="alert" *ngIf="booking$.saved">
-                    <h4 class="alert-heading">Booking Created!</h4>
-                    Your booking have been created correctly!
+                    <h4 class="alert-heading">Success!</h4>
+                    Booking registered correctly!
                 </div>
                 <h3>
                     Guest Information
+                    <span class="float-right badge capitalized-text badge-info ">
+                        Booked at {{ booking$.view.type }}
+                    </span>
                 </h3>
                 <div class="row" *ngIf="booking$.view.guest">
                     <div class="col">
@@ -76,34 +81,30 @@
                 </div>
                 <hr>
                 <h3>Room Information</h3>
-                <div class="row">
-                    <div class="col">
-                        <b>Nights</b>
-                        <p>{{ booking$.view.nights }}</p>
-                    </div>
-                    <div class="col-sm-4 offset-sm-4">
-                        <b>Room Name</b>
-                        <p>
-                            <a [routerLink]="['/rooms/view', booking$.view.room.uid]" title="View Room Details">
-                                {{ booking$.view.room.name }}
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <b>Max Persons</b>
-                        <p>{{ booking$.view.room.max_persons }}</p>
-                    </div>
-                    <div class="col">
-                        <b>Type</b>
-                        <p>{{ booking$.view.room.type }}</p>
-                    </div>
-                    <div class="col">
-                        <b>Rate</b>
-                        <p>{{ booking$.view.room.price_night | currency: booking$.view.room.currency:true:'1.2' }}</p>
-                    </div>
-                </div>
+                <table class="table table-hover table-responsive-sm table-sm">
+                    <thead class="thead-light">
+                        <tr class="">
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Max/Guests</th>
+                            <th>Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let room of booking$.view.room">
+                            <td>
+                                <a [routerLink]="['/rooms/view', room.uid]" title="View Room Details">
+                                    {{ room.name }}
+                                </a>
+                            </td>
+                            <td class="capitalized-text">
+                                {{ room.type }}
+                            </td>
+                            <td>{{ room.max_guests }}</td>
+                            <td>{{ room.price_night | currency: room.currency:true:'1.2' }}</td>
+                        </tr>
+                    </tbody>
+                </table>
                 <hr>
                 <h3>Comments</h3>
                 <div class="row">

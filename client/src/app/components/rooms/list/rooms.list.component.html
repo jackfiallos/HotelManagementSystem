@@ -1,4 +1,5 @@
 <h1 class="page-title">Room List</h1>
+<hr>
 <div class="row grid-margin">
     <div class="col">
         <form>
@@ -8,7 +9,7 @@
     <div class="col">
     	<div class="btn-group float-right">
     		<a class="btn btn-success" [routerLink]="['create']">
-                <i class="mdi mdi-plus-circle"></i> New Room
+                <i class="fa fa-plus-circle"></i> New Room
             </a>
     	</div>
     </div>
@@ -21,13 +22,13 @@
                 <table class="table table-hover table-responsive-sm">
                     <thead class="thead-light">
                         <tr class="">
-                            <th>No.</th>
+                            <th>Details</th>
                             <th>Name</th>
                             <th>Type</th>
-                            <th>Price/Night</th>
-                            <th>Max/Persons</th>
+                            <th>Rate</th>
+                            <th>Max/Guests</th>
                             <th>Available</th>
-                            <th>#</th>
+                            <th width="1%">#</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="rooms$.isLoading == true">
@@ -40,18 +41,20 @@
                     <tbody *ngIf="rooms$.data.length > 0 && rooms$.isLoading == false">
                         <tr *ngFor="let room of rooms$.data | searchFilter: search.value">
                             <td scope="row">
-                                <a [routerLink]="['view', room.uid]" title="View Room Details">
-                                    {{ room.uid }}
+                                <a [routerLink]="['view', room.uid]" title="View Room Details" class="btn">
+                                    <i class="fa fa-file-text-o "></i>
                                 </a>
                             </td>
                             <td>{{ room.name }}</td>
                             <td class="capitalized-text">{{ room.type }}</td>
                             <td>{{ room.price_night | currency: room.currency:true:'1.2' }}</td>
-                            <td>{{ room.max_persons }}</td>
-                            <td>{{ room.available }}</td>
+                            <td>{{ room.max_guests }}</td>
                             <td>
-                                <a [routerLink]="['edit', room.uid]" title="Edit Room">
-                                    <i class="mdi mdi-pencil"></i>
+                                <span class="badge capitalized-text" [ngClass]="{'badge-danger': (room.available == false), 'badge-success': (room.available == true)}">{{ (room.available) ? 'Yes' : 'No' }}</span>
+                            </td>
+                            <td>
+                                <a [routerLink]="['edit', room.uid]" title="Edit Room" class="btn">
+                                    <i class="fa fa-pencil"></i>
                                 </a>
                             </td>
                         </tr>

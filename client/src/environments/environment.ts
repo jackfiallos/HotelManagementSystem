@@ -5,5 +5,6 @@
 
 export const environment = {
     production: false,
+    name: 'Ruals',
     api_url: 'http://[::]:1337'
 };

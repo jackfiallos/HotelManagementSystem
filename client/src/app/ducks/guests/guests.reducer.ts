@@ -76,6 +76,7 @@ export function guestsReducer(state: any = initialState, action: any) {
                 saved: null,
             });
         case types.CREATE_GUESTS:
+        case types.UPDATE_GUESTS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
@@ -84,6 +85,7 @@ export function guestsReducer(state: any = initialState, action: any) {
                 error: null
             });
         case types.CREATE_GUESTS_SUCCESS:
+        case types.UPDATE_GUESTS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
@@ -92,35 +94,13 @@ export function guestsReducer(state: any = initialState, action: any) {
                 error: null
             });
         case types.CREATE_GUESTS_FAILURE:
-            return Object.assign({}, state, {
-                ...state,
-                isLoading: false,
-                lastUpdated: Date.now(),
-                saved: null,
-                error: action.error
-            });
-        case types.UPDATE_GUESTS:
-            return Object.assign({}, state, {
-                ...state,
-                isLoading: true,
-                lastUpdated: Date.now(),
-                error: null,
-                saved: null,
-            });
-        case types.UPDATE_GUESTS_SUCCESS:
-            return Object.assign({}, state, {
-                ...state,
-                isLoading: false,
-                lastUpdated: Date.now(),
-                error: null,
-                saved: null,
-            });
         case types.UPDATE_GUESTS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
                 saved: null,
+                error: action.error
             });
         default:
             return state;
