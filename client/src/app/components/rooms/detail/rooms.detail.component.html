@@ -1,4 +1,7 @@
-<h1 class="page-title">Room No. {{ id }}</h1>
+<h1 class="page-title">
+    Room No. {{ id }}
+    <a class="badge badge-warning float-right" [routerLink]="['/rooms/edit', id]">Edit</a>
+</h1>
 <hr>
 <div class="row grid-margin">
     <div class="col-lg-12" *ngIf="room$.view !== null">
@@ -51,6 +54,10 @@
                         </p>
                     </div>
                 </div>
+                <hr>
+                <h3>
+                    Ammenities
+                </h3>
             </div>
         </div>
     </div>

@@ -28,6 +28,13 @@
     color: color(white);
 }
 
+.badge-warning {
+    color: color(white);
+    &:hover {
+        color: color(white) !important;
+    }
+}
+
 .multiselect {
     .c-btn {
         box-shadow: none !important;
