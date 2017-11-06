@@ -38,7 +38,9 @@ module.exports = function(sequelize, DataTypes) {
                 len: [4, 20]
             },
             set(val) {
-                this.setDataValue('email', val.toLowerCase());
+                if (val) {
+                    this.setDataValue('email', val.toLowerCase());
+                }
             }
         },
         password: {
@@ -57,7 +59,9 @@ module.exports = function(sequelize, DataTypes) {
                 isIn: [['admin', 'user']],
             },
             set(val) {
-                this.setDataValue('type', val.toLowerCase());
+                if (val) {
+                    this.setDataValue('type', val.toLowerCase());
+                }
             }
         },
         active: {

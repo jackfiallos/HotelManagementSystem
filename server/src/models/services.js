@@ -31,7 +31,9 @@ module.exports = function(sequelize, DataTypes) {
                 len: [3,3]
             },
             set(val) {
-                this.setDataValue('curency', val.toUpperCase());
+                if (val) {
+                    this.setDataValue('currency', val.toUpperCase());
+                }
             }
         },
         amount: {

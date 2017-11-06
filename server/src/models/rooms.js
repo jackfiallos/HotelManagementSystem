@@ -30,7 +30,9 @@ module.exports = function(sequelize, DataTypes) {
                 len: [3,3]
             },
             set(val) {
-                this.setDataValue('currency', val.toUpperCase());
+                if (val) {
+                    this.setDataValue('currency', val.toUpperCase());
+                }
             }
         },
         price_night: {
@@ -50,7 +52,9 @@ module.exports = function(sequelize, DataTypes) {
                 isIn: [['standard', 'double', 'suite']],
             },
             set(val) {
-                this.setDataValue('type', val.toLowerCase());
+                if (val) {
+                    this.setDataValue('type', val.toLowerCase());
+                }
             }
         },
         max_guests: {

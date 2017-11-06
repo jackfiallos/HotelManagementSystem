@@ -141,7 +141,11 @@ routes.push({
                     name: err.name
                 });
             } else {
-                res.json(err);
+                res.json({
+                    errors: [{
+                        message: err.message
+                    }]
+                });
             }
 
             return next();
@@ -196,7 +200,11 @@ routes.push({
                     name: err.name
                 });
             } else {
-                res.json(err);
+                res.json({
+                    errors: [{
+                        message: err.message
+                    }]
+                });
             }
 
             return next();

@@ -68,7 +68,9 @@ module.exports = function(sequelize, DataTypes) {
                 isEmail: true,
             },
             set(val) {
-                this.setDataValue('email', val.toLowerCase());
+                if (val) {
+                    this.setDataValue('email', val.toLowerCase());
+                }
             },
             get() {
                 const email = this.getDataValue('email');
@@ -97,7 +99,9 @@ module.exports = function(sequelize, DataTypes) {
                 isIn: [['M', 'F']],
             },
             set(val) {
-                this.setDataValue('gender', val.toUpperCase());
+                if (val) {
+                    this.setDataValue('gender', val.toUpperCase());
+                }
             }
         },
         user_id: {

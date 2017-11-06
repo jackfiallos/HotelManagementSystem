@@ -29,7 +29,9 @@ module.exports = function(sequelize, DataTypes) {
             allowNull: false,
             defaultValue: 'card',
             set(val) {
-                this.setDataValue('method', val.toLowerCase());
+                if (val) {
+                    this.setDataValue('method', val.toLowerCase());
+                }
             }
         },
         currency: {
@@ -40,7 +42,9 @@ module.exports = function(sequelize, DataTypes) {
                 len: [3,3]
             },
             set(val) {
-                this.setDataValue('curency', val.toUpperCase());
+                if (val) {
+                    this.setDataValue('curency', val.toUpperCase());
+                }
             }
         },
         source: {

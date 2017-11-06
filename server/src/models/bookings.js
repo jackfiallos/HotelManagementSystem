@@ -41,7 +41,9 @@ module.exports = function(sequelize, DataTypes) {
                 len: [3,3]
             },
             set(val) {
-                this.setDataValue('curency', val.toUpperCase());
+                if (val) {
+                    this.setDataValue('currency', val.toUpperCase());
+                }
             }
         },
         amount: {
@@ -91,7 +93,9 @@ module.exports = function(sequelize, DataTypes) {
                 isIn: [['online', 'phone', 'agency', 'desk']],
             },
             set(val) {
-                this.setDataValue('type', val.toLowerCase());
+                if (val) {
+                    this.setDataValue('type', val.toLowerCase());
+                }
             }
         },
         confirmed: {
