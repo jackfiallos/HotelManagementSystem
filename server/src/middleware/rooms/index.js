@@ -15,8 +15,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/room'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.rooms.findAll({
@@ -64,8 +63,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/room/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.rooms.findOne({
@@ -115,8 +113,7 @@ routes.push({
         method: 'POST',
         paths: [
             '/room'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         // object
@@ -165,8 +162,7 @@ routes.push({
         method: 'PUT',
         paths: [
             '/room/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         const id = req.params.id;

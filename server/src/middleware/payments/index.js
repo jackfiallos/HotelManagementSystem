@@ -15,8 +15,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/payments'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.payments.findAll({
@@ -49,8 +48,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/payments/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.payments.findOne({
@@ -86,8 +84,7 @@ routes.push({
         method: 'POST',
         paths: [
             '/payments'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         // object
@@ -132,8 +129,7 @@ routes.push({
         method: 'PUT',
         paths: [
             '/payments/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         const id = req.params.id;

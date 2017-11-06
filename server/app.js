@@ -101,13 +101,13 @@ server.use((req, res, next) => {
 
 // Verify through middleware if user is authorized
 server.use(jwt({
-    secret: new Buffer('ssssh', 'base64'),
-    audience: 'urn:foo',
-    issuer: 'urn:issuer',
-    jwtid: 'jwtid',
-    subject: 'subject'
+    secret: new Buffer(nconf.get('Jwt:audience'), 'base64'),
+    audience: nconf.get('Jwt:audience'),
+    issuer: nconf.get('Jwt:issuer'),
+    jwtid: nconf.get('Jwt:jwtid'),
+    subject: nconf.get('Jwt:subject')
 }).unless({
-    path: ['/']
+    path: ['/', '/register']
 }));
 
 /**
@@ -122,6 +122,7 @@ server.on('after', (req, res, err, next) => {
 });
 
 server.on('restifyError', (req, res, err, next) => {
+    console.log(err);
     Logger.error({
         err: err.body,
         headers: req.headers,
@@ -147,10 +148,14 @@ const registerRoute = (route) => {
             const routeMeta = {
                 name: routeName,
                 path: aPath,
-                version: routeVersion
+                version: nconf.get('App:Version')
             };
 
-            server[routeMethod](routeMeta, route.middleware);
+            if (route.validate) {
+                server[routeMethod](routeMeta, route.validate, route.middleware);
+            } else {
+                server[routeMethod](routeMeta, route.middleware);
+            }
         });
 };
 

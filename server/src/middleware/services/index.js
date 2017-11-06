@@ -15,8 +15,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/services'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.services.findAll({
@@ -52,8 +51,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/services/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.services.findOne({
@@ -92,8 +90,7 @@ routes.push({
         method: 'POST',
         paths: [
             '/services'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         // object
@@ -137,8 +134,7 @@ routes.push({
         method: 'PUT',
         paths: [
             '/services/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         const id = req.params.id;

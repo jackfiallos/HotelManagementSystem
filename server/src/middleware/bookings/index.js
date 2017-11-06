@@ -1,4 +1,5 @@
 'use strict';
+
 const moment = require('moment');
 const Sequelize = require('sequelize');
 const Promise = require('bluebird');
@@ -16,9 +17,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/booking'
-        ],
-        version: '1.0.0',
-        secure: true
+        ]
     },
     middleware: (req, res, next) => {
         const tokenData = req.user;
@@ -103,8 +102,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/booking/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         // find specific record
@@ -194,8 +192,7 @@ routes.push({
         method: 'POST',
         paths: [
             '/booking'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         // object
@@ -315,8 +312,7 @@ routes.push({
         method: 'PUT',
         paths: [
             '/booking/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         const id = req.params.id;

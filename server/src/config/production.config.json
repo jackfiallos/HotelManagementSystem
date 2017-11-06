@@ -1,6 +1,14 @@
 {
     "App": {
-        "Name": "api.hms.com"
+        "Name": "api.hms.com",
+        "Version": "1.0.0"
+    },
+    "Jwt": {
+        "secret": "T=_afU=bJq[p%Z6S",
+        "audience": "users.api.hms.local",
+        "issuer": "api.hms.local",
+        "jwtid": "jwt.api.hms.local",
+        "subject": "hms.local"
     },
     "Server": {
         "Port": 1337,

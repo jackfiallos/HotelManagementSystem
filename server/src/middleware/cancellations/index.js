@@ -15,8 +15,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/cancellation'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.cancellations.findAll({
@@ -49,8 +48,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/cancellation/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.cancellations.findOne({
@@ -86,8 +84,7 @@ routes.push({
         method: 'POST',
         paths: [
             '/cancellation'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         // object
@@ -129,8 +126,7 @@ routes.push({
         method: 'PUT',
         paths: [
             '/cancellation/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         const id = req.params.id;

@@ -15,8 +15,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/user'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.users.findAll({
@@ -49,8 +48,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/user/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         models.users.findOne({
@@ -86,8 +84,7 @@ routes.push({
         method: 'POST',
         paths: [
             '/user'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         // object
@@ -130,8 +127,7 @@ routes.push({
         method: 'PUT',
         paths: [
             '/user/:id'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         const id = req.params.id;

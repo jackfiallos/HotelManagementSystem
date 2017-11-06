@@ -39,7 +39,7 @@ module.exports = function(sequelize, DataTypes) {
             },
             set(val) {
                 if (val) {
-                    this.setDataValue('email', val.toLowerCase());
+                    this.setDataValue('username', val.toLowerCase());
                 }
             }
         },

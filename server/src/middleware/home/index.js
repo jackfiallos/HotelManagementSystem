@@ -1,8 +1,18 @@
 'use strict';
 
+const path = require('path');
 const jwt = require('jsonwebtoken');
 const passwordHash = require('password-hash');
+const errors = require('restify-errors');
+const Joi = require('joi');
 const models = require('../../models');
+const env = process.env.NODE_ENV || 'development';
+const userSchema = require('../../dao/user');
+
+// Read configuration file
+const nconf = require('nconf').file({
+    file: path.join(__dirname, '..', '..', 'config', `${env}.config.json`)
+});
 
 /**
  * Routes
@@ -12,7 +22,6 @@ const routes = [];
 
 /**
  * GET /
- * Version: 1.0.0
  */
 routes.push({
     meta: {
@@ -20,8 +29,7 @@ routes.push({
         method: 'GET',
         paths: [
             '/'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         res.send({
@@ -34,7 +42,6 @@ routes.push({
 
 /**
  * POST /
- * Version: 1.0.0
  */
 routes.push({
     meta: {
@@ -42,8 +49,7 @@ routes.push({
         method: 'POST',
         paths: [
             '/'
-        ],
-        version: '1.0.0'
+        ]
     },
     middleware: (req, res, next) => {
         const username = (req.body && req.body.username) ? req.body.username : null;
@@ -66,13 +72,13 @@ routes.push({
                     const token = jwt.sign({
                         user: user
                     },
-                    new Buffer('ssssh', 'base64'),
-                    {
-                        expiresIn: 60 * 60,
-                        audience: 'urn:foo',
-                        issuer: 'urn:issuer',
-                        jwtid: 'jwtid',
-                        subject: 'subject'
+                    new Buffer(nconf.get('Jwt:audience'), 'base64'), {
+                        expiresIn: 1440,
+                        algorithm: 'RS256',
+                        audience: nconf.get('Jwt:audience'),
+                        issuer: nconf.get('Jwt:issuer'),
+                        jwtid: nconf.get('Jwt:jwtid'),
+                        subject: nconf.get('Jwt:subject')
                     });
 
                     res.json({
@@ -102,7 +108,87 @@ routes.push({
 });
 
 /**
+ * POST /register
+ */
+routes.push({
+    meta: {
+        name: 'registerPost',
+        method: 'POST',
+        paths: [
+            '/register'
+        ]
+    },
+    validate: (req, res, next) => {
+        // object
+        const form = {
+            name: (req.body && req.body.name) ? req.body.name : null,
+            lastname: (req.body && req.body.lastname) ? req.body.lastname : null,
+            username: (req.body && req.body.username) ? req.body.username : null,
+            password: (req.body && req.body.password) ? req.body.password : null,
+            type: (req.body && req.body.type) ? req.body.type : null
+        };
+
+        const result = Joi.validate(form, userSchema, {
+            allowUnknown: false, // return an error if body has an unrecognised property
+            abortEarly: false // return all errors a payload contains, not just the first one Joi finds
+        }, (err, value) => {
+            if (err) {
+                const fail = err.details.map((item) => {
+                    return {
+                        message: item.message,
+                        path: item.path
+                    }
+                });
+
+                res.status(400);
+                res.json({
+                    name: 'RegistrationFailed',
+                    message: 'Verify the following fields',
+                    code: 'validation_failed',
+                    status: 400,
+                    errors: fail
+                });
+                return;
+            } else {
+                next();
+            }
+        });
+    },
+    middleware: (req, res, next) => {
+        // object
+        const form = {
+            name: req.body.name,
+            lastname: req.body.lastname,
+            username: req.body.username,
+            password: passwordHash.generate(req.body.password),
+            type: req.body.type
+        };
+
+        // create record
+        models.users.create(form).then((data) => {
+            res.json(data);
+            return next();
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json({
+                    errors: [{
+                        message: err.message
+                    }]
+                });
+            }
+
+            return next();
+        });
+    }
+});
+
+/**
 * Export
 */
-
 module.exports = routes;
