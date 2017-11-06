@@ -17,9 +17,12 @@ routes.push({
         paths: [
             '/booking'
         ],
-        version: '1.0.0'
+        version: '1.0.0',
+        secure: true
     },
     middleware: (req, res, next) => {
+        const tokenData = req.user;
+
         // find records
         models.bookings.findAll({
             order: [

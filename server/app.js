@@ -14,6 +14,7 @@ if (!process.env.NODE_ENV) {
 
 const path = require('path');
 const restify = require('restify');
+const jwt = require('express-jwt');
 const bunyan = require('bunyan');
 const bformat = require('bunyan-format');
 const Sequelize = require('sequelize');
@@ -98,14 +99,16 @@ server.use((req, res, next) => {
     return next();
 });
 
-// // Verify through middleware if user is authorized
-// server.use((req, res, next) => {
-//     if (req.session.auth || req.path === '/auth') {
-//         next();
-//     } else {
-//        res.redirect('/');
-//     }
-// });
+// Verify through middleware if user is authorized
+server.use(jwt({
+    secret: new Buffer('ssssh', 'base64'),
+    audience: 'urn:foo',
+    issuer: 'urn:issuer',
+    jwtid: 'jwtid',
+    subject: 'subject'
+}).unless({
+    path: ['/']
+}));
 
 /**
  * Request / Response Logging
@@ -135,6 +138,7 @@ const registerRoute = (route) => {
     const routeMethod = route.meta.method.toLowerCase();
     const routeName = route.meta.name;
     const routeVersion = route.meta.version;
+    const secure = route.meta.secure;
 
     route
         .meta
