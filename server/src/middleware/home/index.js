@@ -1,6 +1,8 @@
 'use strict';
 
 const jwt = require('jsonwebtoken');
+const passwordHash = require('password-hash');
+const models = require('../../models');
 
 /**
  * Routes
@@ -44,24 +46,58 @@ routes.push({
         version: '1.0.0'
     },
     middleware: (req, res, next) => {
-        const token = jwt.sign({
-            payload: {
-                foo: 'bar'
-            }
-        }, new Buffer('ssssh', 'base64'), {
-            expiresIn: 60 * 60,
-            audience: 'urn:foo',
-            issuer: 'urn:issuer',
-            jwtid: 'jwtid',
-            subject: 'subject'
-        });
+        const username = (req.body && req.body.username) ? req.body.username : null;
+        const password = (req.body && req.body.password) ? req.body.password : null;
 
-        res.send({
-            message: 'please login',
-            token: token
-        });
+        if (username && password) {
+            // find specific record
+            models.users.findOne({
+                where: {
+                    username: username
+                },
+                attributes: [
+                    ['id', 'uid'],
+                    'username',
+                    'password'
+                ],
+                limit: 1
+            }).then((user) => {
+                if (passwordHash.verify(password, user.password)) {
+                    const token = jwt.sign({
+                        user: user
+                    },
+                    new Buffer('ssssh', 'base64'),
+                    {
+                        expiresIn: 60 * 60,
+                        audience: 'urn:foo',
+                        issuer: 'urn:issuer',
+                        jwtid: 'jwtid',
+                        subject: 'subject'
+                    });
 
-        return next();
+                    res.json({
+                        success: true,
+                        message: 'Enjoy your token!',
+                        token: token
+                    });
+                    return next();
+                } else {
+                    throw Error ('Invalid user');
+                }
+            }).catch((err) => {
+                res.status(401);
+                res.json({
+                    message: err.message
+                });
+                return next();
+            });
+        } else {
+            res.status(401);
+            res.json({
+                message: 'Login failed'
+            });
+            return next();
+        }
     }
 });
 
