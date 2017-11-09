@@ -1,11 +1,18 @@
+# Hotel Management System
+
+This project was created using restify and is basically an **API** secured with **JWT**, sequelizejs was selected as ORM and joi for user schema definitions to make data validations.
+
 ## Server Configuration
 
-First of all, don´t forget to configure your **database** (look into the resource folder the schema)
+First of all, don´t forget to configure your **database** (look into the resource folder the schema), the sql file was generated to use MySQL or MariaDB.
 
 ### Installing Dependencies
 ```bash
 $ npm install
 ```
+
+### Setting up
+Inside src/config there´s configuration environment variables
 
 ### Running
 
@@ -14,7 +21,7 @@ To start the project, just run on your console
 $ node run start
 ```
 
-In case you need debugging, you can use chrome debugger through inspect plugin (don´t forget to enabled using chrome://inspect once you have ran the server)
+In case you need to debug, you can use chrome debugger through inspect plugin (don´t forget to enabled using chrome://inspect once that you have ran the server)
 ```bash
 $ node run inspect
 ```
@@ -30,3 +37,12 @@ By default `node-bunyan` is used for logging to a file (`./logs/{{NODE_ENV}}-{{S
 ```bash
 $ NODE_ENV=production node app.js
 ```
+
+### Generate cert key files
+
+```bash
+openssl genrsa -out server.key 2048
+openssl rsa -in server.key -out server.pem -outform PEM -pubout
+```
+
+and move the generated files into keys/ folder or whatever you want, just don´t forget to configure the right path.

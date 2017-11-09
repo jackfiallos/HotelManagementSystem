@@ -1,6 +1,8 @@
-# HMS
+# Hotel Management System
 
-This project is a very simple api and frontend client to manage bookings, rooms, customers, payments, users and cancellations. The server was created on nodejs using restify and connected to mysql instance, the frontend was developed using Angular 4.
+This project is a very simple api and frontend client to manage bookings, rooms, customers, payments, users and cancellations.
+
+The server was created on nodejs using restify and connected to mysql instance, the frontend was developed using Angular 4.
 
 ## Technical Requirements (build with)
 
@@ -10,6 +12,8 @@ This project is a very simple api and frontend client to manage bookings, rooms,
 * Typescript 2.5.3
 * @angular/cli: 1.4.9
 * Bootstrap 4.0.0 beta.2
+
+Please refer to package.json from server/ and client/ folders to see more details about used packages.
 
 ## Notes
 

@@ -12,17 +12,22 @@ if (!process.env.NODE_ENV) {
  * Module dependencies.
  */
 
+const fs = require('fs');
 const path = require('path');
 const restify = require('restify');
-const jwt = require('express-jwt');
+const errors = require('restify-errors');
 const bunyan = require('bunyan');
 const bformat = require('bunyan-format');
 const Sequelize = require('sequelize');
 const corsMiddleware = require('restify-cors-middleware');
+const verifyJWT = require('./src/middlewares/verify.jwt.js');
 
 const nconf = require('nconf').file({
     file: path.join(__dirname, 'src', 'config', `${process.env.NODE_ENV}.config.json`)
 });
+
+// sign with RSA SHA256
+const cert = fs.readFileSync('/Users/jack/Public/HMS/server/keys/server.key');
 
 const formatOut = bformat({
     outputMode: 'long',
@@ -93,22 +98,23 @@ const cors = corsMiddleware({
 server.pre(cors.preflight);
 server.use(cors.actual);
 
+// Verify through middleware if user is authorized
+server.use(verifyJWT({
+    algorithm: 'HS256',
+    audience: nconf.get('Jwt:audience'),
+    issuer: nconf.get('Jwt:issuer'),
+    jwtid: nconf.get('Jwt:jwtid'),
+    subject: nconf.get('Jwt:subject'),
+    cert: cert
+}).unless({
+    path: ['/', '/register']
+}));
+
 // Inject extra header response
 server.use((req, res, next) => {
     res.header('API-RND', Math.floor(Date.now() / 1000));
     return next();
 });
-
-// Verify through middleware if user is authorized
-server.use(jwt({
-    secret: new Buffer(nconf.get('Jwt:audience'), 'base64'),
-    audience: nconf.get('Jwt:audience'),
-    issuer: nconf.get('Jwt:issuer'),
-    jwtid: nconf.get('Jwt:jwtid'),
-    subject: nconf.get('Jwt:subject')
-}).unless({
-    path: ['/', '/register']
-}));
 
 /**
  * Request / Response Logging
@@ -122,13 +128,12 @@ server.on('after', (req, res, err, next) => {
 });
 
 server.on('restifyError', (req, res, err, next) => {
-    console.log(err);
     Logger.error({
         err: err.body,
         headers: req.headers,
         method: req.method
     });
-    next();
+    return next();
 });
 
 /**
@@ -160,7 +165,7 @@ const registerRoute = (route) => {
 };
 
 const setupMiddleware = (middlewareName) => {
-    const routes = require(path.join(__dirname, 'src', 'middleware', middlewareName));
+    const routes = require(path.join(__dirname, 'src', 'controllers', middlewareName));
     routes.forEach(registerRoute);
 };
 

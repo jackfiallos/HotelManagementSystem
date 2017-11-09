@@ -1,5 +1,6 @@
 'use strict';
 
+const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const passwordHash = require('password-hash');
@@ -13,6 +14,9 @@ const userSchema = require('../../dao/user');
 const nconf = require('nconf').file({
     file: path.join(__dirname, '..', '..', 'config', `${env}.config.json`)
 });
+
+// sign with RSA SHA256
+const cert = fs.readFileSync('/Users/jack/Public/HMS/server/keys/server.key');
 
 /**
  * Routes
@@ -71,10 +75,9 @@ routes.push({
                 if (passwordHash.verify(password, user.password)) {
                     const token = jwt.sign({
                         user: user
-                    },
-                    new Buffer(nconf.get('Jwt:audience'), 'base64'), {
+                    }, cert, {
                         expiresIn: 1440,
-                        algorithm: 'RS256',
+                        algorithm: 'HS256',
                         audience: nconf.get('Jwt:audience'),
                         issuer: nconf.get('Jwt:issuer'),
                         jwtid: nconf.get('Jwt:jwtid'),
