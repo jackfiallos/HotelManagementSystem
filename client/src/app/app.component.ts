@@ -11,9 +11,9 @@ import { AuthService } from './auth/authService';
     encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit {
-    private name = 'HMS';
-    private openSidebar = false;
-    private openNotifications = false;
+    public name = 'HMS';
+    public openSidebar = false;
+    public openNotifications = false;
 
     constructor(public _appState: AppState, private _titleService: Title, private _router: Router, private _authenticationService: AuthService) {}
 
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
      * [e description]
      * @type {[type]}
      */
-    private logout(e: MouseEvent) {
+    public logout(e: MouseEvent) {
         e.preventDefault();
         this.openSidebar = false;
         this._authenticationService.removeToken();

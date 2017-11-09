@@ -13,9 +13,9 @@ import { types } from '../../../ducks/guests/guests.types';
     encapsulation: ViewEncapsulation.None
 })
 export class GuestsDetailComponent implements OnInit {
-    private id: number;
-    private sub: any;
-    private guest$: any;
+    public id: number;
+    public sub: any;
+    public guest$: any;
 
     /**
      * [constructor description]

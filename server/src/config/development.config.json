@@ -39,5 +39,8 @@
     "Logging": {
         "Name": "hms-log",
         "Dir": "./logs/"
+    },
+    "Key": {
+        "Path": "/Users/jack/Public/HMS/server/keys/server.key"
     }
 }

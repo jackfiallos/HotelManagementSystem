@@ -18,11 +18,11 @@ import { types as RoomTypes } from '../../../ducks/rooms/rooms.types';
     encapsulation: ViewEncapsulation.None
 })
 export class RoomsFormComponent implements OnInit {
-    private id: number;
-    private sub: any;
-    private room$: any;
+    public id: number;
+    public sub: any;
+    public room$: any;
 
-    private types: any[] = [{
+    public types: any[] = [{
         id: 'standard',
         name: 'Standard'
     }, {
@@ -33,7 +33,7 @@ export class RoomsFormComponent implements OnInit {
         name: 'Suite'
     }];
 
-    private form: any = {
+    public form: any = {
         name: null,
         currency: null,
         price_night: 0,
@@ -121,7 +121,7 @@ export class RoomsFormComponent implements OnInit {
      * [e description]
      * @type {[type]}
      */
-    private onSubmit(e: MouseEvent) {
+    public onSubmit(e: MouseEvent) {
         e.preventDefault();
 
         if (isNaN(this.id)) {

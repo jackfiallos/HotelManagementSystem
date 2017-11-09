@@ -15,9 +15,9 @@ import { types } from '../../ducks/auth/auth.types';
     encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent implements OnInit {
-    private auth$: any = null;
-    private returnUrl: string;
-    private model: any = {
+    public auth$: any = null;
+    public returnUrl: string;
+    public model: any = {
         username: '',
         password: ''
     };
@@ -45,7 +45,15 @@ export class LoginComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    private login() {
+    /**
+     * [login description]
+     * @method  login
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-11-09
+     * @return  {[type]} [description]
+     */
+    public login() {
         this._store.dispatch({
             type: types.LOGIN_REQUEST
         });

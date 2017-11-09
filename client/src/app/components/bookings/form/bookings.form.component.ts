@@ -22,19 +22,19 @@ import { types as GuestTypes } from '../../../ducks/guests/guests.types';
     encapsulation: ViewEncapsulation.None
 })
 export class BookingsFormComponent implements OnInit {
-    private id: number;
-    private sub: any;
-    private booking$: any;
-    private rooms$: any;
-    private guests$: any;
+    public id: number;
+    public sub: any;
+    public booking$: any;
+    public rooms$: any;
+    public guests$: any;
 
-    private guestControl: FormControl = new FormControl();
-    private guestOptions: any[] = [];
-    private guestFiltered: Observable<any[]>;
+    public guestControl: FormControl = new FormControl();
+    public guestOptions: any[] = [];
+    public guestFiltered: Observable<any[]>;
 
-    private availableRooms: any[];
-    private selectedRooms: any [];
-    private dropdownSettings: any = {
+    public availableRooms: any[];
+    public selectedRooms: any [];
+    public dropdownSettings: any = {
         singleSelection: false,
         text: 'Select Rooms',
         selectAllText: 'Select All',
@@ -43,7 +43,7 @@ export class BookingsFormComponent implements OnInit {
         classes: 'multiselect'
     };
 
-    private form: any = {
+    public form: any = {
         checkin: new Date(),
         checkout: new Date(),
         adults: 1,
@@ -55,7 +55,7 @@ export class BookingsFormComponent implements OnInit {
         comments: null
     }
 
-    private types: string[] = ['online', 'phone', 'agency', 'desk'];
+    public types: string[] = ['online', 'phone', 'agency', 'desk'];
 
     /**
      * [constructor description]
@@ -213,10 +213,15 @@ export class BookingsFormComponent implements OnInit {
     }
 
     /**
-     * [e description]
-     * @type {[type]}
+     * [onSubmit description]
+     * @method  onSubmit
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-11-09
+     * @param   {MouseEvent} e [description]
+     * @return  {[type]} [description]
      */
-    private onSubmit(e: MouseEvent) {
+    public onSubmit(e: MouseEvent) {
         e.preventDefault();
 
         // get guest id value
@@ -273,10 +278,15 @@ export class BookingsFormComponent implements OnInit {
     }
 
     /**
-     * [name description]
-     * @type {[type]}
+     * [filter description]
+     * @method  filter
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-11-09
+     * @param   {any} name [description]
+     * @return  {any[]} [description]
      */
-    filter(name: any): any[] {
+    public filter(name: any): any[] {
         return this.guestOptions.filter((option) => {
             const selected = (name && typeof name === 'object') ? name.name : name;
             return option.name.toLowerCase().indexOf(selected.toLowerCase()) >= 0;
@@ -284,10 +294,15 @@ export class BookingsFormComponent implements OnInit {
     }
 
     /**
-     * [option description]
-     * @type {[type]}
+     * [displayFn description]
+     * @method  displayFn
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-11-09
+     * @param   {any} option [description]
+     * @return  {any} [description]
      */
-    displayFn(option: any): any {
+    public displayFn(option: any): any {
         return option ? option.name : option;
     }
 }

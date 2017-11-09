@@ -16,7 +16,7 @@ const nconf = require('nconf').file({
 });
 
 // sign with RSA SHA256
-const cert = fs.readFileSync('/Users/jack/Public/HMS/server/keys/server.key');
+const cert = fs.readFileSync(nconf.get('Key:Path'));
 
 /**
  * Routes
@@ -63,7 +63,8 @@ routes.push({
             // find specific record
             models.users.findOne({
                 where: {
-                    username: username
+                    username: username,
+                    active: 1
                 },
                 attributes: [
                     ['id', 'uid'],
@@ -72,7 +73,7 @@ routes.push({
                 ],
                 limit: 1
             }).then((user) => {
-                if (passwordHash.verify(password, user.password)) {
+                if (user && passwordHash.verify(password, user.password)) {
                     const token = jwt.sign({
                         user: user
                     }, cert, {

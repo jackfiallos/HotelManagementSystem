@@ -12,7 +12,7 @@
     },
     "Server": {
         "Port": 1337,
-        "Name": "api.hms.com",
+        "Name": "api.hms.local",
         "DefaultVersion": "1.0.0",
         "Acceptable": [ "application/json" ],
         "ThrottleRate": 50,
@@ -40,5 +40,8 @@
     "Logging": {
         "Name": "hms-log",
         "Dir": "./logs/"
+    },
+    "Key": {
+        "Path": "/home/public/hms/server/server.key"
     }
 }

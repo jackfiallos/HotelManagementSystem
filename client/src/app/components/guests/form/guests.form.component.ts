@@ -18,11 +18,11 @@ import { types as GuestTypes } from '../../../ducks/guests/guests.types';
     encapsulation: ViewEncapsulation.None
 })
 export class GuestsFormComponent implements OnInit {
-    private id: number;
-    private sub: any;
-    private guest$: any;
+    public id: number;
+    public sub: any;
+    public guest$: any;
 
-    private genders: any[] = [{
+    public genders: any[] = [{
         id: 'M',
         name: 'Male'
     }, {
@@ -30,7 +30,7 @@ export class GuestsFormComponent implements OnInit {
         name: 'Female'
     }];
 
-    private form: any = {
+    public form: any = {
         first_name: '',
         last_name: '',
         phone: '',
@@ -124,10 +124,15 @@ export class GuestsFormComponent implements OnInit {
     }
 
     /**
-     * [e description]
-     * @type {[type]}
+     * [onSubmit description]
+     * @method  onSubmit
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-11-09
+     * @param   {MouseEvent} e [description]
+     * @return  {[type]} [description]
      */
-    private onSubmit(e: MouseEvent) {
+    public onSubmit(e: MouseEvent) {
         e.preventDefault();
 
         if (isNaN(this.id)) {

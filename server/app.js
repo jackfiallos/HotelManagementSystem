@@ -27,7 +27,7 @@ const nconf = require('nconf').file({
 });
 
 // sign with RSA SHA256
-const cert = fs.readFileSync('/Users/jack/Public/HMS/server/keys/server.key');
+const cert = fs.readFileSync(nconf.get('Key:Path'));
 
 const formatOut = bformat({
     outputMode: 'long',

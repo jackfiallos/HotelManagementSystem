@@ -13,8 +13,8 @@ import { types } from '../../../ducks/bookings/bookings.types';
     encapsulation: ViewEncapsulation.None
 })
 export class BookingsDetailComponent implements OnInit, OnDestroy {
-    private id: number;
-    private sub: any;
+    public id: number;
+    public sub: any;
     public booking$: any;
 
     /**
