@@ -91,7 +91,7 @@ server.use(plugins);
 const cors = corsMiddleware({
     preflightMaxAge: 5, //Optional
     origins: ['*'],
-    allowHeaders: ['API-Token'],
+    allowHeaders: ['Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token, Authorization, API-Token'],
     exposeHeaders: ['API-Token-Expiry']
 });
 
