@@ -78,6 +78,12 @@
                     <span class="nav-link">Menu</span>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['dashboard']" (click)="openSidebar = false">
+                        <i class="fa fa-info-circle"></i>
+                        <span class="menu-title">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" [routerLink]="['bookings']" (click)="openSidebar = false">
                         <i class="fa fa-calendar"></i>
                         <span class="menu-title">Booking</span>
@@ -93,6 +99,12 @@
                     <a class="nav-link" [routerLink]="['rooms']" (click)="openSidebar = false">
                         <i class="fa fa-suitcase"></i>
                         <span class="menu-title">Rooms</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" (click)="logout($event)">
+                        <i class="fa fa-power-off"></i>
+                        <span class="menu-title">Logout</span>
                     </a>
                 </li>
                 <!-- <li class="nav-item">

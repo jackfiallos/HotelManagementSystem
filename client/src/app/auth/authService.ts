@@ -29,6 +29,18 @@ export class AuthService {
     }
 
     /**
+     * [setToken description]
+     * @method  setToken
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-11-09
+     * @return  {string} [description]
+     */
+    public setToken(token: string): void {
+        localStorage.setItem('token', token);
+    }
+
+    /**
      * [getToken description]
      * @method  getToken
      * @author jackfiallos
@@ -51,5 +63,17 @@ export class AuthService {
     public isAuthenticated(): boolean {
         const token = this.getToken();
         return false;
+    }
+
+    /**
+     * [removeToken description]
+     * @method  removeToken
+     * @author jackfiallos
+     * @version [version]
+     * @date    2017-11-09
+     */
+    public removeToken(): boolean {
+        localStorage.clear();
+        return true;
     }
 }

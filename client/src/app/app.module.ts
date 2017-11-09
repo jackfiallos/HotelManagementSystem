@@ -9,12 +9,14 @@ import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common
 import { ROUTES } from './app.routes';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
+import { AuthGuard } from './auth/auth.guard';
 
 // redux
 import { StoreModule, ActionReducer, Action } from '@ngrx/store';
 import { storeLogger } from 'ngrx-store-logger';
 import { localStorageSync } from 'ngrx-store-localstorage';
-import { bookingsReducer,
+import { authReducer,
+    bookingsReducer,
     guestsReducer,
     paymentsReducer,
     roomsReducer } from './ducks/index';
@@ -37,6 +39,7 @@ import '../styles/index.scss';
 import { NoContentComponent } from './components/no-content/no-content.component';
 import { LoginComponent } from './components/login/login.component';
 
+import { AuthController } from './ducks/auth/auth.controller';
 import { BookingsController } from './ducks/bookings/bookings.controller';
 import { GuestsController } from './ducks/guests/guests.controller';
 import { PaymentsController } from './ducks/payments/payments.controller';
@@ -47,6 +50,8 @@ const APP_PROVIDERS = [
     ...APP_RESOLVER_PROVIDERS,
     Title,
     AppState,
+    AuthGuard,
+    AuthController,
     BookingsController,
     GuestsController,
     PaymentsController,
@@ -61,6 +66,7 @@ export function localStorageSyncReducer(reducer) {
     return localStorageSync({
         rehydrate: true,
         keys: [
+            'auth',
             'bookings',
             'guests',
             'payments',
@@ -90,6 +96,7 @@ export const metaReducers = environment.production ? [localStorageSyncReducer] :
         }),
         // Redux module config
         StoreModule.forRoot({
+            auth: authReducer,
             bookings: bookingsReducer,
             guests: guestsReducer,
             payments: paymentsReducer,
