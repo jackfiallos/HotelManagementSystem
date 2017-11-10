@@ -157,7 +157,7 @@ routes.push({
             organization: (req.body.organization) ? req.body.organization : null,
             age: (req.body.age) ? req.body.age : null,
             gender: (req.body.gender) ? req.body.gender : null,
-            user_id: 1
+            user_id: res.uid
         };
 
         // create record

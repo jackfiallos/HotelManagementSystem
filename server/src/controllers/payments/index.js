@@ -2,6 +2,8 @@
 
 const Sequelize = require('sequelize');
 const models = require('../../models');
+const paymentSchema = require('../../dao/payment');
+const Joi = require('joi');
 const routes = [];
 
 /**
@@ -23,16 +25,48 @@ routes.push({
                 ['id', 'DESC']
             ],
             attributes: [
-                ['id', 'uid'],
+                'id',
                 'created_at',
                 'amount',
                 'method',
                 'currency'
-            ]
+            ],
+            include: [{
+                model: models.users,
+                as: 'user',
+                required: true
+            }],
         }).then((data) => {
-            res.json(data);
+            const resObj = data.map((payment) => {
+                // tidy up the user data
+                return Object.assign({}, {
+                    uid: payment.id,
+                    created_at: payment.created_at,
+                    amount: payment.amount,
+                    method: payment.method,
+                    currency: payment.currency,
+                    booking_id: payment.booking_id,
+                    user: Object.assign({}, {
+                        uid: payment.user.id,
+                        name: payment.user.name
+                    })
+                });
+            });
+            res.json(resObj);
             return next();
-        });
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json(err);
+            }
+
+            return next();
+        });;
     }
 });
 
@@ -57,19 +91,40 @@ routes.push({
                     [Sequelize.Op.eq]: req.params.id
                 }
             },
-            attributes: [
-                ['id', 'uid'],
-                'created_at',
-                'amount',
-                'method',
-                'currency'
-            ],
-            limit: 1,
-            raw: true
-        }).then((data) => {
-            res.json(data);
+            include: [{
+                model: models.users,
+                as: 'user',
+                required: true
+            }],
+            limit: 1
+        }).then((payment) => {
+            const resObj = Object.assign({}, {
+                uid: payment.id,
+                created_at: payment.created_at,
+                amount: payment.amount,
+                method: payment.method,
+                currency: payment.currency,
+                booking_id: payment.booking_id,
+                user: Object.assign({}, {
+                    uid: payment.user.id,
+                    name: payment.user.name
+                })
+            });
+            res.json(resObj);
             return next();
-        });
+        }).catch((err) => {
+            res.status(400);
+            if (err.name === 'SequelizeValidationError') {
+                res.json({
+                    errors: err.errors,
+                    name: err.name
+                });
+            } else {
+                res.json(err);
+            }
+
+            return next();
+        });;
     }
 });
 
@@ -86,15 +141,49 @@ routes.push({
             '/payments'
         ]
     },
+    validate: (req, res, next) => {
+        // object
+        const form = {
+            amount: (req.body && req.body.amount) ? req.body.amount : null,
+            method: (req.body && req.body.method) ? req.body.method : null,
+            currency: (req.body && req.body.currency) ? req.body.currency : null,
+            booking_id: (req.body && req.body.booking_id) ? req.body.booking_id : null
+        };
+
+        const result = Joi.validate(form, paymentSchema, {
+            allowUnknown: false, // return an error if body has an unrecognised property
+            abortEarly: false // return all errors a payload contains, not just the first one Joi finds
+        }, (err, value) => {
+            if (err) {
+                const fail = err.details.map((item) => {
+                    return {
+                        message: item.message,
+                        path: item.path
+                    }
+                });
+
+                res.status(400);
+                res.json({
+                    name: 'paymentCreationFailed',
+                    message: 'Verify the following fields',
+                    code: 'validation_failed',
+                    status: 400,
+                    errors: fail
+                });
+                return;
+            } else {
+                next();
+            }
+        });
+    },
     middleware: (req, res, next) => {
         // object
         const form = {
             amount: req.body.amount,
             method: req.body.method,
             currency: req.body.currency,
-            source: (req.body.source) ? req.body.source : null,
             booking_id: req.body.booking_id,
-            user_id: req.body.user_id
+            user_id: res.uid
         };
 
         // create record
@@ -102,14 +191,18 @@ routes.push({
             res.json(data);
             return next();
         }).catch((err) => {
+            res.status(400);
             if (err.name === 'SequelizeValidationError') {
-                res.status(400);
                 res.json({
                     errors: err.errors,
                     name: err.name
                 });
             } else {
-                res.json(err);
+                res.json({
+                    errors: [{
+                        message: err.message
+                    }]
+                });
             }
 
             return next();
@@ -138,7 +231,6 @@ routes.push({
             amount: req.body.amount,
             method: req.body.method,
             currency: req.body.currency,
-            source: (req.body.source) ? req.body.source : null,
             booking_id: req.body.booking_id
         };
 
@@ -155,14 +247,18 @@ routes.push({
             res.json(data);
             return next();
         }).catch((err) => {
+            res.status(400);
             if (err.name === 'SequelizeValidationError') {
-                res.status(400);
                 res.json({
                     errors: err.errors,
                     name: err.name
                 });
             } else {
-                res.json(err);
+                res.json({
+                    errors: [{
+                        message: err.message
+                    }]
+                });
             }
 
             return next();

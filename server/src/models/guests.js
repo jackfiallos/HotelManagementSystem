@@ -106,7 +106,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         user_id: {
             type: Sequelize.INTEGER,
-            allowNull: true,
+            allowNull: false,
             validate: {
                 isNumeric: true
             },

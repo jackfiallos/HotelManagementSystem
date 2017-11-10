@@ -171,13 +171,13 @@ const setupMiddleware = (middlewareName) => {
 
 // setup middleware
 [
-    'bookings',
-    'cancellations',
-    'guests',
     'home',
-    'payments',
+    'bookings',
+    'guests',
     'rooms',
     'users',
+    'payments',
+    'cancellations',
     'services'
 ].forEach(setupMiddleware);
 

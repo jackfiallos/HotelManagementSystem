@@ -56,6 +56,8 @@ module.exports = function(options) {
                         }));
                     }
 
+                    res.uid = decoded.user.uid;
+
                     return next();
                 });
             } catch (err) {

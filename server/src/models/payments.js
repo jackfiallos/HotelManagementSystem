@@ -43,20 +43,16 @@ module.exports = function(sequelize, DataTypes) {
             },
             set(val) {
                 if (val) {
-                    this.setDataValue('curency', val.toUpperCase());
+                    this.setDataValue('currency', val.toUpperCase());
                 }
-            }
-        },
-        source: {
-            type: Sequelize.STRING(50),
-            allowNull: true,
-            validate: {
-                len: [5, 50]
             }
         },
         booking_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
+            validate: {
+                isNumeric: true
+            },
             references: {
                 model: Bookings,
                 key: 'id',
@@ -65,12 +61,22 @@ module.exports = function(sequelize, DataTypes) {
         user_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
+            validate: {
+                isNumeric: true
+            },
             references: {
                 model: Users,
                 key: 'id',
             }
         }
     });
+
+    Payments.associate = function(models) {
+        Payments.belongsTo(models.users, {
+            as: 'user',
+            foreignKey: 'user_id'
+        });
+    }
 
     return Payments;
 };

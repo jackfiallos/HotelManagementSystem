@@ -208,7 +208,7 @@ routes.push({
             comments: (req.body.comments) ? req.body.comments : null,
             rooms: (req.body.rooms) ? req.body.rooms : null,
             guest_id: (req.body.guest_id) ? req.body.guest_id : null,
-            user_id: 1
+            user_id: res.uid
         };
 
         const nights = moment(form.checkout).diff(form.checkin, 'days', true);
