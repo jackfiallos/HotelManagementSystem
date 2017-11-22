@@ -28,7 +28,7 @@ $ node run inspect
 
 ### Logging
 
-By default `node-bunyan` is used for logging to a file (`./logs/{{NODE_ENV}}-{{SERVER:NAME}}.log`). Additionally sending logs to Loggly is supported (take a look at the config file).
+By default `node-bunyan` is used for logging to a file (`./logs/{{NODE_ENV}}-{{SERVER:NAME}}.log`).
 
 ### Environments
 
@@ -40,9 +40,11 @@ $ NODE_ENV=production node app.js
 
 ### Generate cert key files
 
+Execute the next command
+
 ```bash
 openssl genrsa -out server.key 2048
 openssl rsa -in server.key -out server.pem -outform PEM -pubout
 ```
 
-and move the generated files into keys/ folder or whatever you want, just don´t forget to configure the right path.
+Once you have the keys, move the generated files into keys/ folder or whatever you want, just don´t forget to configure the right path.

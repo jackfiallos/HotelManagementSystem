@@ -47,6 +47,12 @@ module.exports = function(sequelize, DataTypes) {
                 }
             }
         },
+        comments: {
+            type: Sequelize.TEXT,
+            validate: {
+                notEmpty: true,
+            }
+        },
         booking_id: {
             type: Sequelize.INTEGER,
             allowNull: false,
@@ -75,6 +81,11 @@ module.exports = function(sequelize, DataTypes) {
         Payments.belongsTo(models.users, {
             as: 'user',
             foreignKey: 'user_id'
+        });
+
+        Payments.belongsTo(models.bookings, {
+            as: 'booking',
+            foreignKey: 'booking_id'
         });
     }
 

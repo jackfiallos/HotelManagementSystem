@@ -48,7 +48,8 @@ routes.push({
                     booking_id: payment.booking_id,
                     user: Object.assign({}, {
                         uid: payment.user.id,
-                        name: payment.user.name
+                        name: payment.user.name,
+                        lastname: payment.user.lastname
                     })
                 });
             });
@@ -95,6 +96,10 @@ routes.push({
                 model: models.users,
                 as: 'user',
                 required: true
+            }, {
+                model: models.bookings,
+                as: 'booking',
+                required: true
             }],
             limit: 1
         }).then((payment) => {
@@ -105,9 +110,14 @@ routes.push({
                 method: payment.method,
                 currency: payment.currency,
                 booking_id: payment.booking_id,
+                comments: payment.comments,
                 user: Object.assign({}, {
                     uid: payment.user.id,
-                    name: payment.user.name
+                    name: payment.user.name,
+                    lastname: payment.user.lastname
+                }),
+                booking: Object.assign({}, {
+                    uid: payment.booking.id
                 })
             });
             res.json(resObj);

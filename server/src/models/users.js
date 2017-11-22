@@ -20,6 +20,10 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 notEmpty: true,
                 len: [3, 50]
+            },
+            get() {
+                const name = this.getDataValue('name');
+                return (name) ? name.charAt(0).toUpperCase() + name.slice(1) : null;
             }
         },
         lastname: {
@@ -28,6 +32,10 @@ module.exports = function(sequelize, DataTypes) {
             validate: {
                 notEmpty: true,
                 len: [3, 50]
+            },
+            get() {
+                const lastname = this.getDataValue('lastname');
+                return (lastname) ? lastname.charAt(0).toUpperCase() + lastname.slice(1) : null;
             }
         },
         username: {
