@@ -5,7 +5,10 @@ import { types } from './payments.types';
 export const initialState: any = {
     isLoading: false,
     lastUpdated: Date.now(),
-    data: null,
+    id: null,
+    data: [],
+    view: null,
+    error: null
 };
 
 /**
@@ -20,48 +23,61 @@ export const initialState: any = {
  */
 export function paymentsReducer(state: any = initialState, action: any) {
     switch (action.type) {
+        // LIST_PAYMENTS
         case types.LIST_PAYMENTS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                data: [],
+                error: null,
+                saved: null,
             });
         case types.LIST_PAYMENTS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: action.payload
+                data: action.payload,
+                error: null,
+                saved: null,
             });
         case types.LIST_PAYMENTS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                data: [],
+                error: action.error,
+                saved: null,
             });
+        // GET_PAYMENTS
         case types.GET_PAYMENTS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: true,
                 lastUpdated: Date.now(),
-                data: {}
+                id: action.uid,
+                error: null,
             });
         case types.GET_PAYMENTS_SUCCESS:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                view: action.payload,
+                error: null,
             });
         case types.GET_PAYMENTS_FAILURE:
             return Object.assign({}, state, {
                 ...state,
                 isLoading: false,
                 lastUpdated: Date.now(),
-                data: {}
+                view: {},
+                error: action.error,
+                saved: null,
             });
+        // CREATE_PAYMENTS
         case types.CREATE_PAYMENTS:
             return Object.assign({}, state, {
                 ...state,
@@ -83,6 +99,7 @@ export function paymentsReducer(state: any = initialState, action: any) {
                 lastUpdated: Date.now(),
                 data: {}
             });
+        // UPDATE_PAYMENTS
         case types.UPDATE_PAYMENTS:
             return Object.assign({}, state, {
                 ...state,

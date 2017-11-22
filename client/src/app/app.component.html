@@ -102,6 +102,12 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" [routerLink]="['payments']" (click)="openSidebar = false">
+                        <i class="fa fa-money"></i>
+                        <span class="menu-title">Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" (click)="logout($event)">
                         <i class="fa fa-power-off"></i>
                         <span class="menu-title">Logout</span>

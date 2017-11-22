@@ -72,8 +72,7 @@ export class AuthService {
      * @version [version]
      * @date    2017-11-09
      */
-    public removeToken(): boolean {
+    public removeToken(): void {
         localStorage.clear();
-        return true;
     }
 }

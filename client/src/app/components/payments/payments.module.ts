@@ -8,6 +8,7 @@ import { PaymentsListComponent } from './list/payments.list.component';
 import { PaymentsFormComponent } from './form/payments.form.component';
 import { PaymentsDetailComponent } from './detail/payments.detail.component';
 
+import { SearchFilterModule } from '../../pipes/searchFilter/searchFilter.module';
 import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module';
 
 @NgModule({
@@ -15,7 +16,8 @@ import { LoadingSpinnerModule } from '../loading-spinner/loading-spinner.module'
         CommonModule,
         FormsModule,
         RouterModule.forChild(routes),
-        LoadingSpinnerModule
+        LoadingSpinnerModule,
+        SearchFilterModule
     ],
     declarations: [
         PaymentsListComponent,

@@ -11,10 +11,10 @@ export const routes = [{
         path: 'create',
         component: PaymentsFormComponent
     }, {
-        path: 'edit',
+        path: 'edit/:id',
         component: PaymentsFormComponent
     }, {
-        path: 'view',
+        path: 'view/:id',
         component: PaymentsDetailComponent
     }]
 }];

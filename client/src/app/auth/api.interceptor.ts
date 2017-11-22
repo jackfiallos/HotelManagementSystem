@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './authService';
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +16,7 @@ export class ApiInterceptor implements HttpInterceptor {
      * @param   {AuthService} publicauth [description]
      * @return  {[type]} [description]
      */
-    constructor(public auth: AuthService) {}
+    constructor(public auth: AuthService, private _router: Router) {}
 
     /**
      * [intercept description]
@@ -46,13 +47,6 @@ export class ApiInterceptor implements HttpInterceptor {
             });
         }
 
-        // Setting the accept header
-        request = request.clone({
-            setHeaders: {
-                'Content-Type': 'application/json'
-            }
-        });
-
         // return next.handle(request);
         return next.handle(request).do((event: HttpEvent<any>) => {
             if (event instanceof HttpResponse) {
@@ -62,7 +56,11 @@ export class ApiInterceptor implements HttpInterceptor {
             if (err instanceof HttpErrorResponse) {
                 if (err.status === 401) {
                     this.auth.collectFailedRequest(request);
+                } else if (err.status === 403) {
+                    this.auth.collectFailedRequest(request);
                     // Redirect to the login route or show a modal
+                    this.auth.removeToken();
+                    this._router.navigate(['/']);
                 }
             }
         });

@@ -1,9 +1,15 @@
 <h1 class="page-title">Payment List</h1>
+<hr>
 <div class="row grid-margin">
-    <div class="col-lg-12">
+    <div class="col">
+        <form>
+            <input #search (keyup)="0" class="form-control" type="text" placeholder="Search">
+        </form>
+    </div>
+    <div class="col">
     	<div class="btn-group float-right">
     		<a class="btn btn-success" [routerLink]="['create']">
-                <i class="fa fa-plus"></i> New Payment
+                <i class="fa fa-plus-circle"></i> New Payment
             </a>
     	</div>
     </div>
@@ -16,12 +22,12 @@
                 <table class="table table-hover table-responsive-sm">
                     <thead class="thead-light">
                         <tr class="">
-                            <th>No.</th>
-                            <th>Date</th>
-                            <th>Method</th>
-                            <th>Currency</th>
+                            <th>Details</th>
+                            <th>Created</th>
                             <th>Amount</th>
-                            <th>#</th>
+                            <th>Method</th>
+                            <th>Register by</th>
+                            <th width="1%">#</th>
                         </tr>
                     </thead>
                     <tbody *ngIf="payments$.isLoading == true">
@@ -32,20 +38,28 @@
                         </tr>
                     </tbody>
                     <tbody *ngIf="payments$.data.length > 0 && payments$.isLoading == false">
-                        <tr *ngFor="let payment of payments$.data">
-                            <th scope="row">{{ payment.uid }}</th>
-                            <td>
-                                <a [routerLink]="['view', payment.uid]" title="View Payment Details">
-                                    {{ payment.created_at | date: 'dd/MM/yyyy' }}<br>
-                                    <small>{{ payment.created_at | date: 'mediumTime' }}</small>
+                        <tr *ngFor="let payment of payments$.data | searchFilter: search.value">
+                            <td scope="row">
+                                <a [routerLink]="['view', payment.uid]" title="View Payment Details" class="btn">
+                                    <i class="fa fa-file-text-o "></i>
                                 </a>
                             </td>
-                            <td>{{ payment.method }}</td>
-                            <td>{{ payment.currency }}</td>
-                            <td>{{ payment.amount | currency: payment.currency:true:'1.2' }}</td>
                             <td>
-                                <a [routerLink]="['edit', payment.uid]" title="Edit Payment">
-                                    <i class="mdi mdi-pencil"></i>
+                                {{ payment.created_at | date: 'dd/MM/yyyy' }}<br>
+                                <small>{{ payment.created_at | date: 'mediumTime' }}</small>
+                            </td>
+                            <td>
+                                {{ payment.amount | currency: payment.currency:true:'1.2' }}
+                            </td>
+                            <td>
+                                <span class="badge" [ngClass]="{'badge-warning': payment.method === 'cash', 'badge-success': payment.method === 'online', 'badge-info': payment.method === 'card' }">{{ payment.method }}</span>
+                            </td>
+                            <td>
+                                {{ payment.user.name }} {{ payment.user.lastname }}
+                            </td>
+                            <td>
+                                <a [routerLink]="['edit', payment.uid]" title="Edit Guest" class="btn">
+                                    <i class="fa fa-pencil"></i>
                                 </a>
                             </td>
                         </tr>

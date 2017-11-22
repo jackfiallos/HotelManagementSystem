@@ -1,15 +1,63 @@
-<h1 class="page-title">Payment Detail</h1>
+<h1 class="page-title">
+    Payment No. {{ id }}
+    <a class="badge badge-warning float-right" [routerLink]="['/payments/edit', id]">Edit</a>
+</h1>
+<hr>
 <div class="row grid-margin">
-    <div class="col-lg-12">
+    <div class="col-lg-12" *ngIf="payment$.view !== null">
+        <small *ngIf="payment$.view.user">Registered by {{ payment$.view.user.name }}</small>
+        <small>on {{ payment$.view.created_at | date: 'dd/MM/yyyy HH:mm:ss' }}</small><br>
     	<div class="btn-group float-right">
-    		<a class="btn btn-success" [routerLink]="['new']">
-                <i class="fa fa-plus"></i> New Booking
+            <a class="btn btn-success" [routerLink]="['/payments']">
+                <i class="fa fa-chevron-circle-left"></i> Go Back
             </a>
     	</div>
     </div>
 </div>
 <div class="row grid-margin">
     <div class="col-lg-12 grid-margin grid-margin-lg-0">
-
+        <div class="card">
+            <div class="card-body" *ngIf="payment$.isLoading == true">
+                <loading-spinner></loading-spinner>
+            </div>
+            <div class="card-body" *ngIf="payment$.view !== null && payment$.isLoading == false">
+                <div class="alert alert-success" role="alert" *ngIf="payment$.saved">
+                    <h4 class="alert-heading">Success!</h4>
+                    Payment registered correctly!
+                </div>
+                <h3>
+                    Payment Information
+                </h3>
+                <div class="row" *ngIf="payment$.view">
+                    <div class="col">
+                        <b>Amount</b>
+                        <p>
+                            {{ payment$.view.amount | currency: payment$.view.currency:true:'1.2' }}
+                        </p>
+                    </div>
+                    <div class="col">
+                        <b>Method</b>
+                        <p>
+                            {{ payment$.view.method }}
+                        </p>
+                    </div>
+                    <div class="col">
+                        <b>Booking</b>
+                        <p>
+                            <a [routerLink]="['bookings/id', payment$.view.booking.id]" title="View booking details" class="badge badge-info">
+                                View booking details
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                <hr>
+                <h3>Comments</h3>
+                <div class="row">
+                    <div class="col">
+                        <p class="comments">{{ payment$.view.comments }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
