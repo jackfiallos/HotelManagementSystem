@@ -47,4 +47,11 @@ openssl genrsa -out server.key 2048
 openssl rsa -in server.key -out server.pem -outform PEM -pubout
 ```
 
-Once you have the keys, move the generated files into keys/ folder or whatever you want, just don´t forget to configure the right path.
+Once you have the keys, move the generated files into keys/ folder or whatever you want, just don´t forget to configure the right path into src/config/{development | production}.config.json
+
+### Known issues
+
+There's an issue with bunyan, to fix this you will need to read this link:
+https://github.com/trentm/node-bunyan/issues/525#issuecomment-319861355
+
+and if your configuration file is ok, just execute npm start to run the project
