@@ -11,23 +11,23 @@ export const ROUTES: Routes = [
         component: LoginComponent
     }, {
         path: 'dashboard',
-        loadChildren: './components/dashboard#DashboardModule',
+        loadChildren: () => import('./components/dashboard').then(m => m.DashboardModule),
         canActivate: [AuthGuard]
     }, {
         path: 'bookings',
-        loadChildren: './components/bookings#BookingsModule',
+        loadChildren: () => import('./components/bookings').then(m => m.BookingsModule),
         canActivate: [AuthGuard]
     }, {
         path: 'guests',
-        loadChildren: './components/guests#GuestsModule',
+        loadChildren: () => import('./components/guests').then(m => m.GuestsModule),
         canActivate: [AuthGuard]
     }, {
         path: 'payments',
-        loadChildren: './components/payments#PaymentsModule',
+        loadChildren: () => import('./components/payments').then(m => m.PaymentsModule),
         canActivate: [AuthGuard]
     }, {
         path: 'rooms',
-        loadChildren: './components/rooms#RoomsModule',
+        loadChildren: () => import('./components/rooms').then(m => m.RoomsModule),
         canActivate: [AuthGuard]
     }, {
         path: '**',
