@@ -26,5 +26,10 @@
     "restify-errors": "^8.0.2",
     "sequelize": "^5.21.3"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "engines": {
+    "node": ">=10.18.1",
+    "npm": ">=6.13.7",
+    "yarn": ">=1.21.1"
+  }
 }
