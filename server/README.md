@@ -4,7 +4,7 @@ This project was created using restify and is basically an **API** secured with 
 
 ## Server Configuration
 
-First of all, don´t forget to configure your **database** (look into the resource folder the schema), the sql file was generated to use MySQL or MariaDB.
+First of all, don't forget to configure your **database** (look into the resource folder the schema), the sql file was generated to use MySQL or MariaDB.
 
 ### Installing Dependencies
 
@@ -14,7 +14,7 @@ $ npm install
 
 ### Setting up
 
-Inside src/config there´s configuration environment variables, setup your database here.
+Inside src/config there's configuration environment variables, setup your database here.
 
 ### Running
 
@@ -23,7 +23,7 @@ To start the project, just run on your console
 $ npm start
 ```
 
-In case you need to debug, you can use chrome debugger through inspect plugin (don´t forget to enabled using chrome://inspect once that you have ran the server)
+In case you need to debug, you can use chrome debugger through inspect plugin (don't forget to enabled using chrome://inspect once that you have ran the server)
 ```bash
 $ npm run inspect
 ```
@@ -49,7 +49,7 @@ openssl genrsa -out server.key 2048
 openssl rsa -in server.key -out server.pem -outform PEM -pubout
 ```
 
-Once you have the keys, move the generated files into keys/ folder or whatever you want, just don´t forget to configure the right path into src/config/{development | production}.config.json
+Once you have the keys, move the generated files into keys/ folder or whatever you want, just don't forget to configure the right path into src/config/{development | production}.config.json
 
 ### Known issues
 
@@ -80,7 +80,9 @@ Once the server is running locally the api is ready to be consumed at the port 1
 }
 ```
 
-By default any user is created with the active flag 0, meaning the user is inactive (you can change this directly in your local DB in order to let the user login). And 2 different types of users exist "admin" and "user".
+By default new users are created with the active flag 0/false, meaning the user is inactive (you can change this directly in your local DB in order to let the user login).
+
+Also, exist 2 different types of users, "admin" and "user" (this was created intentionally thinking in mind roles / a future feature)
 
 **Login users**
 

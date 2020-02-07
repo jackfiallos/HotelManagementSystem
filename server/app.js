@@ -27,7 +27,7 @@ const nconf = require('nconf').file({
 });
 
 // sign with RSA SHA256
-const cert = fs.readFileSync(nconf.get('Key:Path'));
+const cert = fs.readFileSync(path.join(__dirname, './', nconf.get('key:path')));
 
 const formatOut = bformat({
     outputMode: 'long',
@@ -39,14 +39,14 @@ const formatOut = bformat({
  */
 
 const Logger = bunyan.createLogger({
-    name: nconf.get('Logging:Name'),
+    name: nconf.get('logging:name'),
     serializers: bunyan.stdSerializers,
     streams: [{
         level: 'info',
         stream: formatOut
     }, {
         level: 'error',
-        path: path.join(nconf.get('Logging:Dir'), `${process.env.NODE_ENV}-${nconf.get('Server:Name')}.log`)
+        path: path.join(__dirname, './', nconf.get('logging:dir'), `${process.env.NODE_ENV}-${nconf.get('server:name')}.log`)
     }]
 });
 
@@ -55,9 +55,9 @@ const Logger = bunyan.createLogger({
  */
 
 const server = restify.createServer({
-    name: nconf.get('Server:Name'),
-    version: nconf.get('Server:DefaultVersion'),
-    acceptable: nconf.get('Server:Acceptable'),
+    name: nconf.get('server:name'),
+    version: nconf.get('server:defaultVersion'),
+    acceptable: nconf.get('server:acceptable'),
     log: Logger
 });
 
@@ -66,8 +66,8 @@ const server = restify.createServer({
  */
 
 const throttleOptions = {
-    rate: nconf.get('Server:ThrottleRate'),
-    burst: nconf.get('Server:ThrottleBurst'),
+    rate: nconf.get('server:throttleRate'),
+    burst: nconf.get('server:throttleBurst'),
     ip: false,
     username: true
 };
@@ -101,10 +101,10 @@ server.use(cors.actual);
 // Verify through middleware if user is authorized
 server.use(verifyJWT({
     algorithm: 'HS256',
-    audience: nconf.get('Jwt:audience'),
-    issuer: nconf.get('Jwt:issuer'),
-    jwtid: nconf.get('Jwt:jwtid'),
-    subject: nconf.get('Jwt:subject'),
+    audience: nconf.get('jwt:audience'),
+    issuer: nconf.get('jwt:issuer'),
+    jwtid: nconf.get('jwt:jwtid'),
+    subject: nconf.get('jwt:subject'),
     cert: cert
 }).unless({
     path: ['/', '/register']
@@ -153,7 +153,7 @@ const registerRoute = (route) => {
             const routeMeta = {
                 name: routeName,
                 path: aPath,
-                version: nconf.get('App:Version')
+                version: nconf.get('app:version')
             };
 
             if (route.validate) {
@@ -186,12 +186,12 @@ const setupMiddleware = (middlewareName) => {
  */
 
 const listen = (done) => {
-    server.listen(nconf.get('Server:Port'), () => {
+    server.listen(nconf.get('server:port'), () => {
         if (done) {
             return done();
         }
 
-        Logger.info('%s now listening on %s', nconf.get('App:Name'), server.url);
+        Logger.info('%s now listening on %s', nconf.get('app:name'), server.url);
     });
 };
 

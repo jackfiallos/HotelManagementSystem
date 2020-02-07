@@ -1,4 +1,3 @@
-import { Action } from '@ngrx/store';
 import { types } from './auth.types';
 
 // Initial State values

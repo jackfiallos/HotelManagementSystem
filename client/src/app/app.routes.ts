@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { DataResolver } from './app.resolver';
 
 import { AuthGuard } from './auth/auth.guard';
 import { NoContentComponent } from './components/no-content/no-content.component';

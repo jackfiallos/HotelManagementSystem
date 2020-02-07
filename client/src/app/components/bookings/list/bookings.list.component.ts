@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 import { BookingsController } from '../../../ducks/bookings/bookings.controller';
 import { types } from '../../../ducks/bookings/bookings.types';
 
 @Component({
-    selector: 'list-bookings',
+    selector: 'app-list-bookings',
     templateUrl: './bookings.list.component.html',
     encapsulation: ViewEncapsulation.None
 })
@@ -43,9 +41,7 @@ export class BookingsListComponent implements OnInit {
             type: types.LIST_BOOKINGS
         });
 
-        this._bookings.getBookings().finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
+        this._bookings.getBookings().subscribe((data: any) => {
             this._store.dispatch({
                 type: types.LIST_BOOKINGS_SUCCESS,
                 payload: data

@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 import { BookingsController } from '../../../ducks/bookings/bookings.controller';
 import { types } from '../../../ducks/bookings/bookings.types';
 
 @Component({
-    selector: 'detail-bookings',
+    selector: 'app-detail-bookings',
     templateUrl: './bookings.detail.component.html',
     encapsulation: ViewEncapsulation.None
 })
@@ -50,9 +48,7 @@ export class BookingsDetailComponent implements OnInit, OnDestroy {
                 uid: this.id
             });
 
-            this._bookings.getBookingById(this.id).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._bookings.getBookingById(this.id).subscribe((data: any) => {
                 this._store.dispatch({
                     type: types.GET_BOOKINGS_SUCCESS,
                     payload: data

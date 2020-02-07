@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 import { PaymentsController } from '../../../ducks/payments/payments.controller';
 import { types } from '../../../ducks/payments/payments.types';
 
 @Component({
-    selector: 'list-payments',
+    selector: 'app-list-payments',
     templateUrl: './payments.list.component.html',
     encapsulation: ViewEncapsulation.None
 })
@@ -43,9 +41,7 @@ export class PaymentsListComponent implements OnInit {
             type: types.LIST_PAYMENTS
         });
 
-        this._payments.getPayments().finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
+        this._payments.getPayments().subscribe((data: any) => {
             this._store.dispatch({
                 type: types.LIST_PAYMENTS_SUCCESS,
                 payload: data

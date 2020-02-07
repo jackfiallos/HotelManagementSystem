@@ -1,18 +1,16 @@
 import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 import { GuestsController } from '../../../ducks/guests/guests.controller';
 import { types } from '../../../ducks/guests/guests.types';
 
 @Component({
-    selector: 'detail-guests',
+    selector: 'app-detail-guests',
     templateUrl: './guests.detail.component.html',
     encapsulation: ViewEncapsulation.None
 })
-export class GuestsDetailComponent implements OnInit {
+export class GuestsDetailComponent implements OnInit, OnDestroy {
     public id: number;
     public sub: any;
     public guest$: any;
@@ -50,9 +48,7 @@ export class GuestsDetailComponent implements OnInit {
                 uid: this.id
             });
 
-            this._guests.getGuestById(this.id).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._guests.getGuestById(this.id).subscribe((data: any) => {
                 this._store.dispatch({
                     type: types.GET_GUESTS_SUCCESS,
                     payload: data

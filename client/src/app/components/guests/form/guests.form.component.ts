@@ -1,23 +1,17 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
-import { DateAdapter, NativeDateAdapter } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import _ from 'lodash';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/finally';
 
 import { GuestsController } from '../../../ducks/guests/guests.controller';
 import { types as GuestTypes } from '../../../ducks/guests/guests.types';
 
 @Component({
-    selector: 'form-guests',
+    selector: 'app-form-guests',
     templateUrl: './guests.form.component.html',
     encapsulation: ViewEncapsulation.None
 })
-export class GuestsFormComponent implements OnInit {
+export class GuestsFormComponent implements OnInit, OnDestroy {
     public id: number;
     public sub: any;
     public guest$: any;
@@ -80,9 +74,7 @@ export class GuestsFormComponent implements OnInit {
                     uid: this.id
                 });
 
-                this._guest.getGuestById(this.id).finally(() => {
-                    console.log('finally logic');
-                }).subscribe((data: any) => {
+                this._guest.getGuestById(this.id).subscribe((data: any) => {
                     this.form = {
                         first_name: data.first_name,
                         last_name: data.last_name,
@@ -142,9 +134,7 @@ export class GuestsFormComponent implements OnInit {
             });
 
             // request create guest
-            this._guest.createGuest(this.form).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._guest.createGuest(this.form).subscribe((data: any) => {
                 this._store.dispatch({
                     type: GuestTypes.CREATE_GUESTS_SUCCESS,
                     payload: data
@@ -164,9 +154,7 @@ export class GuestsFormComponent implements OnInit {
             });
 
             // request create guest
-            this._guest.updateGuest(this.id, this.form).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._guest.updateGuest(this.id, this.form).subscribe((data: any) => {
                 this._store.dispatch({
                     type: GuestTypes.UPDATE_GUESTS_SUCCESS,
                     payload: data

@@ -1,23 +1,17 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
-import { DateAdapter, NativeDateAdapter } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import _ from 'lodash';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/finally';
 
 import { PaymentsController } from '../../../ducks/payments/payments.controller';
 import { types as PaymentTypes } from '../../../ducks/payments/payments.types';
 
 @Component({
-    selector: 'form-payments',
+    selector: 'app-form-payments',
     templateUrl: './payments.form.component.html',
     encapsulation: ViewEncapsulation.None
 })
-export class PaymentsFormComponent implements OnInit {
+export class PaymentsFormComponent implements OnInit, OnDestroy {
     public id: number;
     public sub: any;
     public payment$: any;
@@ -84,9 +78,7 @@ export class PaymentsFormComponent implements OnInit {
                     uid: this.id
                 });
 
-                this._payment.getPaymentById(this.id).finally(() => {
-                    console.log('finally logic');
-                }).subscribe((data: any) => {
+                this._payment.getPaymentById(this.id).subscribe((data: any) => {
                     this.form = {
                         amount: data.amount,
                         currency: data.currency,
@@ -134,9 +126,7 @@ export class PaymentsFormComponent implements OnInit {
             });
 
             // request create room
-            this._payment.createPayment(this.form).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._payment.createPayment(this.form).subscribe((data: any) => {
                 this._store.dispatch({
                     type: PaymentTypes.CREATE_PAYMENTS_SUCCESS,
                     payload: data
@@ -156,9 +146,7 @@ export class PaymentsFormComponent implements OnInit {
             });
 
             // request create room
-            this._payment.updatePayment(this.id, this.form).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._payment.updatePayment(this.id, this.form).subscribe((data: any) => {
                 this._store.dispatch({
                     type: PaymentTypes.UPDATE_PAYMENTS_SUCCESS,
                     payload: data

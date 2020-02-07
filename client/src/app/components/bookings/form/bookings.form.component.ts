@@ -1,13 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { DateAdapter, NativeDateAdapter } from '@angular/material';
+import { DateAdapter } from '@angular/material/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import _ from 'lodash';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/finally';
+
+import { startWith, map } from 'rxjs/operators';
 
 import { BookingsController } from '../../../ducks/bookings/bookings.controller';
 import { RoomsController } from '../../../ducks/rooms/rooms.controller';
@@ -17,11 +16,11 @@ import { types as RoomTypes } from '../../../ducks/rooms/rooms.types';
 import { types as GuestTypes } from '../../../ducks/guests/guests.types';
 
 @Component({
-    selector: 'form-bookings',
+    selector: 'app-form-bookings',
     templateUrl: './bookings.form.component.html',
     encapsulation: ViewEncapsulation.None
 })
-export class BookingsFormComponent implements OnInit {
+export class BookingsFormComponent implements OnInit, OnDestroy {
     public id: number;
     public sub: any;
     public booking$: any;
@@ -53,7 +52,7 @@ export class BookingsFormComponent implements OnInit {
         guest_id: null,
         rooms: null,
         comments: null
-    }
+    };
 
     public types: string[] = ['online', 'phone', 'agency', 'desk'];
 
@@ -70,7 +69,15 @@ export class BookingsFormComponent implements OnInit {
      * @param   {[type]} private [description]
      * @return  {[type]} [description]
      */
-    constructor(private route: ActivatedRoute, private _router: Router, private _bookings: BookingsController, private _room: RoomsController, private _guest: GuestsController, private _store: Store<any>, private dateAdapter: DateAdapter<NativeDateAdapter>) {
+    constructor(
+        private route: ActivatedRoute,
+        private _router: Router,
+        private _bookings: BookingsController,
+        private _room: RoomsController,
+        private _guest: GuestsController,
+        private _store: Store<any>,
+        private dateAdapter: DateAdapter<any>
+    ) {
         this.dateAdapter.setLocale('en-US');
 
         _store.select('bookings').subscribe((response) => {
@@ -90,15 +97,13 @@ export class BookingsFormComponent implements OnInit {
             type: RoomTypes.LIST_ROOMS
         });
 
-        this._room.getRooms('availables').finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
+        this._room.getRooms('availables').subscribe((data: any) => {
             this.availableRooms = _.map(data, (item) => {
                 return {
                     id: item.uid,
                     itemName: `${item.name} (${item.type} - ${item.max_guests} guest)`
                 };
-            })
+            });
             this._store.dispatch({
                 type: RoomTypes.LIST_ROOMS_SUCCESS,
                 payload: data
@@ -115,9 +120,7 @@ export class BookingsFormComponent implements OnInit {
         });
 
         // request guest list
-        this._guest.getGuests().finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
+        this._guest.getGuests().subscribe((data: any) => {
             this.guestOptions = _.map(data, (guest) => {
                 const email = (guest.email !== null) ? `(${guest.email})` : '';
                 return Object.assign({}, {
@@ -127,13 +130,15 @@ export class BookingsFormComponent implements OnInit {
             });
 
             this.guestFiltered = this.guestControl.valueChanges
-                .startWith(null)
-                    .map((guest) => {
+                .pipe(
+                    startWith(null),
+                    map((guest) => {
                         return (guest && typeof guest === 'object') ? guest.name : guest;
-                    })
-                    .map((name) => {
+                    }),
+                    map((name) => {
                         return name ? this.filter(name) : this.guestOptions.slice();
-                    });
+                    })
+                );
 
             this._store.dispatch({
                 type: GuestTypes.LIST_GUESTS_SUCCESS,
@@ -161,9 +166,7 @@ export class BookingsFormComponent implements OnInit {
                     uid: this.id
                 });
 
-                this._bookings.getBookingById(this.id).finally(() => {
-                    console.log('finally logic');
-                }).subscribe((data: any) => {
+                this._bookings.getBookingById(this.id).subscribe((data: any) => {
                     this.form = {
                         checkin: data.checkin,
                         checkout: data.checkout,
@@ -172,14 +175,14 @@ export class BookingsFormComponent implements OnInit {
                         type: data.type,
                         confirmed: data.confirmed,
                         comments: data.comments
-                    }
+                    };
 
                     this.selectedRooms = _.map(data.room, (room) => {
                         return {
                             id: room.uid,
                             itemName: `${room.name} (${room.type} - ${room.max_guests} guest)`
                         };
-                    })
+                    });
 
                     this.guestControl.setValue({
                         id: data.guest.uid,
@@ -237,9 +240,7 @@ export class BookingsFormComponent implements OnInit {
             });
 
             // request create booking
-            this._bookings.createBooking(this.form).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._bookings.createBooking(this.form).subscribe((data: any) => {
                 this._store.dispatch({
                     type: BookingTypes.CREATE_BOOKINGS_SUCCESS,
                     payload: data
@@ -259,9 +260,7 @@ export class BookingsFormComponent implements OnInit {
             });
 
             // request update booking
-            this._bookings.updateBooking(this.id, this.form).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._bookings.updateBooking(this.id, this.form).subscribe((data: any) => {
                 this._store.dispatch({
                     type: BookingTypes.UPDATE_BOOKINGS_SUCCESS,
                     payload: data

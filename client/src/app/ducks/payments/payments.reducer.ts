@@ -1,4 +1,3 @@
-import { Action } from '@ngrx/store';
 import { types } from './payments.types';
 
 // Initial State values

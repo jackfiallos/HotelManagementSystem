@@ -2,10 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MatDatepickerModule, MatNativeDateModule } from '@angular/material';
-import { MatAutocompleteModule } from '@angular/material';
-
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown';
 
 import { routes } from './bookings.routes';
 import { BookingsListComponent } from './list/bookings.list.component';
@@ -19,12 +18,11 @@ import { SearchFilterModule } from '../../pipes/searchFilter/searchFilter.module
     imports: [
         CommonModule,
         FormsModule,
+        AngularMultiSelectModule,
         ReactiveFormsModule,
         RouterModule.forChild(routes),
         MatAutocompleteModule,
         MatDatepickerModule,
-        MatNativeDateModule,
-        AngularMultiSelectModule,
         LoadingSpinnerModule,
         SearchFilterModule
     ],

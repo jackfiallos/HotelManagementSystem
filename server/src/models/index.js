@@ -11,7 +11,7 @@ const nconf = require('nconf').file({
 });
 
 // Configure db connection
-const sequelize = new Sequelize(nconf.get('DB:name'), nconf.get('DB:username'), nconf.get('DB:password'), nconf.get('DB:config'));
+const sequelize = new Sequelize(nconf.get('db:name'), nconf.get('db:username'), nconf.get('db:password'), nconf.get('db:config'));
 var db = {};
 
 // Read and load model files (avoid index.js)

@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormControl } from '@angular/forms';
 import { AuthService } from '../../auth/authService';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 import { AuthController } from '../../ducks/auth/auth.controller';
 import { types } from '../../ducks/auth/auth.types';
@@ -31,7 +28,13 @@ export class LoginComponent implements OnInit {
      * @param   {[type]} private [description]
      * @return  {[type]} [description]
      */
-    constructor(private authenticationService: AuthService, private route: ActivatedRoute, private router: Router, private _auth: AuthController, private _store: Store<any>) {
+    constructor(
+        private authenticationService: AuthService,
+        private route: ActivatedRoute,
+        private router: Router,
+        private _auth: AuthController,
+        private _store: Store<any>
+    ) {
         _store.select('auth').subscribe((response) => {
             this.auth$ = response;
         });

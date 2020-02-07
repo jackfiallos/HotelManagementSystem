@@ -4,7 +4,7 @@
             <div class="card col-lg-8 mx-auto">
                 <div class="card-body px-5 py-5">
                     <h3 class="card-title text-left mb-3">Login</h3>
-                    <form (ngSubmit)="login($event)" [ngClass]="{'d-none': auth$.isLoading == true}" novalidate>
+                    <form (ngSubmit)="login()" [ngClass]="{'d-none': auth$.isLoading == true}" novalidate>
                         <div class="form-group text-center" *ngIf="auth$.isLoading == true">
                             <loading-spinner></loading-spinner>
                         </div>

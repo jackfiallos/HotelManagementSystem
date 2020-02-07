@@ -1,23 +1,17 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
-import { DateAdapter, NativeDateAdapter } from '@angular/material';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import _ from 'lodash';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/finally';
 
 import { RoomsController } from '../../../ducks/rooms/rooms.controller';
 import { types as RoomTypes } from '../../../ducks/rooms/rooms.types';
 
 @Component({
-    selector: 'form-rooms',
+    selector: 'app-form-rooms',
     templateUrl: './rooms.form.component.html',
     encapsulation: ViewEncapsulation.None
 })
-export class RoomsFormComponent implements OnInit {
+export class RoomsFormComponent implements OnInit, OnDestroy {
     public id: number;
     public sub: any;
     public room$: any;
@@ -79,9 +73,7 @@ export class RoomsFormComponent implements OnInit {
                     uid: this.id
                 });
 
-                this._room.getRoomById(this.id).finally(() => {
-                    console.log('finally logic');
-                }).subscribe((data: any) => {
+                this._room.getRoomById(this.id).subscribe((data: any) => {
                     this.form = {
                         name: data.name,
                         currency: data.currency,
@@ -131,9 +123,7 @@ export class RoomsFormComponent implements OnInit {
             });
 
             // request create room
-            this._room.createRoom(this.form).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._room.createRoom(this.form).subscribe((data: any) => {
                 this._store.dispatch({
                     type: RoomTypes.CREATE_ROOMS_SUCCESS,
                     payload: data
@@ -153,9 +143,7 @@ export class RoomsFormComponent implements OnInit {
             });
 
             // request create room
-            this._room.updateRoom(this.id, this.form).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._room.updateRoom(this.id, this.form).subscribe((data: any) => {
                 this._store.dispatch({
                     type: RoomTypes.UPDATE_ROOMS_SUCCESS,
                     payload: data

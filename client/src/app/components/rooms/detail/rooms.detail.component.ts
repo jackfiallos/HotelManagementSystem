@@ -1,18 +1,16 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 import { RoomsController } from '../../../ducks/rooms/rooms.controller';
 import { types } from '../../../ducks/rooms/rooms.types';
 
 @Component({
-    selector: 'detail-rooms',
+    selector: 'app-detail-rooms',
     templateUrl: './rooms.detail.component.html',
     encapsulation: ViewEncapsulation.None
 })
-export class RoomsDetailComponent implements OnInit {
+export class RoomsDetailComponent implements OnInit, OnDestroy {
     public id: number;
     public sub: any;
     public room$: any;
@@ -50,9 +48,7 @@ export class RoomsDetailComponent implements OnInit {
                 uid: this.id
             });
 
-            this._rooms.getRoomById(this.id).finally(() => {
-                console.log('finally logic');
-            }).subscribe((data: any) => {
+            this._rooms.getRoomById(this.id).subscribe((data: any) => {
                 this._store.dispatch({
                     type: types.GET_ROOMS_SUCCESS,
                     payload: data

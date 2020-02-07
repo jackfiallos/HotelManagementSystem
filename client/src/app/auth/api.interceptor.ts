@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from './authService';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/do';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
 
 @Injectable()
 export class ApiInterceptor implements HttpInterceptor {
@@ -47,10 +48,12 @@ export class ApiInterceptor implements HttpInterceptor {
             });
         }
 
+        const started = Date.now();
         // return next.handle(request);
-        return next.handle(request).do((event: HttpEvent<any>) => {
+        return next.handle(request).pipe(tap(event => {
             if (event instanceof HttpResponse) {
-                // Do stuff with response if you want
+                const elapsed = Date.now() - started;
+                console.log(`Request for ${request.urlWithParams} took ${elapsed} ms.`);
             }
         }, (err: any) => {
             if (err instanceof HttpErrorResponse) {
@@ -63,6 +66,6 @@ export class ApiInterceptor implements HttpInterceptor {
                     this._router.navigate(['/']);
                 }
             }
-        });
+        }));
     }
 }

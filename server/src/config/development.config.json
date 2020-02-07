@@ -1,27 +1,27 @@
 {
-    "App": {
-        "Name": "api.hms.local",
-        "Version": "1.0.0"
+    "app": {
+        "name": "api.hms.local",
+        "version": "1.0.0"
     },
-    "Jwt": {
+    "jwt": {
         "secret": "T=_afU=bJq[p%Z6S",
         "audience": "users.api.hms.local",
         "issuer": "api.hms.local",
         "jwtid": "jwt.api.hms.local",
         "subject": "hms.local"
     },
-    "Server": {
-        "Port": 1337,
-        "Name": "api.hms.local",
-        "DefaultVersion": "1.0.0",
-        "Acceptable": [ "application/json" ],
-        "ThrottleRate": 50,
-        "ThrottleBurst": 100
+    "server": {
+        "port": 1337,
+        "name": "api.hms.local",
+        "defaultVersion": "1.0.0",
+        "acceptable": [ "application/json" ],
+        "throttleRate": 50,
+        "throttleBurst": 100
     },
-    "DB": {
+    "db": {
         "name": "hms",
         "username": "root",
-        "password": "mysqlubuntu",
+        "password": "g1g4bl3d3v",
         "config": {
             "host": "localhost",
             "port": 3306,
@@ -36,11 +36,11 @@
             }
         }
     },
-    "Logging": {
-        "Name": "hms-log",
-        "Dir": "./logs/"
+    "logging": {
+        "name": "hms-log",
+        "dir": "logs/"
     },
-    "Key": {
-        "Path": "/Users/jack/Public/HotelManagementSystem/server/keys/server.key"
+    "key": {
+        "path": "keys/server.key"
     }
 }

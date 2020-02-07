@@ -16,7 +16,7 @@ const nconf = require('nconf').file({
 });
 
 // sign with RSA SHA256
-const cert = fs.readFileSync(nconf.get('Key:Path'));
+const cert = fs.readFileSync(path.join(__dirname, '../../../', nconf.get('key:path')));
 
 /**
  * Routes
@@ -79,10 +79,10 @@ routes.push({
                     }, cert, {
                         expiresIn: 1440,
                         algorithm: 'HS256',
-                        audience: nconf.get('Jwt:audience'),
-                        issuer: nconf.get('Jwt:issuer'),
-                        jwtid: nconf.get('Jwt:jwtid'),
-                        subject: nconf.get('Jwt:subject')
+                        audience: nconf.get('jwt:audience'),
+                        issuer: nconf.get('jwt:issuer'),
+                        jwtid: nconf.get('jwt:jwtid'),
+                        subject: nconf.get('jwt:subject')
                     });
 
                     res.json({

@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 import { GuestsController } from '../../../ducks/guests/guests.controller';
 import { types } from '../../../ducks/guests/guests.types';
 
 @Component({
-    selector: 'list-guests',
+    selector: 'app-list-guests',
     templateUrl: './guests.list.component.html',
     encapsulation: ViewEncapsulation.None
 })
@@ -43,9 +41,7 @@ export class GuestsListComponent implements OnInit {
             type: types.LIST_GUESTS
         });
 
-        this._guests.getGuests().finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
+        this._guests.getGuests().subscribe((data: any) => {
             this._store.dispatch({
                 type: types.LIST_GUESTS_SUCCESS,
                 payload: data

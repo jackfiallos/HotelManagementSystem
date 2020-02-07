@@ -1,13 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/finally';
 
 import { RoomsController } from '../../../ducks/rooms/rooms.controller';
 import { types } from '../../../ducks/rooms/rooms.types';
 
 @Component({
-    selector: 'list-rooms',
+    selector: 'app-list-rooms',
     templateUrl: './rooms.list.component.html',
     encapsulation: ViewEncapsulation.None
 })
@@ -43,9 +41,7 @@ export class RoomsListComponent implements OnInit {
             type: types.LIST_ROOMS
         });
 
-        this._rooms.getRooms().finally(() => {
-            console.log('finally logic');
-        }).subscribe((data: any) => {
+        this._rooms.getRooms().subscribe((data: any) => {
             this._store.dispatch({
                 type: types.LIST_ROOMS_SUCCESS,
                 payload: data

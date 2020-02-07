@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { AppState } from './app.service';
 import { environment } from '../environments/environment';
@@ -15,7 +15,12 @@ export class AppComponent implements OnInit {
     public openSidebar = false;
     public openNotifications = false;
 
-    constructor(public _appState: AppState, private _titleService: Title, private _router: Router, private _authenticationService: AuthService) {}
+    constructor(
+        public _appState: AppState,
+        private _titleService: Title,
+        private _router: Router,
+        private _authenticationService: AuthService
+    ) {}
 
     /**
      * [name description]

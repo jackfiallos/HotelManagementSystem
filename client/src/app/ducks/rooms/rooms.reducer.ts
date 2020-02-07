@@ -1,4 +1,3 @@
-import { Action } from '@ngrx/store';
 import { types } from './rooms.types';
 
 // Initial State values
