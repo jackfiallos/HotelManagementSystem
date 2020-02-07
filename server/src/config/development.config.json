@@ -21,7 +21,7 @@
     "db": {
         "name": "hms",
         "username": "root",
-        "password": "g1g4bl3d3v",
+        "password": "your_password_here",
         "config": {
             "host": "localhost",
             "port": 3306,

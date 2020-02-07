@@ -21,7 +21,7 @@
     "DB": {
         "name": "hms",
         "username": "root",
-        "password": "mysqlubuntu",
+        "password": "your_password_here",
         "config": {
             "host": "localhost",
             "port": 3306,
